@@ -28,20 +28,20 @@ const Login: NextPage = () => {
 
         //   });
 
-        // axiosInstance
-        //     .post('users/sign_in.json', {
-        //         user: {
-        //         password: '123456',
-        //         email: '12345@qq.com'
-        //         }
-        //     }).then((res) => {
-        //         alert(data.username)
-        //         // console.log(res.data)
+        axiosInstance
+            .post('users/sign_in.json', {
+                user: {
+                password: '123456',
+                email: '12345@qq.com'
+                }
+            }).then((res) => {
+                alert(data.username)
+                // console.log(res.data)
              
-        //     }).catch((err) => {
-        //         alert(data.username)
-        //         // console.log(err.toString())
-        //     })
+            }).catch((err) => {
+                alert(data.username)
+                // console.log(err.toString())
+            })
 
     }
     function handleChange(e:any) {
@@ -55,7 +55,7 @@ const Login: NextPage = () => {
     <div className="bg-[#2c3338] w-full  h-screen text-center flex justify-center items-center">
         <div className=" w-60">
             <div>
-                <label className="text-white text-5xl">登入3</label>
+                <label className="text-white text-5xl">登入</label>
             </div>
             <div className="mt-8">
                 <div className="flex-row w-full h-12  ">
