@@ -10,23 +10,23 @@ const Login: NextPage = () => {
         password: ''
     })
     const login_submit = () => {
-        fetch(`http://www.examhero.com/api/users/sign_in.json`, {
-            method: 'POST',
-            headers: {
-              'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({
-                        user: {
-                        password: '123456',
-                        email: '12345@qq.com'
-                        }})
-          }).then(async r => {
-            if (r.status !== 200) throw await r.text();
-            return r.json();
-          }).then(tdata => {
-            localStorage.setItem('token', `${tdata.token_type} ${tdata.access_token}`);
+        // fetch(`http://www.examhero.com/api/users/sign_in.json`, {
+        //     method: 'POST',
+        //     headers: {
+        //       'Content-Type': 'application/json',
+        //     },
+        //     body: JSON.stringify({
+        //                 user: {
+        //                 password: '123456',
+        //                 email: '12345@qq.com'
+        //                 }})
+        //   }).then(async r => {
+        //     if (r.status !== 200) throw await r.text();
+        //     return r.json();
+        //   }).then(tdata => {
+        //     localStorage.setItem('token', `${tdata.token_type} ${tdata.access_token}`);
 
-          });
+        //   });
 
         // axiosInstance
         //     .post('users/sign_in.json', {
@@ -55,7 +55,7 @@ const Login: NextPage = () => {
     <div className="bg-[#2c3338] w-full  h-screen text-center flex justify-center items-center">
         <div className=" w-60">
             <div>
-                <label className="text-white text-5xl">登入</label>
+                <label className="text-white text-5xl">登入3</label>
             </div>
             <div className="mt-8">
                 <div className="flex-row w-full h-12  ">
