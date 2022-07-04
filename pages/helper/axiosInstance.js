@@ -14,8 +14,6 @@ axiosInstance.interceptors.request.use(
       config.headers.Authorization = `Bearer ${token}`;
     }
     config.headers['Device-Model'] = 'web'
-    config.headers['Access-Control-Allow-Origin','http://localhost:3000']
-    config.headers['Access-Control-Allow-Credentials',true]
     return config;
   },
   (error) => {
