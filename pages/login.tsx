@@ -1,48 +1,23 @@
 import type { NextPage } from 'next'
 import Link from 'next/link';
+import { useRouter } from 'next/router';
 import { useState } from 'react';
 import  {FaLock, FaUser}  from "react-icons/fa";
 import axiosInstance from './helper/axiosInstance';
+import AuthService from './services/auth_services';
 
 const Login: NextPage = () => {
+    const router = useRouter();
     const [data, setData] = useState({
         username: '',
         password: ''
     })
     const login_submit = () => {
-        // fetch(`http://www.examhero.com/api/users/sign_in.json`, {
-        //     method: 'POST',
-        //     headers: {
-        //       'Content-Type': 'application/json',
-        //     },
-        //     body: JSON.stringify({
-        //                 user: {
-        //                 password: '123456',
-        //                 email: '12345@qq.com'
-        //                 }})
-        //   }).then(async r => {
-        //     if (r.status !== 200) throw await r.text();
-        //     return r.json();
-        //   }).then(tdata => {
-        //     localStorage.setItem('token', `${tdata.token_type} ${tdata.access_token}`);
-
-        //   });
-
-        axiosInstance
-            .post('users/sign_in.json', {
-                user: {
-                password: '123456',
-                email: '12345@qq.com'
-                }
-            }).then((res) => {
-                alert(data.username)
-                // console.log(res.data)
-             
-            }).catch((err) => {
-                alert(data.username)
-                // console.log(err.toString())
-            })
-
+        AuthService.signIn('12345@qq.com', '123456').then((data:any) => {
+            localStorage.setItem('token', `${data.doc.authentication_token}`);
+            localStorage.setItem('user', JSON.stringify(data.doc));
+            router.push("/")
+        }).catch(res => alert(res.toString()))
     }
     function handleChange(e:any) {
         if (e.target.files) {

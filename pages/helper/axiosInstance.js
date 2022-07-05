@@ -9,7 +9,7 @@ const axiosInstance = axios.create({
 
 axiosInstance.interceptors.request.use(
   async (config) => {
-    const token = null;
+    const token = localStorage.getItem('token');;
     if (token) {
       config.headers.Authorization = `Bearer ${token}`;
     }
@@ -33,7 +33,9 @@ axiosInstance.interceptors.response.use(
       });
     }
 
-    if (error.response.status === 403) {
+    if (error.response.status === 404) {
+      // navigate(LOGOUT, {tokenExpired: true});
+    }else if (error.response.status === 403) {
       // navigate(LOGOUT, {tokenExpired: true});
     } else {
       return new Promise((resolve, reject) => {
