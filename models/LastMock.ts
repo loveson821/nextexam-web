@@ -3,6 +3,7 @@ import Examination from "./Examination";
 import Group from "./Group";
 import JSModel from "./JSModel";
 import moment from 'moment';
+import { useServices } from "../pages/services";
 
 /**
  * 模擬考試model
@@ -96,96 +97,96 @@ export default class LastMock extends JSModel {
   }
 
   openTime() {
-    // const { t } = useServices();
-    // if (this.can_start_at && this.deadline)
-    //   return t.do('mocks.open_time') + moment(this.can_start_at).format('YYYY-MM-DD HH:mm') + " ~ " + moment(this.deadline).format('YYYY-MM-DD HH:mm')
+    const { t } = useServices();
+    if (this.can_start_at && this.deadline)
+      return t.do('mocks.open_time') + moment(this.can_start_at).format('YYYY-MM-DD HH:mm') + " ~ " + moment(this.deadline).format('YYYY-MM-DD HH:mm')
   }
 
   enrollTime() {
-    // const { t } = useServices();
-    // if (this.status != 'done' && this.enrollment_start != undefined)
-    //   return t.do('mocks.enrolled_time') + moment(this.enrollment_start).format('YYYY-MM-DD HH:mm') + " ~ " + moment(this.enrollment_end).format('YYYY-MM-DD HH:mm')
+    const { t } = useServices();
+    if (this.status != 'done' && this.enrollment_start != undefined)
+      return t.do('mocks.enrolled_time') + moment(this.enrollment_start).format('YYYY-MM-DD HH:mm') + " ~ " + moment(this.enrollment_end).format('YYYY-MM-DD HH:mm')
   }
 
   submit_at() {
-    // const { t } = useServices();
-    // var showText = '';
-    // switch (this.status) {
-    //   case 'doing':
-    //     showText = t.do('mocks.time_used') + this.time_used
-    //     break;
-    //   case 'submited':
-    //   case 'correcting':
-    //     showText = ''
-    //     break;
-    //   case 'done':
-    //     showText = ''
-    //     break;
-    //   case 'none':
-    //     showText = t.do('mocks.suggest_time_in_hms') + this.suggest_time_in_hms
-    //     break;
-    //   default:
-    //     showText = t.do('mocks.suggest_time_in_hms') + this.suggest_time_in_hms
-    //     break;
+    const { t } = useServices();
+    var showText = '';
+    switch (this.status) {
+      case 'doing':
+        showText = t.do('mocks.time_used') + this.time_used
+        break;
+      case 'submited':
+      case 'correcting':
+        showText = ''
+        break;
+      case 'done':
+        showText = ''
+        break;
+      case 'none':
+        showText = t.do('mocks.suggest_time_in_hms') + this.suggest_time_in_hms
+        break;
+      default:
+        showText = t.do('mocks.suggest_time_in_hms') + this.suggest_time_in_hms
+        break;
 
-    // }
-    // return showText
+    }
+    return showText
   }
 
   getStatus() {
-    // const { t } = useServices();
-    // var showText = '';
-    // switch (this.status) {
-    //   case 'doing':
-    //     showText = t.do('exam_status.doing')
-    //     break;
-    //   case 'submited':
-    //   case 'correcting':
-    //     showText = t.do('exam_status.wait_correction')
-    //     break;
-    //   case 'done':
-    //     showText = ''
-    //     break;
-    //   case 'none':
-    //     showText = t.do('exam_status.none')
-    //     break;
-    //   default:
-    //     showText = t.do('exam_status.none')
-    //     break;
-    // }
-    // return showText
+    const { t } = useServices();
+    var showText = '';
+    switch (this.status) {
+      case 'doing':
+        showText = t.do('exam_status.doing')
+        break;
+      case 'submited':
+      case 'correcting':
+        showText = t.do('exam_status.wait_correction')
+        break;
+      case 'done':
+        showText = ''
+        break;
+      case 'none':
+        showText = t.do('exam_status.none')
+        break;
+      default:
+        showText = t.do('exam_status.none')
+        break;
+    }
+    return showText
   }
   getLabel() {
-    // const { t } = useServices();
-    // var showText = '';
-    // switch (this.status) {
-    //   case 'doing':
-    //     showText = t.do('exam_status.continue_do')
-    //     break;
-    //   case 'submited':
-    //   case 'correcting':
-    //     showText = t.do('mocks.report')
-    //     break;
-    //   case 'wait_proofread':
-    //   case 'proofread':
-    //     showText = t.do('mocks.report')
-    //     break;
-    //   case 'done':
-    //     showText = t.do('mocks.report')
-    //     break;
-    //   case 'none':
-    //     if (!this.enrolled && this.enrollment_period) {
-    //       showText = t.do('mocks.enrolled')
-    //     } else if (!this.enrolled && !this.enrollment_period) {
-    //       showText =  t.do('mocks.enrollment_period')
-    //     } else {
-    //       showText = t.do('mocks.wait_start')
-    //     }
-    //     break;
-    //   default:
-    //     showText = ''
-    //     break;
-    // }
-    // return showText
+    const { t } = useServices();
+    var showText = '';
+    switch (this.status) {
+      case 'doing':
+        showText = t.do('exam_status.continue_do')
+        break;
+      case 'submited':
+      case 'correcting':
+        showText = t.do('mocks.report')
+        break;
+      case 'wait_proofread':
+      case 'proofread':
+        showText = t.do('mocks.report')
+        break;
+      case 'done':
+        showText = t.do('mocks.report')
+        break;
+      case 'none':
+        if (!this.enrolled && this.enrollment_period) {
+          showText = t.do('mocks.enrolled')
+        } else if (!this.enrolled && !this.enrollment_period) {
+          showText =  t.do('mocks.enrollment_period')
+        } else {
+          showText = t.do('mocks.wait_start')
+        }
+        break;
+      default:
+        showText = ''
+        break;
+    }
+    return showText
   }
 }

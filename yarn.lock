@@ -1117,6 +1117,11 @@ has@^1.0.3:
   dependencies:
     function-bind "^1.1.1"
 
+i18n-js@^3.9.2:
+  version "3.9.2"
+  resolved "https://registry.npmmirror.com/i18n-js/-/i18n-js-3.9.2.tgz#4a015dcfabd4c9fc73115fc2d02d2627e4c15ca5"
+  integrity sha512-+Gm8h5HL0emzKhRx2avMKX+nKiVPXeaOZm7Euf2/pbbFcLQoJ3zZYiUykAzoRasijCoWos2Kl1tslmScTgAQKw==
+
 ignore@^5.2.0:
   version "5.2.0"
   resolved "https://registry.npmjs.org/ignore/-/ignore-5.2.0.tgz"
