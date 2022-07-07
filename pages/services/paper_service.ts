@@ -16,6 +16,8 @@ export default class PaperService {
           }
         })
         .catch((err) => {
+          console.log("err.response.status",err);
+          
           reject(err.response ? err.response.data : { error: 'Something went wrong, try agin' })
         });
     });

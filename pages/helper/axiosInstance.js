@@ -1,4 +1,5 @@
 import axios from 'axios';
+import { reject } from 'lodash';
 let headers = {"Content-Type": "application/json"};
 
 // AsyncStorage.setItem('token', '2UWirLmhUxspMPjcE5gH')
@@ -9,8 +10,8 @@ const axiosInstance = axios.create({
 
 axiosInstance.interceptors.request.use(
   async (config) => {
-    const token = "X7msRyi7MLDJPjg59gS3"
-    // const token = localStorage.getItem('token');
+    // const token = "X7msRyi7MLDJPjg59gS3"
+    const token = localStorage.getItem('token');
     if (token) {
       config.headers.Authorization = `Bearer ${token}`;
     }
@@ -33,8 +34,10 @@ axiosInstance.interceptors.response.use(
         reject(error);
       });
     }
-
-    if (error.response.status === 404) {
+    if (error.response.status === 401) {
+      window.location = "/users/sign_in"
+      // navigate(LOGOUT, {tokenExpired: true});
+    }else if (error.response.status === 404) {
       // navigate(LOGOUT, {tokenExpired: true});
     }else if (error.response.status === 403) {
       // navigate(LOGOUT, {tokenExpired: true});

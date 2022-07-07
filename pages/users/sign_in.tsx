@@ -13,7 +13,7 @@ const sign_in: NextPage = () => {
         password: ''
     })
     const login_submit = () => {
-        AuthService.signIn('12345@qq.com', '123456').then((data:any) => {
+        AuthService.signIn('1234@qq.com', '123456').then((data:any) => {
             localStorage.setItem('token', `${data.doc.authentication_token}`);
             localStorage.setItem('user', JSON.stringify(data.doc));
             router.push("/")

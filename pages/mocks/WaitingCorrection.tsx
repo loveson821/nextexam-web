@@ -31,7 +31,7 @@ export default function WaitingCorrection() {
             <div className='flex flex-col w-full pt-2 justify-center items-center'>
             <div className="w-9/12 bg-white shadow sm:rounded-md">
                     {
-                        i_correcting.length > 0 ? 
+                        i_correcting?.length > 0 ? 
                         <div className='p-4  flex flex-shrink-0 flex-row justify-between items-center  mt-2 mb-2 bg-slate-500'>
                             <p className=' text-white text-center'>你正在批改的模擬卷</p>
                         </div> 
@@ -39,7 +39,7 @@ export default function WaitingCorrection() {
                     }
                       
                     <ul role="list" className="divide-y divide-gray-200">
-                        {i_correcting.map((item:any, index) => (
+                        {i_correcting?.map((item:any, index) => (
                         <li key={index}>
                             <a  className="block cursor-pointer hover:bg-gray-50">
                             <div className="flex items-center px-4 py-4 sm:px-6">
@@ -98,7 +98,7 @@ export default function WaitingCorrection() {
                         
                     </div>   
                     <ul role="list" className="divide-y divide-gray-200">
-                        {others.map((item:any, index) => (
+                        {others?.map((item:any, index) => (
                         <li key={index}>
                             <a  className="block cursor-pointer hover:bg-gray-50">
                             <div className="flex items-center px-4 py-4 sm:px-6">

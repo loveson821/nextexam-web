@@ -25,6 +25,9 @@ export default function detail() {
             PaperService.papers_can_do(parseInt( router.query.id.toString())).then((doc:any) => {
                 console.log(doc);
                 setPaper(doc)
+            }).catch(err => {
+              console.log("err",err);
+              
             })
         }
     }

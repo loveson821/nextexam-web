@@ -30,7 +30,7 @@ export default function Header() {
   const logout = () => {
     localStorage.setItem('token','')
     localStorage.setItem('user','')
-    router.push('/login')
+    router.push('/users/sign_in')
   }
   const navigation = [
     { name: '首頁', href: '/', current: true },
@@ -124,10 +124,10 @@ export default function Header() {
                       <Menu.Item>
                         {({ active }) => (
                           <a
-                            href="#"
+                            href="/users/info"
                             className={classNames(active ? 'bg-gray-100' : '', 'block px-4 py-2 text-sm text-gray-700')}
                           >
-                            Your Profile
+                            個人資料
                           </a>
                         )}
                       </Menu.Item>
@@ -137,7 +137,7 @@ export default function Header() {
                             href="#"
                             className={classNames(active ? 'bg-gray-100' : '', 'block px-4 py-2 text-sm text-gray-700')}
                           >
-                            Settings
+                            修改密碼
                           </a>
                         )}
                       </Menu.Item>
@@ -147,7 +147,7 @@ export default function Header() {
                             onClick={logout}
                             className={classNames(active ? 'bg-gray-100' : '', 'block cursor-pointer px-4 py-2 text-sm text-gray-700')}
                           >
-                            Sign out
+                            登出
                           </a>
                         )}
                       </Menu.Item>
