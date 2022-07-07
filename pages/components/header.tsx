@@ -43,7 +43,7 @@ export default function Header() {
 
   return (
     <>
-    <Disclosure as="nav" className="bg-gray-800 fixed w-full top-0">
+    <Disclosure as="nav" className="bg-gray-800 sticky  w-full top-0">
       {({ open }) => (
         <>
           <div className="max-w-7xl mx-auto px-2 sm:px-6 lg:px-8">

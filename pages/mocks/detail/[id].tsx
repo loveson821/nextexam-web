@@ -4,6 +4,7 @@ import React from 'react';
 import Header from '../../components/header';
 import PaperService from '../../services/paper_service';
 import LastMock from '../../../models/LastMock';
+import Bar from '../../components/bar';
 
 export async function getServerSideProps () {
     // Pass data to the page via props
@@ -34,9 +35,10 @@ export default function detail() {
       return (
         <>
         <Header/>
-        <div className='mt-16 w-full'>
+        <div className='w-full'>
             <div className='flex flex-col w-full pt-2 justify-center items-center'>
             <div className="w-9/12 bg-white shadow overflow-hidden sm:rounded-lg">
+              <Bar/>
               <div className="-ml-4 -mt-4 px-4 py-5  flex justify-between items-center flex-wrap sm:flex-nowrap">
                 <div className="ml-4 mt-4">
                   <h3 className="text-lg leading-6 font-medium text-gray-900">{paper?.description || '-'}</h3>

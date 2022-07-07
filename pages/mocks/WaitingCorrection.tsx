@@ -27,7 +27,7 @@ export default function WaitingCorrection() {
     <>
         <Header/>
         
-        <div className='mt-16 w-full'>
+        <div className='w-full'>
             <div className='flex flex-col w-full pt-2 justify-center items-center'>
             <div className="w-9/12 bg-white shadow sm:rounded-md">
                     {

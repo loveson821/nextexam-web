@@ -1,6 +1,7 @@
 import type { NextPage } from 'next'
 import Link from 'next/link';
 import React, { useState } from 'react';
+import Alerts from '../components/alerts';
 import Footer from '../components/footer';
 import Header from '../components/header'
 import MocksService from '../services/mocks_services';
@@ -49,7 +50,7 @@ const mocks: NextPage = () => {
   return (
    <>
       <Header/>
-      <div className='mt-16 w-full'>
+      <div className='w-full'>
     <div className='flex flex-col w-full pt-2 justify-center items-center'>
         <div className='w-9/12 grid grid-cols-1  gap-4'>
 
@@ -70,7 +71,6 @@ const mocks: NextPage = () => {
         <div className='w-9/12 mt-2 mb-2 text-left bg-slate-500'>
             <p className='m-4 text-white'>模擬試考前練習</p>
         </div>
-
         <div className='w-9/12 grid sm:grid-cols-2 lg:grid-cols-3 gap-4'>
             {
                 assignments.map((item: any, index) => (

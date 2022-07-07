@@ -6,7 +6,7 @@ import  {FaLock, FaUser}  from "react-icons/fa";
 import axiosInstance from './helper/axiosInstance';
 import AuthService from './services/auth_services';
 
-const Login: NextPage = () => {
+const Login2: NextPage = () => {
     const router = useRouter();
     const [data, setData] = useState({
         username: '',
