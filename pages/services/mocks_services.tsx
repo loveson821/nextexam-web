@@ -1,4 +1,5 @@
 import axiosInstance from "../helper/axiosInstance";
+const querystring = require('query-string');
 
 export default class MocksService {
     static groups() {
@@ -17,6 +18,7 @@ export default class MocksService {
     }
 
     static getLastMockDetail(curriculum_id: number, course_id: number) {
+        console.log(`/curriculums/${curriculum_id}/last_mock.json?` + querystring.stringify(course_id))
         return new Promise((resolve, reject) => {
             axiosInstance
             .get(`curriculums/${curriculum_id}/last_mock.json`, { params: { course: course_id } }).then((res) => {
@@ -35,8 +37,8 @@ export default class MocksService {
         return new Promise((resolve, reject) => {
             axiosInstance
             .get(`courses/${course_id}/assignments.json`, { params: { page: page, count: count } }).then((res) => {
-                if (res.data.docs) {
-                    resolve(res.data.docs);
+                if (res.data) {
+                    resolve(res.data);
                   } else {
                     reject(res.data.error);
                   }

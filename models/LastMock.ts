@@ -96,20 +96,20 @@ export default class LastMock extends JSModel {
     return false;
   }
 
-  openTime() {
-    const { t } = useServices();
+  openTime(t: any) {
+    // const { t } = useServices();
     if (this.can_start_at && this.deadline)
       return t.do('mocks.open_time') + moment(this.can_start_at).format('YYYY-MM-DD HH:mm') + " ~ " + moment(this.deadline).format('YYYY-MM-DD HH:mm')
   }
 
-  enrollTime() {
-    const { t } = useServices();
+  enrollTime(t: any) {
+    // const { t } = useServices();
     if (this.status != 'done' && this.enrollment_start != undefined)
       return t.do('mocks.enrolled_time') + moment(this.enrollment_start).format('YYYY-MM-DD HH:mm') + " ~ " + moment(this.enrollment_end).format('YYYY-MM-DD HH:mm')
   }
 
-  submit_at() {
-    const { t } = useServices();
+  submit_at(t:any) {
+    // const { t } = useServices();
     var showText = '';
     switch (this.status) {
       case 'doing':
@@ -133,8 +133,8 @@ export default class LastMock extends JSModel {
     return showText
   }
 
-  getStatus() {
-    const { t } = useServices();
+  getStatus(t: any) {
+    // const { t } = useServices();
     var showText = '';
     switch (this.status) {
       case 'doing':
@@ -156,8 +156,8 @@ export default class LastMock extends JSModel {
     }
     return showText
   }
-  getLabel() {
-    const { t } = useServices();
+  getLabel(t: any) {
+    // const { t } = useServices();
     var showText = '';
     switch (this.status) {
       case 'doing':

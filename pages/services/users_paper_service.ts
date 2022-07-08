@@ -68,6 +68,24 @@ export default class UsersPaperService {
     });
   }
 
+  static practices_can_correct(params: any) {
+    return new Promise((resolve, reject) => {
+      console.log("me/practices_can_correct.json?" + querystring.stringify(params))
+      axiosInstance
+        .get("me/practices_can_correct.json?" + querystring.stringify(params))
+        .then((res) => {
+          if (res.data.docs) {
+            resolve(res.data.docs);
+          } else {
+            reject(res.data.error);
+          }
+        })
+        .catch((err) => {
+          reject(err.response ? err.response.data : { error: 'Something went wrong, try agin' })
+        });
+    });
+  }
+
   static load_waiting_correct_users_papers(paper_id: number, params: any) {
     return new Promise((resolve, reject) => {
       console.log("load waiting correct users papers / paper_id " + paper_id);
@@ -112,6 +130,26 @@ export default class UsersPaperService {
       console.log("/users_papers/" + users_paper_id + "/check_paper_can_proofread.json")
       axiosInstance
         .get("/users_papers/" + users_paper_id + "/check_paper_can_proofread.json")
+        .then((res) => {
+          if (res.data) {
+            resolve(res.data);
+          } else {
+            reject(res.data.error);
+          }
+        })
+        .catch((err) => {
+          reject(err.response ? err.response.data : { error: 'Something went wrong, try agin' })
+        });
+    });
+  }
+
+  static start_edit_paper(paper_id: number) {
+    // /users_papers/\(users_paper_id)/start_correction
+    return new Promise((resolve, reject) => {
+      console.log("start_edit_paper papers id " + paper_id);
+      console.log("/users_papers.json")
+      axiosInstance
+        .post("/users_papers.json",{ "users_paper": {"is_model_answer": false, "paper_id": paper_id}})
         .then((res) => {
           if (res.data) {
             resolve(res.data);

@@ -4,13 +4,11 @@ import { HomeIcon } from '@heroicons/react/solid'
 const pages = [
   { name: 'Projects', href: '#', current: false },
   { name: 'Project Nero', href: '#', current: true },
-  { name: 'Project Nero', href: '#', current: true },
-  { name: 'Project Nero', href: '#', current: true },
 ]
 
 export default function Bar() {
   return (
-    <nav className="flex" aria-label="Breadcrumb">
+    <div className="flex w-full" aria-label="Breadcrumb">
       <ol role="list" className="  bg-white rounded-md shadow px-6 flex space-x-4">
         <li className="flex">
           <div className="flex items-center">
@@ -44,6 +42,6 @@ export default function Bar() {
           </li>
         ))}
       </ol>
-    </nav>
+    </div>
   )
 }

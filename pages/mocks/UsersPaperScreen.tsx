@@ -12,9 +12,16 @@ import UsersPaperService from '../services/users_paper_service';
 import _ from 'lodash';
 import PaperPageView from '../components/users_paper/PaperPageView';
 import { PaperPageableType, UsersPaperEditMode } from '../../utils/enums';
+import { Router, useRouter } from 'next/router';
 
-export default function UsersPaperScreen() {
+export async function getServerSideProps () {
+    // Pass data to the page via props
+    return { props: { } }
+  }
+
+export default function UsersPaperScreen(props: any) {
     const { t} = useServices();
+    const router = useRouter();
     const [users_paper, setUsersPaper] = React.useState<UsersPaper>();
     const [paper, setPaper] = React.useState<Paper>();
     const [data, setData] = React.useState([]);
@@ -31,8 +38,12 @@ export default function UsersPaperScreen() {
       }, []);
     
     const loadData = async () => {
-        var paper_id = 1853;
-        var user_paper_id = 12983;
+        console.log(router.query.paper_id);
+        console.log(router.query.user_paper_id);
+        // var paper_id = 1853;
+        // var user_paper_id = 12983;
+        var paper_id = parseInt( router.query.paper_id+"");
+        var user_paper_id = parseInt( router.query.user_paper_id+"" );
         const res = await PaperService.load(paper_id);
         const paper = new Paper(res);
         
@@ -42,8 +53,6 @@ export default function UsersPaperScreen() {
           setUsersPaper(up);
         }
         setPaper(paper)
-        // console.log("paper:", paper);
-        // console.log("users_paper:", users_paper);
         
     }
 
@@ -54,9 +63,9 @@ export default function UsersPaperScreen() {
         return new UsersQuestion(uq);
       };
     return (
-        <>
+        <div className=' min-h-screen h-full relative'>
             <Header/>
-            <div className='w-full'>
+            <div className='w-full pb-40'>
                 <div className='flex flex-col w-full pt-2 justify-center items-center'>
                     <div className="w-9/12 ">
                         <Bar/>
@@ -98,6 +107,6 @@ export default function UsersPaperScreen() {
                 </div>
             </div>
             <Footer/>
-        </>
+        </div>
     )
 }

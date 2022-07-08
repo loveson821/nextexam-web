@@ -1,6 +1,8 @@
 /* This example requires Tailwind CSS v2.0+ */
 import { CheckCircleIcon, ChevronRightIcon, MailIcon } from '@heroicons/react/solid'
-import React from 'react';
+import { useRouter } from 'next/router';
+import React, { useState } from 'react';
+import Bar from '../components/bar';
 import Dropdown from '../components/dropdowns';
 import Footer from '../components/footer'
 import Header from '../components/header'
@@ -9,31 +11,36 @@ import UsersPaperService from '../services/users_paper_service';
 
 export default function WaitingCorrection() {
     const { t} = useServices();
+    const router = useRouter();
     const [data, setData] = React.useState([]);
     const [i_correcting, setI_correcting] = React.useState([])
     const [others, setOthers] = React.useState([])
+    const [paper_id] = useState( parseInt( router.query.paper_id+""))
     React.useEffect(() => {
         loadData('')
       }, []);
     
     const loadData = (status: string) => {
-        UsersPaperService.load_waiting_correct_users_papers(1877,{status: status}).then((data: any) => {
+        UsersPaperService.load_waiting_correct_users_papers(paper_id,{status: status}).then((data: any) => {
             setOthers(data.others)
             setI_correcting(data.i_correcting)
         })
     }
 
   return (
-    <>
+    <div className=' min-h-screen h-full relative'>
         <Header/>
         
-        <div className='w-full'>
+        <div className='w-full pb-40'>
             <div className='flex flex-col w-full pt-2 justify-center items-center'>
+            <div className="w-9/12 ">
+                <Bar/>
+            </div>
             <div className="w-9/12 bg-white shadow sm:rounded-md">
                     {
                         i_correcting?.length > 0 ? 
                         <div className='p-4  flex flex-shrink-0 flex-row justify-between items-center  mt-2 mb-2 bg-slate-500'>
-                            <p className=' text-white text-center'>你正在批改的模擬卷</p>
+                            <p className=' text-white text-center'>{t.do('exam_status.correctioning_exams')}</p>
                         </div> 
                         : null
                     }
@@ -44,7 +51,7 @@ export default function WaitingCorrection() {
                             <a  className="block cursor-pointer hover:bg-gray-50">
                             <div className="flex items-center px-4 py-4 sm:px-6">
                                 <div className="min-w-0 flex-1 flex items-center">
-                                <div className="flex-shrink-0 m-2">
+                                <div className="flex-shrink-0 m-2  w-6">
                                     <p className='text-gray-900'>{item.submit_sequence_number}</p>
                                 </div>
                                 <div className="flex-shrink-0">
@@ -91,7 +98,7 @@ export default function WaitingCorrection() {
 
                 <div className="w-9/12 bg-white shadow sm:rounded-md">
                     <div className='p-4  flex flex-shrink-0 flex-row justify-between items-center  mt-2 mb-2 bg-slate-500'>
-                        <p className=' text-white text-center'>全部考卷</p>
+                        <p className=' text-white text-center'>{t.do('exam_status.all_exams')}</p>
                         <div className=''>
                             <Dropdown onSwitch={loadData}/>
                         </div>
@@ -103,7 +110,7 @@ export default function WaitingCorrection() {
                             <a  className="block cursor-pointer hover:bg-gray-50">
                             <div className="flex items-center px-4 py-4 sm:px-6">
                                 <div className="min-w-0 flex-1 flex items-center">
-                                <div className="flex-shrink-0 m-2">
+                                <div className="flex-shrink-0 m-2 w-6">
                                     <p className='text-gray-900'>{item.submit_sequence_number}</p>
                                 </div>
                                 <div className="flex-shrink-0">
@@ -158,6 +165,6 @@ export default function WaitingCorrection() {
             </div>
         </div>
         <Footer/>
-    </>
+    </div>
   )
 }

@@ -10,6 +10,9 @@ export default class UsersPaper extends JSModel {
 	users_questions?: [UsersQuestion];
 	started_at?: string;
 	status?: string;
+	score?: string;
+	submited_at?: string;
+	comment?: User;
 
 
 	// var is_model_answer: Bool!
