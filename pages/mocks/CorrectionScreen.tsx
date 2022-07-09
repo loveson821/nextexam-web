@@ -42,10 +42,10 @@ export default function CorrectionScreen() {
         
         <div className='w-full pb-40'>
             <div className='flex flex-col w-full pt-2 justify-center items-center'>
-                <div className="w-9/12 ">
+                <div className="max-w-screen-lg w-full ">
                     <Bar/>
                 </div>
-                <div className="w-9/12 bg-white shadow sm:rounded-md">
+                <div className="max-w-screen-lg w-full bg-white shadow sm:rounded-md">
                     <div className='p-4  flex flex-shrink-0 flex-row justify-between items-center  mt-2 mb-2 bg-slate-500'>
                         <p className=' text-white text-center'>{t.do('exam_all.correction_list')}</p>
                     </div>   
@@ -70,7 +70,7 @@ export default function CorrectionScreen() {
                         ))}
                     </ul>
                 </div>
-                <div className="w-9/12 mt-6">
+                <div className="max-w-screen-lg w-full mt-6">
                     <a
                     href="#"
                     className="w-full flex justify-center items-center px-4 py-2 border border-gray-300 shadow-sm text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50"

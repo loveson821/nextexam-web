@@ -67,10 +67,10 @@ export default function UsersPaperScreen(props: any) {
             <Header/>
             <div className='w-full pb-40'>
                 <div className='flex flex-col w-full pt-2 justify-center items-center'>
-                    <div className="w-9/12 ">
+                    <div className="max-w-screen-lg w-full ">
                         <Bar/>
                     </div>
-                    <div className="w-9/12 flex sm:rounded-md">
+                    <div className="max-w-screen-lg w-full flex sm:rounded-md">
                         <ul role="list" className="w-3/4 space-y-6">
                             {paper?.paper_pages.map((item:any, index) => (
                                 <PaperPageView 
@@ -85,9 +85,9 @@ export default function UsersPaperScreen(props: any) {
                             ))}
                         </ul>
                         
-                        <div className='w-1/4 ml-16'>
+                        <div className=' ml-4'>
                             
-                            <div className="flex flex-col fixed w-1/6  bg-white shadow px-4 py-5 sm:px-6   justify-between">
+                            <div className="flex flex-col fixed  bg-white shadow px-4 py-5 sm:px-6   justify-between">
                                 <div className='grid sm:grid-cols-1 lg:grid-cols-2 gap-2'>
                                     {users_paper?.users_questions?.map((item:UsersQuestion, index) => (
                                         <button

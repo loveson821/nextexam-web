@@ -179,7 +179,7 @@ export default function detail() {
         <Header/>
         <div className='w-full pb-40'>
             <div className='flex flex-col w-full pt-2 justify-center items-center'>
-            <div className="w-9/12 bg-white shadow overflow-hidden sm:rounded-lg">
+            <div className="max-w-screen-lg w-full bg-white shadow overflow-hidden sm:rounded-lg">
               <Bar/>
               <div className="-ml-4 -mt-4 px-4 py-5  flex justify-between items-center flex-wrap sm:flex-nowrap">
                 <div className="ml-4 mt-4">

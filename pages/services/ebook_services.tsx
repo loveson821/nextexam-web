@@ -16,4 +16,18 @@ export default class EbookService {
             })
         })
     }
+    static detail(book_id: number) {
+        return new Promise((resolve, reject) => {
+            axiosInstance
+            .get(`books/${book_id}.json`).then((res) => {
+                if (res.data.doc) {
+                    resolve(res.data.doc);
+                  } else {
+                    reject(res.data.error);
+                  }
+            }).catch((err) => {
+                reject(err.response ? err.response.data : { error: 'Something went wrong, try agin' })
+            })
+        })
+    }
 }

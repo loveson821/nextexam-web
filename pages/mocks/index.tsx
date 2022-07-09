@@ -119,7 +119,7 @@ const mocks: NextPage = () => {
       <Header/>
       <div className='w-full pb-40'>
     <div className='flex flex-col w-full pt-2 justify-center items-center'>
-        <div className='w-9/12  grid  grid-cols-3  gap-4'>
+        <div className='max-w-screen-lg w-full  grid  grid-cols-3  gap-4'>
             <div className="col-span-2  bg-white rounded-lg border border-red-200 shadow-md dark:bg-gray-800 dark:border-gray-700">
                 {
                 lastMock != null ?
@@ -163,10 +163,10 @@ const mocks: NextPage = () => {
                 </div>
             </div>
         </div>
-        <div className='w-9/12 mt-2 mb-2 text-left bg-slate-500'>
+        <div className='max-w-screen-lg w-full mt-2 mb-2 text-left bg-slate-500'>
             <p className='m-4 text-white'>{t.do('mocks.head_tip')}({published_papers_can_do_count})</p>
         </div>
-        <div className='w-9/12 grid sm:grid-cols-2 lg:grid-cols-3 gap-4'>
+        <div className='max-w-screen-lg w-full grid sm:grid-cols-2 lg:grid-cols-3 gap-4'>
             {
                 assignments.map((item: any, index) => (
                     <ExamPaper key={index} role={''} paper={item}/>

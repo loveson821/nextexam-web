@@ -80,8 +80,9 @@ export default function MyAnswerView(props: any) {
        */
       const show_mc_answer = () => {
         return (
-              <label>{props.users_question.answer.writing}</label>
-  
+          <div className='w-full flex py-10 justify-center items-center'>
+            <span className=' text-gray-500'>{props.users_question.answer.writing}</span>
+          </div>
         )
       }
 
