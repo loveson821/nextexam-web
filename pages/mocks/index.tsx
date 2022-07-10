@@ -6,34 +6,53 @@ import Group from '../../models/Group';
 import LastMock from '../../models/LastMock';
 import { UsersPaperEditMode } from '../../utils/enums';
 import Alerts from '../components/alerts';
+import Bar from '../components/bar';
 import { ExamPaper } from '../components/ExamPaper';
 import Footer from '../components/footer';
 import Header from '../components/header'
+import MyModal from '../components/MyModal';
 import { useServices } from '../services';
 import MocksService from '../services/mocks_services';
+
+export async function getServerSideProps () {
+  // Pass data to the page via props
+  return { props: { } }
+}
 
 const mocks: NextPage = () => {
     const { t } = useServices();
     const [lastMock, setLastMock] = useState<LastMock>();
-    const [group, setGroup] = useState<Group>();
+    const [groups, setGroups] = useState([]);
     const [role, setRole] = useState()
     const router = useRouter();
     const [published_papers_can_do_count , set_published_papers_can_do_count] = useState(0)
     const [assignments, setAssignments] = useState([])
-    const [course_id] = useState( parseInt( router.query.course_id+"") || 74)
+    const [course_id] = useState( parseInt( router.query.course_id+""))
+    const [curriculum_id] = useState( parseInt( router.query.curriculum_id+""))
+    const [visable, setVisable] = useState(false)
+    const [description, setDescription] = useState('')
+    const pages = [
+      { name: '模擬試', href: '/groups', current: true },
+      { name:  router.query.group_name, href: '/mocks/courses?group_id='+router.query.group_id+"&group_name="+router.query.group_name, current: true },
+      { name:  router.query.curriculum_name, href: '#', current: true }
+    ]
+
     React.useEffect(() => {
         loadData();
       }, []);
 
     const loadData = () => {
-        MocksService.groups().then((docs: any) => {
-            console.log("docs: ", docs);
-            
-        }).catch((error) => {
-            console.error(error);
-        })
+        // MocksService.groups().then((docs: any) => {
+        //     console.log("docs: ", docs);
 
-        MocksService.getLastMockDetail(121,course_id).then((doc: any) => {
+        //     if( docs )
+        //       setGroups(docs)
+            
+        // }).catch((error) => {
+        //     console.error(error);
+        // })
+
+        MocksService.getLastMockDetail(curriculum_id,course_id).then((doc: any) => {
             if (doc) {
                 setLastMock(new LastMock(doc))
             }
@@ -73,17 +92,22 @@ const mocks: NextPage = () => {
           if (lastMock.canEnrolled()) {
               Router.push("https://www.examhero.com/appkit/papers/" + lastMock.id + "/enroll_info?access_token=" + localStorage.getItem('token'))
           } else if (!lastMock.canEnrolled()) {
-            alert(t.do('mocks.enrolled_tip'))
+            // alert(t.do('mocks.enrolled_tip'))
+            setVisable(true)
+            setDescription(t.do('mocks.enrolled_tip'))
             return;
           } else if (lastMock.enrolledNotBeing()) {
-            alert(t.do('mocks.start_tip'))
+            setVisable(true)
+            setDescription(t.do('mocks.start_tip'))
           } else if (lastMock.isFinish()) {
-            alert(t.do('mocks.enrollment_period'))
+            setVisable(true)
+            setDescription(t.do('mocks.enrollment_period'))
           } else {
             // setVisible(true)
           }
         } else if (lastMock?.isDoing() && lastMock?.isFinish()) {
-          alert(t.do('mocks.has_end'))
+          setVisable(true)
+          setDescription(t.do('mocks.has_end'))
         } else if (lastMock && lastMock.id && lastMock?.isDoing()) {
             Router.push({pathname: '/UsersPaperScreen', query: {
                 paper_id: lastMock?.id,
@@ -111,15 +135,38 @@ const mocks: NextPage = () => {
     
       }
       const listButtonClick = () => {
-        
-        Router.push('/mocks/CorrectionScreen?course_id='+course_id)
+        Router.push({
+          pathname: '/mocks/CorrectionScreen', 
+          query: { 
+              paper_id: router.query.paper_id,
+              course_id: course_id, 
+              curriculum_id: router.query.curriculum_id,
+              curriculum_name: router.query.curriculum_name,
+              group_id: router.query.group_id,
+              group_name: router.query.group_name
+          }
+      })
+
+        // Router.push('/mocks/CorrectionScreen?course_id='+course_id)
       }
+
+      const cancelClick = () => {
+        setVisable(false)
+      }
+      const confirmClick = () => {
+          setVisable(false)
+      }
+
   return (
    <div className=' min-h-screen h-full relative'>
       <Header/>
       <div className='w-full pb-40'>
     <div className='flex flex-col w-full pt-2 justify-center items-center'>
-        <div className='max-w-screen-lg w-full  grid  grid-cols-3  gap-4'>
+      <div className=" max-w-screen-lg w-full">
+        <Bar pages={pages}/>
+      </div>
+        <div className='max-w-screen-lg w-full mt-2 grid  grid-cols-3  gap-4'>
+           
             <div className="col-span-2  bg-white rounded-lg border border-red-200 shadow-md dark:bg-gray-800 dark:border-gray-700">
                 {
                 lastMock != null ?
@@ -148,9 +195,8 @@ const mocks: NextPage = () => {
             </div>
             <div className="col-span-1  items-center text-center justify-center bg-white rounded-lg border border-red-200 shadow-md dark:bg-gray-800 dark:border-gray-700">
               <div className="p-5">
-                    <p className=' text-2xl'>{lastMock?.group?.name || ' -- '}</p>
-                    <p className='mt-4'>{lastMock?.examination?.name|| ' -- '}</p>
-                    <p className='mt-2'>{lastMock?.curriculum?.name || ' -- '}</p>
+                    <p className=' text-2xl'>{router.query.group_name || ' -- '}</p>
+                    <p className='mt-2'>{router.query.curriculum_name|| ' -- '}</p>
 
                     {
                       role == 'owner' || role == 'moderator' ?
@@ -175,10 +221,8 @@ const mocks: NextPage = () => {
         </div>
 
     </div>
-
-
-      
     </div>
+    <MyModal visable={visable} cancelClick={cancelClick} confirmClick={confirmClick} description={description}/>
     <Footer/>
     </div>
   )

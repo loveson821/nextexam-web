@@ -6,19 +6,19 @@ const pages = [
   { name: 'Project Nero', href: '#', current: true },
 ]
 
-export default function Bar() {
+export default function Bar(props: any) {
   return (
     <div className="flex w-full" aria-label="Breadcrumb">
       <ol role="list" className="  bg-white rounded-md shadow px-6 flex space-x-4">
         <li className="flex">
           <div className="flex items-center">
-            <a href="#" className="text-gray-400 hover:text-gray-500">
+            <a href="/" className="text-gray-400 hover:text-gray-500">
               <HomeIcon className="flex-shrink-0 h-5 w-5" aria-hidden="true" />
               <span className="sr-only">Home</span>
             </a>
           </div>
         </li>
-        {pages.map((page, index) => (
+        {props.pages.map((page:any, index:any) => (
           <li key={index} className="flex">
             <div className="flex items-center">
               <svg

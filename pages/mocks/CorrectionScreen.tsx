@@ -2,6 +2,7 @@
 import { CheckCircleIcon, ChevronRightIcon, MailIcon } from '@heroicons/react/solid'
 import Router, { useRouter } from 'next/router';
 import React, { useState } from 'react';
+import Paper from '../../models/Paper';
 import Bar from '../components/bar';
 import Dropdown from '../components/dropdowns';
 import Footer from '../components/footer'
@@ -19,6 +20,13 @@ export default function CorrectionScreen() {
     const router = useRouter();
     const [data, setData] = React.useState([]);
     const [course_id] = useState( parseInt( router.query.course_id+"") || 80)
+    const pages = [
+        { name: '模擬試', href: '/groups', current: true },
+        { name:  router.query.group_name, href: '/mocks/courses?group_id='+router.query.group_id+"&group_name="+router.query.group_name, current: true },
+        { name:  router.query.curriculum_name, href: '/mocks?course_id='+router.query.course_id+'&group_id='+router.query.group_id+"&group_name="+router.query.group_name+"&curriculum_id="+router.query.curriculum_id+"&curriculum_name="+router.query.curriculum_name, current: true },
+        { name: '改卷列表', href: '#', current: false}
+    ]
+
     React.useEffect(() => {
         loadData(0)
       }, []);
@@ -31,9 +39,20 @@ export default function CorrectionScreen() {
         })
     }
 
-    const listClick = (paper: any) =>{
+    const listClick = (paper: Paper) =>{
         console.log(paper);
-        Router.push('/mocks/WaitingCorrection?paper_id='+paper.id)
+        Router.push({
+            pathname: '/mocks/WaitingCorrection', 
+            query: { 
+                paper_id: paper.id,
+                paper_name: paper.description,
+                course_id: course_id, 
+                curriculum_id: router.query.curriculum_id,
+                curriculum_name: router.query.curriculum_name,
+                group_id: router.query.group_id,
+                group_name: router.query.group_name
+            }
+        })
         
     }
   return (
@@ -43,7 +62,7 @@ export default function CorrectionScreen() {
         <div className='w-full pb-40'>
             <div className='flex flex-col w-full pt-2 justify-center items-center'>
                 <div className="max-w-screen-lg w-full ">
-                    <Bar/>
+                    <Bar pages={pages}/>
                 </div>
                 <div className="max-w-screen-lg w-full bg-white shadow sm:rounded-md">
                     <div className='p-4  flex flex-shrink-0 flex-row justify-between items-center  mt-2 mb-2 bg-slate-500'>

@@ -8,6 +8,9 @@ export default class Group extends JSModel {
 	name: string | undefined;
 	admission?: Admission;
 	role?: string;
+	avatar?: string;
+	name1?: string;
+	name2?: string;
 	// paper_pages: [PaperPage] | undefined;
 	//   vpass ?: string;
 	//   invalid_date ?: string;

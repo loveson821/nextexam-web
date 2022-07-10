@@ -34,7 +34,7 @@ export default function Header() {
   }
   const navigation = [
     { name: '首頁', href: '/', current: true },
-    { name: '模擬試', href: '/mocks', current: false },
+    { name: '模擬試', href: '/groups', current: false },
     { name: '電子書', href: '/ebooks', current: false },
   ]
   function classNames(...classes: string[]) {

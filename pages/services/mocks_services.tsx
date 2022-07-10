@@ -17,6 +17,21 @@ export default class MocksService {
         })
     }
 
+    static courses(group_id: number) {
+        return new Promise((resolve, reject) => {
+            axiosInstance
+            .get('courses/index_v2.json', { params: { group_id: group_id } }).then((res) => {
+                if (res.data.docs) {
+                    resolve(res.data.docs);
+                  } else {
+                    reject(res.data.error);
+                  }
+            }).catch((err) => {
+                reject(err.response ? err.response.data : { error: 'Something went wrong, try agin' })
+            })
+        })
+    }
+
     static getLastMockDetail(curriculum_id: number, course_id: number) {
         console.log(`/curriculums/${curriculum_id}/last_mock.json?` + querystring.stringify(course_id))
         return new Promise((resolve, reject) => {

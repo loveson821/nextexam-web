@@ -24,7 +24,12 @@ export default function detail() {
     const [paper, setPaper] = React.useState<LastMock>()
     const [user_paper, setUserPaper] = React.useState<UsersPaper>()
     const [status, setStatus] = useState('')
-    
+    const pages = [
+      { name: '模擬試', href: '/groups', current: true },
+      { name:  router.query.group_name, href: '#', current: true },
+      { name:  "選擇科目", href: '#', current: true }
+    ]
+
     React.useEffect(() => {
         loadData();
     }, []);
@@ -180,7 +185,7 @@ export default function detail() {
         <div className='w-full pb-40'>
             <div className='flex flex-col w-full pt-2 justify-center items-center'>
             <div className="max-w-screen-lg w-full bg-white shadow overflow-hidden sm:rounded-lg">
-              <Bar/>
+              <Bar pages={pages}/>
               <div className="-ml-4 -mt-4 px-4 py-5  flex justify-between items-center flex-wrap sm:flex-nowrap">
                 <div className="ml-4 mt-4">
                   <h3 className="text-lg leading-6 font-medium text-gray-900">{paper?.description || '--'}</h3>

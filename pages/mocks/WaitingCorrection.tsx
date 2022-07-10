@@ -16,6 +16,13 @@ export default function WaitingCorrection() {
     const [i_correcting, setI_correcting] = React.useState([])
     const [others, setOthers] = React.useState([])
     const [paper_id] = useState( parseInt( router.query.paper_id+""))
+    const pages = [
+        { name: '模擬試', href: '/groups', current: true },
+        { name:  router.query.group_name, href: '/mocks/courses?group_id='+router.query.group_id+"&group_name="+router.query.group_name, current: true },
+        { name:  router.query.curriculum_name, href: '/mocks?course_id='+router.query.course_id+'&group_id='+router.query.group_id+"&group_name="+router.query.group_name+"&curriculum_id="+router.query.curriculum_id+"&curriculum_name="+router.query.curriculum_name, current: true },
+        { name:  '改卷列表', href: '/mocks/CorrectionScreen?course_id='+router.query.course_id+'&group_id='+router.query.group_id+"&group_name="+router.query.group_name+"&curriculum_id="+router.query.curriculum_id+"&curriculum_name="+router.query.curriculum_name, current: false}
+    ]
+
     React.useEffect(() => {
         loadData('')
       }, []);
@@ -34,7 +41,7 @@ export default function WaitingCorrection() {
         <div className='w-full pb-40'>
             <div className='flex flex-col w-full pt-2 justify-center items-center'>
             <div className="max-w-screen-lg w-full ">
-                <Bar/>
+                <Bar pages={pages}/>
             </div>
             <div className="max-w-screen-lg w-full bg-white shadow sm:rounded-md">
                     {
