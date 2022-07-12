@@ -38,9 +38,11 @@ export default function UsersPaperScreen(props: any) {
     var qq = 1;
 
     React.useEffect(() => {
+        handlingEditMode()
         loadData()
       }, []);
-    
+
+
     const loadData = async () => {
         console.log(router.query.paper_id);
         console.log(router.query.user_paper_id);
@@ -60,12 +62,24 @@ export default function UsersPaperScreen(props: any) {
         
     }
 
+    const handlingEditMode = () => {
+        setEditMode(UsersPaperEditMode.user_edit_mode);
+        if (router.query.editMode != undefined) {
+          setEditMode(UsersPaperEditMode.user_edit_mode);
+        }
+      };
+
     const users_question_for_paper_page = (up: UsersPaper | undefined, pp: PaperPage) => {
         const uq = _.find(up?.users_questions, function (uq) {
           return uq?.question?.id == pp.paper_pageable_id;
         });
         return new UsersQuestion(uq);
       };
+
+    const submit = () => {
+        console.log("users_paper", users_paper);
+        
+    }
     return (
         <div className=' min-h-screen h-full relative'>
             <Header/>
@@ -84,26 +98,33 @@ export default function UsersPaperScreen(props: any) {
                                     paper_page={item} 
                                     users_paper={users_paper}
                                     users_question={users_question_for_paper_page(users_paper, item)}
-                                    edit_mode={UsersPaperEditMode.user_edit_mode}
+                                    edit_mode={edit_mode}
                                     />
                             ))}
+                              <button
+                        type="button"
+                        onClick={submit}
+                        className="inline-flex items-center px-4 py-2 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+                        >
+                        {t.do('exam_status.wait_correction')}
+                        </button>
                         </ul>
-                        
+                      
+
                         <div className='hidden sm:block ml-4 z-10 max-h-screen overflow:scroll'>
                             
                             <div className="flex flex-col m-0 fixed  bg-white shadow px-4 py-5 sm:px-6   justify-between">
                                 <div className='grid sm:grid-cols-2 lg:grid-cols-3 gap-2'>
                                     
                                     {users_paper?.users_questions?.map((item:UsersQuestion, index) => (
-                                        <a
+                                        <span
                                             key={index}
-                                            type="button"
                                             className={item.hasAnswer() ? 
                                                 'inline-flex items-center justify-center  h-10 w-10 m-1  border border-transparent rounded-full shadow-sm text-white bg-green-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500'
                                                 : 'inline-flex items-center justify-center  h-10 w-10 m-1  border border-transparent rounded-full shadow-sm text-white bg-gray-500  hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500'}
                                             >
                                             <a href={'#paper_'+item.question?.id} className='text-sm' aria-hidden="true" >{item.question?.paper_pageable_type == 'MediaPage' ? 'M'+mm++ : 'Q'+qq++ }</a>
-                                        </a>
+                                        </span>
                                     ))}
                                 </div>
                             </div>

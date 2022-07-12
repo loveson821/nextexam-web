@@ -9,8 +9,11 @@ import UsersQuestionService from '../../services/users_question_service';
 
 export default function PaperPageView(props: any) {
     const { t } = useServices();
+    const [users_question, setUsersQuestion] = useState(props.users_question)
     React.useEffect(() => {
-      }, []);
+        console.log("users_question", users_question);
+        
+      }, [users_question]);
     
       // 點擊入去手畫圖
       const onImageClick = async (index = -1) => {
@@ -79,10 +82,12 @@ export default function PaperPageView(props: any) {
 
      const handleImage = async (data: any, index = -1, correcting = false) => {
         // index == -1 代表 addImage
+     
         if (data.uq_id == props.users_question.id) {
         //   this.setState({ uploading: true })
           try {
-            const uploadUrl = ""
+            const uploadUrl = "https://oimg.m2mda.com/web_uploads/2020-08-07/6c854c2d-69bf-aec6-8988-80d2734afedf.jpg"
+
             // const uploadUrl = await new UploadFileApi().uploadFile(data.image.path, "/users_papers/" + props.users_paper.id);
             if (correcting) {
               // console.log(correcting)
@@ -91,7 +96,10 @@ export default function PaperPageView(props: any) {
             } else {
               props.users_question.set_image_data_to_answer_with_index(uploadUrl, index)
             }
-            UsersQuestionService.save_to_server(props.users_question);
+            console.log("",props.users_question.answer?.writing?.split(',').length);
+            // setUsersQuestion(props.users_question)
+            
+            // UsersQuestionService.save_to_server(props.users_question);
             update_users_paper_for_local_use()
           } catch (e) {
             console.log(e);
@@ -108,7 +116,7 @@ export default function PaperPageView(props: any) {
             props.users_paper.users_questions[index] = props.users_question
           }
         });
-        props.update_ui()
+        // props.update_ui()
       }
 
      const onMcAnswer = () => {
@@ -117,14 +125,14 @@ export default function PaperPageView(props: any) {
       }
      const onRemovingAnswer = async (index: number) => {
         props.users_question.answer.remove_image_data_from_writing_with_index(index);
-        UsersQuestionService.save_to_server(props.users_question);
+        // UsersQuestionService.save_to_server(props.users_question);
         update_users_paper_for_local_use()
         // this.setState({ refresh: true })
       }
     
      const onRemovingCorrection = async (index: number) => {
         props.users_question.correction.remove_image_data_from_writing_with_index(index);
-        UsersQuestionService.save_to_server(props.users_question);
+        // UsersQuestionService.save_to_server(props.users_question);
         update_users_paper_for_local_use()
         // this.setState({ refresh: true })
       }
@@ -150,6 +158,30 @@ export default function PaperPageView(props: any) {
           return t.do('exam_all.play_text') + " (0)"
       }
 
+      const handleFileSelect = (e: any) => {
+        // get files from event on the input element as an array
+        // let files = [...e.target.files];
+        console.log("---");
+        
+        // console.log(e.target.files[0]);
+
+        for (const file of e.target.files) {
+          const reader = new FileReader();
+          reader.readAsDataURL(file);
+          reader.onload = async () => {
+            // console.log(reader.result);
+
+            await handleImage({ uq_id: props.users_question.id, image: reader.result });
+
+            // setImgsSrc((imgs) => [...imgs, reader.result]);
+            e.target.value = null;//上传完图片后要清空file，下次可以继续上传
+          };
+          reader.onerror = () => {
+            console.log(reader.error);
+          };
+        }
+      };
+      const [imgsSrc, setImgsSrc] = useState([]);
     const uploadImageView = () => {
         return (
             <div className="mt-8 flex justify-center px-6 pt-5 pb-6 border-2 border-gray-300 border-dashed rounded-md">
@@ -170,11 +202,10 @@ export default function PaperPageView(props: any) {
                     </svg>
                     <div className="flex text-sm text-gray-600">
                     <label
-                        htmlFor="file-upload"
-                        className="relative cursor-pointer bg-white rounded-md font-medium text-indigo-600 hover:text-indigo-500 focus-within:outline-none focus-within:ring-2 focus-within:ring-offset-2 focus-within:ring-indigo-500"
+                        className="cursor-pointer bg-white rounded-md font-medium text-indigo-600 hover:text-indigo-500 focus-within:outline-none focus-within:ring-2 focus-within:ring-offset-2 focus-within:ring-indigo-500"
                     >
                         <span>Upload a file</span>
-                        <input id="file-upload" name="file-upload" type="file" className="sr-only" />
+                        <input  name="file-upload" multiple type="file" className="sr-only" onChange={handleFileSelect}/>
                     </label>
                     <p className="pl-1">or drag and drop</p>
                     </div>

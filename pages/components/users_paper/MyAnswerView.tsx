@@ -10,7 +10,10 @@ export default function MyAnswerView(props: any) {
     const { t } = useServices();
   
     React.useEffect(() => {
-      }, []);
+
+      console.log("fuck MyAnswerView", props.users_question);
+      
+      }, [props.users_question]);
 
       const isAnswering = () => {
         return props.edit_mode == UsersPaperEditMode.user_edit_mode || props.edit_mode == UsersPaperEditMode.user_start_mode
@@ -195,7 +198,7 @@ export default function MyAnswerView(props: any) {
        * @returns 
        */
       const show_answer = () => {
-        // console.log("myanswerview show_answer")
+        console.log("myanswerview show_answer")
         const uq = new UsersQuestion(props.users_question)
         if (uq.answer?.isText()) {
           if (uq.question?.isMC()) {
