@@ -29,7 +29,7 @@ export default function UsersPaperScreen(props: any) {
         UsersPaperEditMode.show_only_mode,
       );
     const pages = [
-    { name: '模擬試', href: '/groups', current: true },
+    { name: '模擬試', href: '/mocks/groups', current: true },
     { name:  router.query.description, href: '#', current: true }
     ]
     var m = 1;

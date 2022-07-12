@@ -4,6 +4,7 @@ import { UsersPaperEditMode } from '../../../utils/enums';
 import { UsersQuestion } from '../../../models';
 import { useServices } from '../../services';
 import MyLine from '../MyLine';
+import { MailIcon } from '@heroicons/react/outline';
 
 export default function MyAnswerView(props: any) {
     const { t } = useServices();
@@ -26,18 +27,40 @@ export default function MyAnswerView(props: any) {
       const isShowOnly = () => {
         return props.edit_mode == UsersPaperEditMode.show_only_mode
       }
+
+      const removeAnswer = (index: number) => {
+        props.onRemovingAnswer(index)
+      }
+    
+      const removeCorrection = (index: number) => {
+        props.onRemovingCorrection(index)
+      }
+
       
       /**
-       * 顯示答案圖片
+       * 顯示學生答案圖片
        * @param url 
        * @param index 
        * @returns 
        */
       const student_view = (url: string, index: number) => {
         return (
-            <div key={index}>
+            <div className='group' key={index}>
+              <div className='flex justify-end mr-4'>
+                {isAnswering() && 
+                  <button
+                      type="button"
+                      onClick={()=> removeAnswer(index)}
+                      className="invisible group-hover:visible inline-flex items-center px-3 py-2 border border-transparent shadow-sm text-sm leading-4 font-medium rounded-md text-white bg-red-600 hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+                    >
+                    <MailIcon className="-ml-0.5 mr-2 h-4 w-4" aria-hidden="true" />
+                    {t.do('general.delete')}
+                  </button>
+                }
+               
+              </div>
               <img src={url} />
-              <MyLine/>
+                <MyLine/>
             </div>
           
         )
@@ -80,7 +103,7 @@ export default function MyAnswerView(props: any) {
        */
       const show_mc_answer = () => {
         return (
-          <div className='w-full flex py-10 justify-center items-center'>
+          <div onClickCapture={() => onEditAnswer()} className='w-full flex py-10 justify-center items-center'>
             <span className=' text-gray-500'>{props.users_question.answer.writing}</span>
           </div>
         )
@@ -91,12 +114,35 @@ export default function MyAnswerView(props: any) {
        * @param index 
        */
       const correcting_mc_view = (index: number) => {
+        const uq = props.users_question
+        return (
+          <div key={index}>
+            <div className=' min-h-[100] items-center justify-center' >
+              <label>{uq.answer.writing}</label>
+            </div>
+            <div className='p-10'>
+              <label >{t.do('exam_all.compare_answer')}</label>
+            </div>
+            <MyLine />
+            <div className=' min-h-[100] items-center justify-center'>
+              <label>{uq.question.compare_answer}</label>
+            </div>
+          </div>
+        )
       }
       /**
        * 顯示改卷答案-文字
        * @param index 
        */
       const correcting_text_view = (index: number) => {
+        const uq = props.users_question
+        return (
+          <div key={index}>
+            <div className=' min-h-[100] items-center justify-center'>
+              <label>{uq.answer.writing}</label>
+            </div>
+          </div>
+        )
       }
       /**
        * 顯示改卷答案-圖片
@@ -104,6 +150,45 @@ export default function MyAnswerView(props: any) {
        * @param index 
        */
       const correcting_image_view = (url: string, index: number) => {
+        return (
+          <div className='group' key={index}>
+              <div className='flex justify-end mr-4'>
+                <button
+                    type="button"
+                    onClick={()=> onEditAnswer(index)}
+                    className="invisible group-hover:visible inline-flex items-center px-3 py-2 border border-transparent shadow-sm text-sm leading-4 font-medium rounded-md text-white bg-red-600 hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+                  >
+                  <MailIcon className="-ml-0.5 mr-2 h-4 w-4" aria-hidden="true" />
+                  {t.do('exam_all.correction')}
+                </button>
+              </div>
+    
+            { props.users_question.hasCorrectionOnIndex(index) && 
+              <div>
+
+                <button
+                    type="button"
+                    onClick={()=> removeCorrection(index)}
+                    className="invisible group-hover:visible inline-flex items-center px-3 py-2 border border-transparent shadow-sm text-sm leading-4 font-medium rounded-md text-white bg-red-600 hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+                  >
+                  <MailIcon className="-ml-0.5 mr-2 h-4 w-4" aria-hidden="true" />
+                  {t.do('exam_all.rewriting')}
+                </button>
+
+                <div onClick={() => { onEditAnswer(index) }}>
+                  <img src={props.users_question.correction_on_index(index)} />
+                </div>
+
+              </div>
+            }
+    
+            { !props.users_question.hasCorrectionOnIndex(index) && 
+              <div onClick={() => { onEditAnswer(index) }}>
+                <img src={url} />
+              </div>
+            }
+          </div>
+        )
       }
       /**
        * 顯示學生答案
@@ -144,6 +229,28 @@ export default function MyAnswerView(props: any) {
         }
       }
 
+      const onEditAnswer = (index?: number) => {
+        if( isShowOnly() ) return ;
+        // 是否 mc
+        const uq = new UsersQuestion(props.users_question)
+        if (uq.question?.isMC() && !isAnswering())
+          return;
+        else if (uq.question?.isMC()) {
+          return props.onMcAnswer()
+        } else {
+          // Alert.alert('is not MC')
+          // return
+        }
+    
+        // 判斷 user 用緊乜野答問題，要分開返係圖片定文字，調用返唔同的 callback，所有邏輯處理去返 paper page view 做
+        if (props.users_question?.hasAnswer()) {
+          if (props.users_question.answer.isText()) {
+            return props.onTextAnswer()
+          } else {
+            return props.onImageAnswer(index)
+          }
+        }
+      }
     return (
         <>
           <div key={props.users_question.id}>
