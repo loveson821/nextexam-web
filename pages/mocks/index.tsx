@@ -32,7 +32,7 @@ const mocks: NextPage = () => {
     const [visable, setVisable] = useState(false)
     const [description, setDescription] = useState('')
     const pages = [
-      { name: '模擬試', href: '/groups', current: true },
+      { name: '模擬試', href: '/mocks/groups', current: true },
       { name:  router.query.group_name, href: '/mocks/courses?group_id='+router.query.group_id+"&group_name="+router.query.group_name, current: true },
       { name:  router.query.curriculum_name, href: '#', current: true }
     ]
@@ -109,10 +109,11 @@ const mocks: NextPage = () => {
           setVisable(true)
           setDescription(t.do('mocks.has_end'))
         } else if (lastMock && lastMock.id && lastMock?.isDoing()) {
-            Router.push({pathname: '/UsersPaperScreen', query: {
+            Router.push({pathname: '/mocks/UsersPaperScreen', query: {
                 paper_id: lastMock?.id,
                 user_paper_id: lastMock?.users_paper_id,
                 editMode: UsersPaperEditMode.user_edit_mode,
+                description: lastMock?.description
             }})
         //   navigation.navigate('UsersPaperScreen', {
         //     paper_id: lastMock.id,
@@ -143,7 +144,7 @@ const mocks: NextPage = () => {
               curriculum_id: router.query.curriculum_id,
               curriculum_name: router.query.curriculum_name,
               group_id: router.query.group_id,
-              group_name: router.query.group_name
+              group_name: router.query.group_name,
           }
       })
 
@@ -182,10 +183,18 @@ const mocks: NextPage = () => {
                         <p>{lastMock?.getStatus(t)}</p>
                     }
                     <p className="mb-3 font-normal text-gray-700 dark:text-gray-400">{lastMock?.submit_at(t)}</p>
-                    <a onClick={enrollButtonClick} className="inline-flex cursor-pointer items-center py-2 px-3 text-sm font-medium text-center text-white bg-blue-700 rounded-lg hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
-                        {lastMock?.getLabel(t) || '  '}
-                        {/* <svg className="ml-2 -mr-1 w-4 h-4" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path d="M10.293 3.293a1 1 0 011.414 0l6 6a1 1 0 010 1.414l-6 6a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-4.293-4.293a1 1 0 010-1.414z" ></path></svg> */}
-                    </a>
+                    <div className='flex flex-row flex-wrap justify-between'>
+                    
+                      <a onClick={enrollButtonClick} className="inline-flex cursor-pointer items-center py-2 px-3 text-sm font-medium text-center text-white bg-blue-700 rounded-lg hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
+                          {lastMock?.getLabel(t) || '  '}
+                      </a>
+                      {
+                        role == 'owner' || role == 'moderator' ?
+                        <a onClick={listButtonClick} className="inline-flex cursor-pointer items-center py-2 px-3 text-sm font-medium text-center text-white bg-blue-700 rounded-lg hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
+                          {t.do('exam_all.correction_list')}
+                        </a>:''
+                      }
+                    </div>
                 </div>
                 :
                 <div className="p-5">
@@ -197,15 +206,6 @@ const mocks: NextPage = () => {
               <div className="p-5">
                     <p className=' text-2xl'>{router.query.group_name || ' -- '}</p>
                     <p className='mt-2'>{router.query.curriculum_name|| ' -- '}</p>
-
-                    {
-                      role == 'owner' || role == 'moderator' ?
-                      <a onClick={listButtonClick} className="inline-flex cursor-pointer mt-4 items-center py-2 px-3 text-sm font-medium text-center text-white bg-blue-700 rounded-lg hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
-                        {t.do('exam_all.correction_list')}
-                          {/* <svg className="ml-2 -mr-1 w-4 h-4" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path d="M10.293 3.293a1 1 0 011.414 0l6 6a1 1 0 010 1.414l-6 6a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-4.293-4.293a1 1 0 010-1.414z" ></path></svg> */}
-                      </a>:''
-                    }
-                   
                 </div>
             </div>
         </div>
@@ -215,7 +215,7 @@ const mocks: NextPage = () => {
         <div className='max-w-screen-lg w-full grid sm:grid-cols-2 lg:grid-cols-3 gap-4'>
             {
                 assignments.map((item: any, index) => (
-                    <ExamPaper key={index} role={''} paper={item}/>
+                    <ExamPaper key={index} role={''} paper={item} course_id={course_id}/>
                 ))
             }
         </div>

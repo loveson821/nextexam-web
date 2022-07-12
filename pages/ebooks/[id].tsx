@@ -1,9 +1,12 @@
 import { ChevronRightIcon } from '@heroicons/react/outline';
+import moment from 'moment';
 import Router, { useRouter } from 'next/router';
 import React, { useState } from 'react';
 import Book from '../../models/Book';
 import Chapter from '../../models/Chapter';
+import Group from '../../models/Group';
 import Section from '../../models/section';
+import Bar from '../components/bar';
 import Footer from '../components/footer';
 import Header from '../components/header';
 import MyModal from '../components/MyModal';
@@ -20,7 +23,13 @@ export default function detail() {
     const {t} = useServices();
     const [id, setId] = React.useState(parseInt(router.query.id+""));
     const [book, setBook] = useState<Book>();
+    const [group, setGroup] = useState<Group>();
     const [visable, setVisable] = useState(false)
+    const [description, setDescription] = useState('')
+    const pages = [
+        { name: '電子書', href: '/ebooks/groups', current: true },
+        { name:  router.query.book_name, href: '#', current: true }
+      ]
 
     React.useEffect(() => {
         loadData();
@@ -31,6 +40,7 @@ export default function detail() {
             if (doc) {
                 console.log(doc);
                 setBook(doc)
+                setGroup(doc.group)
             }
         }).catch((error) => {
             console.error(error);
@@ -38,7 +48,19 @@ export default function detail() {
         })
     };
     const sectionClick = (section: Section) => {
-        if( section.premium ) setVisable(true)
+        if (group != null
+            && (group.vpass != null
+                && group.vpass.invalid_date != null
+                && moment(group.vpass.invalid_date).isAfter(moment().format("YYYY-MM-DD")))
+        ){
+            return ;
+            
+        }
+
+        if( section.premium ) {
+            setVisable(true)
+            setDescription("請下載【考試英雄】App進行訂閱~")
+        }
     }
 
     const cancelClick = () => {
@@ -53,6 +75,9 @@ export default function detail() {
             <Header/>
             <div className='w-full pb-40'>
             <div className='flex flex-col w-full pt-2 justify-center items-center'>
+                <div className='max-w-screen-lg w-full'>
+                    <Bar pages={pages}/>
+                </div>
                 <div className='max-w-screen-lg w-full p-2  m-4 flex flex-row '>
                     <div className="w-40 rounded-lg overflow-hidden bg-gray-200 aspect-w-1 aspect-h-1 hover:opacity-75">
                         <img
@@ -96,7 +121,7 @@ export default function detail() {
                 </nav>
                 </div>
             </div>
-            <MyModal visable={visable} cancelClick={cancelClick} confirmClick={confirmClick} description={ t.do('ebook.need_subscription')}/>
+            <MyModal visable={visable} cancelClick={cancelClick} confirmClick={confirmClick} description={description}/>
             <Footer/>
         </div>
     )

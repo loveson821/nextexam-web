@@ -1,7 +1,7 @@
 import Head from 'next/head';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
-import React from 'react';
+import React, { useState } from 'react';
 import { User } from '../../models';
 import { Fragment } from 'react'
 import { Disclosure, Menu, Transition } from '@headlessui/react'
@@ -14,7 +14,11 @@ export default function Header() {
   const [loggedIn, setLoggedIn] = React.useState(false);
   const [user, setUser] = React.useState<User>()
   const router = useRouter();
-
+  const [data, setData] = useState({
+    isHome: false,
+    isMock: false,
+    isEbook: false,
+  })
   
   React.useEffect(() => {
     if (localStorage.getItem('token') != null && localStorage.getItem('token') !== '') {
@@ -25,6 +29,26 @@ export default function Header() {
       var user = new User(JSON.parse(_user))
       setUser(user)
     }
+    console.log(router.pathname);
+    if( router.pathname.indexOf('mocks') != -1){
+      setData({
+        isHome: false,
+        isMock: true,
+        isEbook: false,
+      })
+    }else if( router.pathname.indexOf('ebooks') != -1 ){
+      setData({
+        isHome: false,
+        isMock: false,
+        isEbook: true,
+      })
+    }else{
+      setData({
+        isHome: true,
+        isMock: false,
+        isEbook: false,
+      })
+    }
   },[]);
 
   const logout = () => {
@@ -33,9 +57,9 @@ export default function Header() {
     router.push('/users/sign_in')
   }
   const navigation = [
-    { name: '首頁', href: '/', current: true },
-    { name: '模擬試', href: '/groups', current: false },
-    { name: '電子書', href: '/ebooks', current: false },
+    { name: '首頁', href: '/', current: data.isHome },
+    { name: '模擬試', href: '/mocks/groups', current: data.isMock },
+    { name: '電子書', href: '/ebooks/groups', current: data.isEbook },
   ]
   function classNames(...classes: string[]) {
     return classes.filter(Boolean).join(' ')
@@ -105,7 +129,7 @@ export default function Header() {
                     <Menu.Button className="bg-gray-800 flex text-sm rounded-full focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-800 focus:ring-white">
                       <span className="sr-only">Open user menu</span>
                       <img
-                        className="h-8 w-8 rounded-full"
+                        className="h-8 w-8 rounded-full border"
                         src={user?.avatar}
                         alt=""
                       />

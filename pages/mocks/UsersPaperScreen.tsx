@@ -28,6 +28,10 @@ export default function UsersPaperScreen(props: any) {
     const [edit_mode, setEditMode] = React.useState<UsersPaperEditMode>(
         UsersPaperEditMode.show_only_mode,
       );
+    const pages = [
+    { name: '模擬試', href: '/groups', current: true },
+    { name:  router.query.description, href: '#', current: true }
+    ]
     var m = 1;
     var q = 1;
     var mm = 1;
@@ -68,10 +72,10 @@ export default function UsersPaperScreen(props: any) {
             <div className='w-full pb-40'>
                 <div className='flex flex-col w-full pt-2 justify-center items-center'>
                     <div className="max-w-screen-lg w-full ">
-                        <Bar/>
+                        <Bar pages={pages} />
                     </div>
                     <div className="max-w-screen-lg w-full flex sm:rounded-md">
-                        <ul role="list" className="w-3/4 space-y-6">
+                        <ul role="list" className=" max-w-3xl space-y-6">
                             {paper?.paper_pages.map((item:any, index) => (
                                 <PaperPageView 
                                     key={index}
@@ -85,12 +89,13 @@ export default function UsersPaperScreen(props: any) {
                             ))}
                         </ul>
                         
-                        <div className=' ml-4'>
+                        <div className='hidden sm:block ml-4 z-10 max-h-screen overflow:scroll'>
                             
-                            <div className="flex flex-col fixed  bg-white shadow px-4 py-5 sm:px-6   justify-between">
-                                <div className='grid sm:grid-cols-1 lg:grid-cols-2 gap-2'>
+                            <div className="flex flex-col m-0 fixed  bg-white shadow px-4 py-5 sm:px-6   justify-between">
+                                <div className='grid sm:grid-cols-2 lg:grid-cols-3 gap-2'>
+                                    
                                     {users_paper?.users_questions?.map((item:UsersQuestion, index) => (
-                                        <button
+                                        <a
                                             key={index}
                                             type="button"
                                             className={item.hasAnswer() ? 
@@ -98,7 +103,7 @@ export default function UsersPaperScreen(props: any) {
                                                 : 'inline-flex items-center justify-center  h-10 w-10 m-1  border border-transparent rounded-full shadow-sm text-white bg-gray-500  hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500'}
                                             >
                                             <a href={'#paper_'+item.question?.id} className='text-sm' aria-hidden="true" >{item.question?.paper_pageable_type == 'MediaPage' ? 'M'+mm++ : 'Q'+qq++ }</a>
-                                        </button>
+                                        </a>
                                     ))}
                                 </div>
                             </div>

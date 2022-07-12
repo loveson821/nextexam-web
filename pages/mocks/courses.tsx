@@ -23,7 +23,7 @@ export async function getServerSideProps () {
     const [courses, setCourses] = useState<Course[]>([]);
     const [group_id] = useState( parseInt( router.query.group_id+""))
     const pages = [
-        { name: '模擬試', href: '/groups', current: true },
+        { name: '模擬試', href: '/mocks/groups', current: true },
         { name:  router.query.group_name, href: '#', current: true },
         { name:  "選擇科目", href: '#', current: true }
       ]

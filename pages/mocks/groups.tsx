@@ -9,7 +9,7 @@ import MocksService from "../services/mocks_services";
 
 const pages = [
   { name: '模擬試', href: '/groups', current: true },
-  { name: '選擇群組', href: '#', current: true }
+  { name: '選擇模擬試', href: '#', current: true }
 ]
 
   const index: NextPage = () => {

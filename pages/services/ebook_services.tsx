@@ -2,6 +2,21 @@ import axiosInstance from "../helper/axiosInstance";
 const querystring = require('query-string');
 
 export default class EbookService {
+    static groups_v2() {
+        return new Promise((resolve, reject) => {
+            axiosInstance
+            .get('me/groups_v2.json', { params: { ebook_only: true } }).then((res) => {
+                if (res.data.docs) {
+                    resolve(res.data.docs);
+                  } else {
+                    reject(res.data.error);
+                  }
+            }).catch((err) => {
+                reject(err.response ? err.response.data : { error: 'Something went wrong, try agin' })
+            })
+        })
+    }
+
     static list(group_id: number) {
         return new Promise((resolve, reject) => {
             axiosInstance

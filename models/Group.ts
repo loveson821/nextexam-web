@@ -11,6 +11,7 @@ export default class Group extends JSModel {
 	avatar?: string;
 	name1?: string;
 	name2?: string;
+  	is_free?: boolean;
 	// paper_pages: [PaperPage] | undefined;
 	//   vpass ?: string;
 	//   invalid_date ?: string;
