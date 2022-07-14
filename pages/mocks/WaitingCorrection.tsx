@@ -378,53 +378,54 @@ export default function WaitingCorrection() {
                       
                     <ul role="list" className="divide-y divide-gray-200">
                         {i_correcting?.map((item:any, index) => (
-                        <li key={index}>
-                            <a  className="block cursor-pointer hover:bg-gray-50">
-                            <div className="flex items-center px-4 py-4 sm:px-6">
-                                <div className="min-w-0 flex-1 flex items-center">
-                                <div className="flex-shrink-0 m-2  w-6">
-                                    <p className='text-gray-900'>{item.submit_sequence_number}</p>
-                                </div>
-                                <div className="flex-shrink-0">
-                                    <img className="h-12 w-12 rounded-full" src={item.user?.avatar} alt="" />
-                                </div>
-                                <div className="min-w-0 flex-1 px-4 md:grid md:grid-cols-2 md:gap-4">
-                                    <div className='flex justify-left items-center'>
-                                        <p className="text-sm font-medium text-indigo-600 truncate">{item?.user.name}</p>
-                                    </div>
-                                    <div className="hidden md:block">
-                                    <div>
-                                        <p className="text-sm text-gray-900">
-                                            {item.teacher?.name}
-                                        </p>
-                                        <p className="mt-2 flex items-center text-sm text-gray-500">
-                                        <CheckCircleIcon className="flex-shrink-0 mr-1.5 h-5 w-5 text-green-400" aria-hidden="true" />
-                                            {
-                                                item.status == 'done' || item.status == 'wait_proofread'?
-                                                    <label>{t.do('exam_status.done_correction')}</label>
-                                                : item.status == 'correcting' ?
-                                                    <label style={{color: '#4CAF50'}}>{t.do('exam_status.correcting')}</label>
-                                                : item.status == 'submited' ?
-                                                    <label style={{color:'#FF6C6C'}}>{t.do('exam_status.none_correction')}</label>
-                                                : item.status == 'proofreading' ?
-                                                    <label>{t.do('exam_status.proofreading')}</label>
-                                                : null
-                                            }
+                            _renderItem(item, index)
+                        // <li key={index}>
+                        //     <a  className="block cursor-pointer hover:bg-gray-50">
+                        //     <div className="flex items-center px-4 py-4 sm:px-6">
+                        //         <div className="min-w-0 flex-1 flex items-center">
+                        //         <div className="flex-shrink-0 m-2  w-6">
+                        //             <p className='text-gray-900'>{item.submit_sequence_number}</p>
+                        //         </div>
+                        //         <div className="flex-shrink-0">
+                        //             <img className="h-12 w-12 rounded-full" src={item.user?.avatar} alt="" />
+                        //         </div>
+                        //         <div className="min-w-0 flex-1 px-4 md:grid md:grid-cols-2 md:gap-4">
+                        //             <div className='flex justify-left items-center'>
+                        //                 <p className="text-sm font-medium text-indigo-600 truncate">{item?.user.name}</p>
+                        //             </div>
+                        //             <div className="hidden md:block">
+                        //             <div>
+                        //                 <p className="text-sm text-gray-900">
+                        //                     {item.teacher?.name}
+                        //                 </p>
+                        //                 <p className="mt-2 flex items-center text-sm text-gray-500">
+                        //                 <CheckCircleIcon className="flex-shrink-0 mr-1.5 h-5 w-5 text-green-400" aria-hidden="true" />
+                        //                     {
+                        //                         item.status == 'done' || item.status == 'wait_proofread'?
+                        //                             <label>{t.do('exam_status.done_correction')}</label>
+                        //                         : item.status == 'correcting' ?
+                        //                             <label style={{color: '#4CAF50'}}>{t.do('exam_status.correcting')}</label>
+                        //                         : item.status == 'submited' ?
+                        //                             <label style={{color:'#FF6C6C'}}>{t.do('exam_status.none_correction')}</label>
+                        //                         : item.status == 'proofreading' ?
+                        //                             <label>{t.do('exam_status.proofreading')}</label>
+                        //                         : null
+                        //                     }
 
-                                        </p>
-                                    </div>
-                                    </div>
-                                </div>
-                                </div>
-                                <div className='flex flex-row'>
-                                    {
-                                        item.status == 'done' ?  <label className='text-red-500'>({item.score})</label> : ''
-                                    }
-                                    <ChevronRightIcon className="h-5 w-5 text-gray-400" aria-hidden="true" />
-                                </div>
-                            </div>
-                            </a>
-                        </li>
+                        //                 </p>
+                        //             </div>
+                        //             </div>
+                        //         </div>
+                        //         </div>
+                        //         <div className='flex flex-row'>
+                        //             {
+                        //                 item.status == 'done' ?  <label className='text-red-500'>({item.score})</label> : ''
+                        //             }
+                        //             <ChevronRightIcon className="h-5 w-5 text-gray-400" aria-hidden="true" />
+                        //         </div>
+                        //     </div>
+                        //     </a>
+                        // </li>
                         ))}
                     </ul>
                 </div>

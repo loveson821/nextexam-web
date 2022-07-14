@@ -65,7 +65,6 @@ export default function detail() {
     const loadData = () => {
       var paper_id = parseInt( router.query.id+"")
       var user_paper_id = parseInt( router.query.user_paper_id+"")
-      var show_model
         if( router.query.id ){
             if( show_model == 0 ){
               PaperService.papers_can_do(paper_id).then((doc:any) => {
@@ -272,6 +271,7 @@ export default function detail() {
                       className="inline-flex items-center px-4 py-2 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
                     >
                       {status || ' -- '}
+
                     </button>
                   }
                   

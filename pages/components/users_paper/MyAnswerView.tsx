@@ -4,16 +4,12 @@ import { UsersPaperEditMode } from '../../../utils/enums';
 import { UsersQuestion } from '../../../models';
 import { useServices } from '../../services';
 import MyLine from '../MyLine';
-import { MailIcon } from '@heroicons/react/outline';
+import { MailIcon, PencilAltIcon, TrashIcon } from '@heroicons/react/outline';
+import { RadioGroup } from '@headlessui/react';
 
 export default function MyAnswerView(props: any) {
     const { t } = useServices();
-  
-    React.useEffect(() => {
-
-      console.log("fuck MyAnswerView", props.users_question);
-      
-      }, [props.users_question]);
+    const [num, setNum] = useState(0)
 
       const isAnswering = () => {
         return props.edit_mode == UsersPaperEditMode.user_edit_mode || props.edit_mode == UsersPaperEditMode.user_start_mode
@@ -49,14 +45,14 @@ export default function MyAnswerView(props: any) {
       const student_view = (url: string, index: number) => {
         return (
             <div className='group' key={index}>
-              <div className='flex justify-end mr-4'>
+              <div className='flex justify-end relative'>
                 {isAnswering() && 
                   <button
                       type="button"
                       onClick={()=> removeAnswer(index)}
-                      className="invisible group-hover:visible inline-flex items-center px-3 py-2 border border-transparent shadow-sm text-sm leading-4 font-medium rounded-md text-white bg-red-600 hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+                      className="invisible group-hover:visible m-2 inline-flex items-center absolute top-0 px-3 py-2 border border-transparent shadow-sm text-sm leading-4 font-medium rounded-md text-white bg-red-600 hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
                     >
-                    <MailIcon className="-ml-0.5 mr-2 h-4 w-4" aria-hidden="true" />
+                    <TrashIcon className="-ml-0.5 mr-2 h-4 w-4" aria-hidden="true" />
                     {t.do('general.delete')}
                   </button>
                 }
@@ -100,14 +96,57 @@ export default function MyAnswerView(props: any) {
         )
       }
       
+    
+      function classNames(...classes: string[]) {
+        return classes.filter(Boolean).join(' ')
+      }
+      const memoryOptions = [
+        "A","B","C","D","E"
+      ]
+      
+      
+      const [mcValue, setMcValue] = useState(props.users_question.answer.writing || '')
       /**
        * 顯示學生答案-選擇題答案
        * @returns 
        */
       const show_mc_answer = () => {
+        
+       
+        const select = (value: any) => {
+          if( isCorrecting() ) return ;
+          console.log(value);
+          setMcValue(value)
+          onEditAnswer(value)
+          // setNum(num => num++)
+        }
         return (
-          <div onClickCapture={() => onEditAnswer()} className='w-full flex py-10 justify-center items-center'>
-            <span className=' text-gray-500'>{props.users_question.answer.writing}</span>
+          <div className='w-full flex py-10 justify-center items-center'>
+
+            <RadioGroup value={mcValue} onChange={select} className="mt-2">
+              <div className="grid grid-cols-3 gap-3 sm:grid-cols-6">
+                {memoryOptions.map((option) => (
+                  <RadioGroup.Option
+                    key={option}
+                    value={option}
+                    className={({ active, checked }) =>
+                      classNames(
+                        // option.inStock ? 'cursor-pointer focus:outline-none' : 'opacity-25 cursor-not-allowed',
+                        // active ? 'ring-2 ring-offset-2 ring-indigo-500' : '',
+                        checked
+                          ? 'bg-indigo-600 border-transparent text-white hover:bg-indigo-700'
+                          : 'bg-white border-gray-200 text-gray-900 hover:bg-gray-50',
+                        'cursor-pointer focus:outline-none border rounded-md py-3 px-3 flex items-center justify-center text-sm font-medium uppercase sm:flex-1'
+                      )
+                    }
+                  >
+                    <RadioGroup.Label as="p">{option}</RadioGroup.Label>
+                  </RadioGroup.Option>
+                ))}
+              </div>
+            </RadioGroup>
+
+            {/* <span className=' text-gray-500'>{props.users_question.answer.writing}</span> */}
           </div>
         )
       }
@@ -120,15 +159,34 @@ export default function MyAnswerView(props: any) {
         const uq = props.users_question
         return (
           <div key={index}>
-            <div className=' min-h-[100] items-center justify-center' >
-              <label>{uq.answer.writing}</label>
+            <div className=''>
+              <label className='px-3 bg-white text-lg font-medium text-gray-900'>{t.do('exam_all.compare_answer')}</label>
             </div>
-            <div className='p-10'>
-              <label >{t.do('exam_all.compare_answer')}</label>
-            </div>
-            <MyLine />
-            <div className=' min-h-[100] items-center justify-center'>
-              <label>{uq.question.compare_answer}</label>
+            <div className='w-full flex py-10 justify-center items-center'>
+            <RadioGroup value={uq.question.compare_answer} onChange={()=>{}} className="mt-2">
+              <div className="grid grid-cols-3 gap-3 sm:grid-cols-6">
+                {memoryOptions.map((option) => (
+                  <RadioGroup.Option
+                    key={option}
+                    value={option}
+                    className={({ active, checked }) =>
+                      classNames(
+                        // option.inStock ? 'cursor-pointer focus:outline-none' : 'opacity-25 cursor-not-allowed',
+                        // active ? 'ring-2 ring-offset-2 ring-indigo-500' : '',
+                        checked
+                          ? 'bg-green-600 border-transparent text-white hover:bg-green-700'
+                          : 'bg-white border-gray-200 text-gray-900 hover:bg-gray-50',
+                        'cursor-pointer focus:outline-none border rounded-md py-3 px-3 flex items-center justify-center text-sm font-medium uppercase sm:flex-1'
+                      )
+                    }
+                  >
+                    <RadioGroup.Label as="p">{option}</RadioGroup.Label>
+                  </RadioGroup.Option>
+                ))}
+              </div>
+            </RadioGroup>
+
+              {/* <label>{uq.question.compare_answer}</label> */}
             </div>
           </div>
         )
@@ -154,30 +212,30 @@ export default function MyAnswerView(props: any) {
        */
       const correcting_image_view = (url: string, index: number) => {
         return (
-          <div className='group' key={index}>
-              <div className='flex justify-end mr-4'>
+          <div className=' group bg-black' key={index}>
+              <div className='flex relative justify-end '>
                 <button
                     type="button"
                     onClick={()=> onEditAnswer(index)}
-                    className="invisible group-hover:visible inline-flex items-center px-3 py-2 border border-transparent shadow-sm text-sm leading-4 font-medium rounded-md text-white bg-red-600 hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+                    className="invisible group-hover:visible m-2 absolute inline-flex items-center px-3 py-2 border border-transparent shadow-sm text-sm leading-4 font-medium rounded-md text-white bg-red-600 hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
                   >
-                  <MailIcon className="-ml-0.5 mr-2 h-4 w-4" aria-hidden="true" />
+                  <PencilAltIcon className="-ml-0.5 mr-2 h-4 w-4" aria-hidden="true" />
                   {t.do('exam_all.correction')}
                 </button>
               </div>
     
             { props.users_question.hasCorrectionOnIndex(index) && 
-              <div>
-
-                <button
-                    type="button"
-                    onClick={()=> removeCorrection(index)}
-                    className="invisible group-hover:visible inline-flex items-center px-3 py-2 border border-transparent shadow-sm text-sm leading-4 font-medium rounded-md text-white bg-red-600 hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
-                  >
-                  <MailIcon className="-ml-0.5 mr-2 h-4 w-4" aria-hidden="true" />
-                  {t.do('exam_all.rewriting')}
-                </button>
-
+              <div className=''>
+                <div className=' relative'>
+                  <button
+                      type="button"
+                      onClick={()=> removeCorrection(index)}
+                      className="invisible group-hover:visible absolute m-2 inline-flex items-center px-3 py-2 border border-transparent shadow-sm text-sm leading-4 font-medium rounded-md text-white bg-red-600 hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+                    >
+                    <PencilAltIcon className="-ml-0.5 mr-2 h-4 w-4" aria-hidden="true" />
+                    {t.do('exam_all.rewriting')}
+                  </button>
+                </div>
                 <div onClick={() => { onEditAnswer(index) }}>
                   <img src={props.users_question.correction_on_index(index)} />
                 </div>
@@ -198,17 +256,26 @@ export default function MyAnswerView(props: any) {
        * @returns 
        */
       const show_answer = () => {
-        console.log("myanswerview show_answer")
+        // console.log("myanswerview show_answer")
         const uq = new UsersQuestion(props.users_question)
-        if (uq.answer?.isText()) {
-          if (uq.question?.isMC()) {
-            return show_mc_answer()
-          } else {
+        if( uq.question?.isMC() ){
+          return show_mc_answer()
+        }else{
+          if (uq.answer?.isText()) {
             return show_text_answer()
+          }else{
+            return show_image_answer()
           }
-        } else {
-          return show_image_answer()
         }
+        // if (uq.answer?.isText()) {
+        //   if (uq.question?.isMC()) {
+        //     return show_mc_answer()
+        //   } else {
+        //     return show_text_answer()
+        //   }
+        // } else {
+        //   return show_image_answer()
+        // }
       }
 
       /**
@@ -232,14 +299,15 @@ export default function MyAnswerView(props: any) {
         }
       }
 
-      const onEditAnswer = (index?: number) => {
+      const onEditAnswer = (index?: number) => { 
+
         if( isShowOnly() ) return ;
         // 是否 mc
         const uq = new UsersQuestion(props.users_question)
         if (uq.question?.isMC() && !isAnswering())
           return;
         else if (uq.question?.isMC()) {
-          return props.onMcAnswer()
+          return props.onMcAnswer(index)
         } else {
           // Alert.alert('is not MC')
           // return
@@ -266,12 +334,12 @@ export default function MyAnswerView(props: any) {
               </span>
             </div>
           </div>
-          {!props.users_question?.hasAnswer() &&
+          {!props.users_question?.hasAnswer() && !props.users_question?.isMC() &&
             <div className='w-full flex py-10 justify-center items-center'>
               <span className=' text-gray-500'>{t.do('exam_all.none_answer')}</span>
             </div>
           }
-          {props.users_question?.hasAnswer() && (isAnswering() || isShowOnly() )&&
+          {(props.users_question?.hasAnswer() && (isAnswering() || isShowOnly() ) || props.users_question?.isMC())  &&
               show_answer()
           }
           {props.users_question?.hasAnswer() && isCorrecting() &&

@@ -25,9 +25,8 @@ export default function UsersPaperScreen(props: any) {
     const [users_paper, setUsersPaper] = React.useState<UsersPaper>();
     const [paper, setPaper] = React.useState<Paper>();
     const [data, setData] = React.useState([]);
-    const [edit_mode, setEditMode] = React.useState<UsersPaperEditMode>(
-        UsersPaperEditMode.show_only_mode,
-      );
+    const [num, setNum] = useState(0)
+    const [edit_mode, setEditMode] = React.useState('');
     const pages = [
     { name: '模擬試', href: '/mocks/groups', current: true },
     { name:  router.query.description, href: '#', current: true }
@@ -63,9 +62,11 @@ export default function UsersPaperScreen(props: any) {
     }
 
     const handlingEditMode = () => {
-        setEditMode(UsersPaperEditMode.user_edit_mode);
+        // setEditMode(UsersPaperEditMode.user_edit_mode);
         if (router.query.editMode != undefined) {
-          setEditMode(UsersPaperEditMode.user_edit_mode);
+            console.log(router.query.editMode);
+            
+          setEditMode(router.query.editMode+"");
         }
       };
 
@@ -76,8 +77,25 @@ export default function UsersPaperScreen(props: any) {
         return new UsersQuestion(uq);
       };
 
-    const submit = () => {
+    // const submit = () => {
+    //     console.log("users_paper", users_paper);
+        
+    // }
+
+    const force_submit = async () => {
+        if (users_paper == undefined || users_paper.id == undefined) return
         console.log("users_paper", users_paper);
+        router.back()
+        // UsersPaperService.submit(users_paper.id).then((res) => {
+        //   router.back()
+        // }).catch((err) => {
+        //   alert(err.toString());
+        // })
+      }
+
+    const update = () => {
+        console.log("update");
+        setNum(num => num + 1)
         
     }
     return (
@@ -99,17 +117,11 @@ export default function UsersPaperScreen(props: any) {
                                     users_paper={users_paper}
                                     users_question={users_question_for_paper_page(users_paper, item)}
                                     edit_mode={edit_mode}
+                                    update={update}
                                     />
                             ))}
-                              <button
-                        type="button"
-                        onClick={submit}
-                        className="inline-flex items-center px-4 py-2 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
-                        >
-                        {t.do('exam_status.wait_correction')}
-                        </button>
+                            
                         </ul>
-                      
 
                         <div className='hidden sm:block ml-4 z-10 max-h-screen overflow:scroll'>
                             
@@ -130,6 +142,16 @@ export default function UsersPaperScreen(props: any) {
                             </div>
                         </div>
                     </div>
+                    <div className="max-w-screen-lg flex sm:rounded-md m-4 justify-center">
+                        <button
+                            type="button"
+                            onClick={force_submit}
+                            className="inline-flex items-center px-4 py-2 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+                            >
+                            {t.do('general.submit')}
+                        </button>
+                    </div>
+                   
                 </div>
             </div>
             <Footer/>

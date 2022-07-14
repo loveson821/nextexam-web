@@ -9,11 +9,8 @@ import UsersQuestionService from '../../services/users_question_service';
 
 export default function PaperPageView(props: any) {
     const { t } = useServices();
-    const [users_question, setUsersQuestion] = useState(props.users_question)
-    React.useEffect(() => {
-        console.log("users_question", users_question);
-        
-      }, [users_question]);
+    // const [users_question, setUsersQuestion] = useState(props.users_question)
+    const [num, setNum] = useState(0)
     
       // 點擊入去手畫圖
       const onImageClick = async (index = -1) => {
@@ -96,9 +93,6 @@ export default function PaperPageView(props: any) {
             } else {
               props.users_question.set_image_data_to_answer_with_index(uploadUrl, index)
             }
-            console.log("",props.users_question.answer?.writing?.split(',').length);
-            // setUsersQuestion(props.users_question)
-            
             // UsersQuestionService.save_to_server(props.users_question);
             update_users_paper_for_local_use()
           } catch (e) {
@@ -116,23 +110,28 @@ export default function PaperPageView(props: any) {
             props.users_paper.users_questions[index] = props.users_question
           }
         });
+        setNum(num => num + 1)
+        props.update()
         // props.update_ui()
       }
 
-     const onMcAnswer = () => {
-        const { users_question } = props;
+     const onMcAnswer = (mcValue: string) => {
+        console.log("mcValue",mcValue);
+        props.users_question.answer.writing = mcValue
+        UsersQuestionService.save_to_server(props.users_question);
+        update_users_paper_for_local_use()
         // this.setState({ mcPicker_visible: true })
       }
      const onRemovingAnswer = async (index: number) => {
         props.users_question.answer.remove_image_data_from_writing_with_index(index);
-        // UsersQuestionService.save_to_server(props.users_question);
+        UsersQuestionService.save_to_server(props.users_question);
         update_users_paper_for_local_use()
         // this.setState({ refresh: true })
       }
     
      const onRemovingCorrection = async (index: number) => {
         props.users_question.correction.remove_image_data_from_writing_with_index(index);
-        // UsersQuestionService.save_to_server(props.users_question);
+        UsersQuestionService.save_to_server(props.users_question);
         update_users_paper_for_local_use()
         // this.setState({ refresh: true })
       }
@@ -161,8 +160,6 @@ export default function PaperPageView(props: any) {
       const handleFileSelect = (e: any) => {
         // get files from event on the input element as an array
         // let files = [...e.target.files];
-        console.log("---");
-        
         // console.log(e.target.files[0]);
 
         for (const file of e.target.files) {
@@ -181,7 +178,7 @@ export default function PaperPageView(props: any) {
           };
         }
       };
-      const [imgsSrc, setImgsSrc] = useState([]);
+
     const uploadImageView = () => {
         return (
             <div className="mt-8 flex justify-center px-6 pt-5 pb-6 border-2 border-gray-300 border-dashed rounded-md">
@@ -238,7 +235,8 @@ export default function PaperPageView(props: any) {
                 {props.paper_page.paper_pageable_type == PaperPageableType.Question ?
                     props.edit_mode == UsersPaperEditMode.user_edit_mode ?  
                         <div>
-                            <label>{t.do('exam_all.score')}:{props.paper_page.score}</label>
+                            <label >{t.do('exam_all.score')}:</label>
+                            <label className=' text-red-500'>{props.paper_page.score}</label>
                         </div>
                     : 
                     <div>
@@ -268,13 +266,14 @@ export default function PaperPageView(props: any) {
                     onRemovingCorrection={onRemovingCorrection}
                     handleErrorRemark={handleErrorRemark}
                     edit_mode={props.edit_mode}
+                    num = { num}
 
                 />
               : null
             }
             
 
-            {props.paper_page.paper_pageable_type == PaperPageableType.Question && props.edit_mode == UsersPaperEditMode.user_edit_mode ?
+            {props.paper_page.paper_pageable_type == PaperPageableType.Question && props.edit_mode == UsersPaperEditMode.user_edit_mode && props.paper_page['kind'] != 'mc' ?
                 uploadImageView()
             :null}
         </li>

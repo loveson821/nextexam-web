@@ -3,11 +3,11 @@ import axiosInstance from '../helper/axiosInstance';
 export default class PaperService {
 
   // load users papers 
-  static papers_can_do(id: number) {
+  static papers_can_do(paper_id: number) {
     return new Promise((resolve, reject) => {
-      console.log("loading paper " + id);
+      console.log("loading paper " + paper_id);
       axiosInstance
-        .get("/me/papers_can_do/" + id + ".json")
+        .get(`me/papers_can_do/${paper_id}.json`)
         .then((res) => {
           if (res.data.doc) {
             resolve(res.data.doc);
