@@ -12,11 +12,14 @@ export default class UsersQuestionService {
         .then((res) => {
           if (res.data.doc || res.data.success) {
             resolve(res.data.doc);
+            
           }else{
+            console.error(res.data.error);
             reject(res.data.error);
           }
         })
         .catch((err) => {
+          console.error(err);
           reject(err.response ? err.response.data : { error: 'Something went wrong, try agin' })
         });
     });

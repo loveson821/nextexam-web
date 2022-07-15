@@ -7,6 +7,7 @@ import Bar from '../components/bar';
 import Dropdown from '../components/dropdowns';
 import Footer from '../components/footer'
 import Header from '../components/header'
+import LoadMore from '../components/LoadMore';
 import MyModal from '../components/MyModal';
 import { useServices } from '../services';
 import MocksService from '../services/mocks_services';
@@ -18,12 +19,17 @@ export default function WaitingCorrection() {
     const [data, setData] = React.useState([]);
     const [i_correcting, setI_correcting] = React.useState([])
     const [others, setOthers] = React.useState([])
-    const [paper_id] = useState( parseInt( router.query.paper_id+""))
+    const [paper_id, setPaper_id] = useState(parseInt( router.query.paper_id+""))
     const [visable, setVisable] = useState(false)
     const [description, setDescription] = useState('')
+    const [loading, setLoading] = useState(false)
+    const [nodata, setNodata] = useState(false);
+    const [page, setPage] = useState(1);
+    const count = 10;
+    const [status, setStatus] = useState('')
     
     const pages = [
-        { name: '模擬試', href: '/groups', current: true },
+        { name: '模擬試', href: '/mocks/groups', current: true },
         { name:  router.query.group_name, href: '/mocks/courses?group_id='+router.query.group_id+"&group_name="+router.query.group_name, current: true },
         { name:  router.query.curriculum_name, href: '/mocks?course_id='+router.query.course_id+'&group_id='+router.query.group_id+"&group_name="+router.query.group_name+"&curriculum_id="+router.query.curriculum_id+"&curriculum_name="+router.query.curriculum_name, current: true },
         { name:  '改卷列表', href: '/mocks/CorrectionScreen?course_id='+router.query.course_id+'&group_id='+router.query.group_id+"&group_name="+router.query.group_name+"&curriculum_id="+router.query.curriculum_id+"&curriculum_name="+router.query.curriculum_name, current: false}
@@ -34,9 +40,32 @@ export default function WaitingCorrection() {
       }, []);
     
     const loadData = (status: string) => {
-        UsersPaperService.load_waiting_correct_users_papers(paper_id,{status: status}).then((data: any) => {
+        console.log(paper_id);
+        setPaper_id( parseInt( router.query.paper_id+""))
+        setStatus(status)
+        UsersPaperService.load_waiting_correct_users_papers(paper_id,{status: status,page: page, count: count }).then((data: any) => {
             setOthers(data.others)
             setI_correcting(data.i_correcting)
+            if( data.others?.length < count ){
+                setNodata(true)
+            }
+            setPage(2)
+        })
+    }
+    const loadMoreData = () => {
+        console.log("page",page);
+        if( nodata ) return ;
+        setLoading(true)
+        UsersPaperService.load_waiting_correct_users_papers(paper_id,{status: status ,page: page, count: count }).then((data: any) => {
+            setOthers(others.concat(data.others))
+
+            setPage(page => page + 1)
+            if( data.others?.length < count ){
+                setNodata(true)
+            }
+            
+        }).finally(()=>{
+            setLoading(false)
         })
     }
 
@@ -252,7 +281,7 @@ export default function WaitingCorrection() {
                             query: {
                                 paper_id: paper_id,
                                 user_paper_id: item.id,
-                                editMode: UsersPaperEditMode.proof_mode,  
+                                editMode: UsersPaperEditMode.proof_mode,
                             }
                         })
                     }else{
@@ -379,53 +408,6 @@ export default function WaitingCorrection() {
                     <ul role="list" className="divide-y divide-gray-200">
                         {i_correcting?.map((item:any, index) => (
                             _renderItem(item, index)
-                        // <li key={index}>
-                        //     <a  className="block cursor-pointer hover:bg-gray-50">
-                        //     <div className="flex items-center px-4 py-4 sm:px-6">
-                        //         <div className="min-w-0 flex-1 flex items-center">
-                        //         <div className="flex-shrink-0 m-2  w-6">
-                        //             <p className='text-gray-900'>{item.submit_sequence_number}</p>
-                        //         </div>
-                        //         <div className="flex-shrink-0">
-                        //             <img className="h-12 w-12 rounded-full" src={item.user?.avatar} alt="" />
-                        //         </div>
-                        //         <div className="min-w-0 flex-1 px-4 md:grid md:grid-cols-2 md:gap-4">
-                        //             <div className='flex justify-left items-center'>
-                        //                 <p className="text-sm font-medium text-indigo-600 truncate">{item?.user.name}</p>
-                        //             </div>
-                        //             <div className="hidden md:block">
-                        //             <div>
-                        //                 <p className="text-sm text-gray-900">
-                        //                     {item.teacher?.name}
-                        //                 </p>
-                        //                 <p className="mt-2 flex items-center text-sm text-gray-500">
-                        //                 <CheckCircleIcon className="flex-shrink-0 mr-1.5 h-5 w-5 text-green-400" aria-hidden="true" />
-                        //                     {
-                        //                         item.status == 'done' || item.status == 'wait_proofread'?
-                        //                             <label>{t.do('exam_status.done_correction')}</label>
-                        //                         : item.status == 'correcting' ?
-                        //                             <label style={{color: '#4CAF50'}}>{t.do('exam_status.correcting')}</label>
-                        //                         : item.status == 'submited' ?
-                        //                             <label style={{color:'#FF6C6C'}}>{t.do('exam_status.none_correction')}</label>
-                        //                         : item.status == 'proofreading' ?
-                        //                             <label>{t.do('exam_status.proofreading')}</label>
-                        //                         : null
-                        //                     }
-
-                        //                 </p>
-                        //             </div>
-                        //             </div>
-                        //         </div>
-                        //         </div>
-                        //         <div className='flex flex-row'>
-                        //             {
-                        //                 item.status == 'done' ?  <label className='text-red-500'>({item.score})</label> : ''
-                        //             }
-                        //             <ChevronRightIcon className="h-5 w-5 text-gray-400" aria-hidden="true" />
-                        //         </div>
-                        //     </div>
-                        //     </a>
-                        // </li>
                         ))}
                     </ul>
                 </div>
@@ -444,14 +426,11 @@ export default function WaitingCorrection() {
                         ))}
                     </ul>
                 </div>
-                <div className="max-w-screen-lg w-full mt-6">
-                    <a
-                    href="#"
-                    className="w-full flex justify-center items-center px-4 py-2 border border-gray-300 shadow-sm text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50"
-                    >
-                    View all
-                    </a>
-                </div>
+                <LoadMore
+                    loadMoreData={loadMoreData}
+                    loading={loading}
+                    nodata={nodata}
+                    />
             </div>
         </div>
         <MyModal visable={visable} cancelClick={cancelClick} confirmClick={confirmClick} description={description}/>

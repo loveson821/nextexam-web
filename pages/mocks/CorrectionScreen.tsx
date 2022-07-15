@@ -7,6 +7,7 @@ import Bar from '../components/bar';
 import Dropdown from '../components/dropdowns';
 import Footer from '../components/footer'
 import Header from '../components/header'
+import LoadMore from '../components/LoadMore';
 import { useServices } from '../services';
 import UsersPaperService from '../services/users_paper_service';
 
@@ -19,28 +20,52 @@ export default function CorrectionScreen() {
     const { t} = useServices();
     const router = useRouter();
     const [data, setData] = React.useState([]);
-    const [course_id] = useState( parseInt( router.query.course_id+"") || 80)
+    const [course_id] = useState( parseInt( router.query.course_id+""))
+    const [loading, setLoading] = useState(false)
+    const [nodata, setNodata] = useState(false);
+    const [page, setPage] = useState(0);
+    const count = 10;
     const pages = [
-        { name: '模擬試', href: '/groups', current: true },
+        { name: '模擬試', href: '/mocks/groups', current: true },
         { name:  router.query.group_name, href: '/mocks/courses?group_id='+router.query.group_id+"&group_name="+router.query.group_name, current: true },
         { name:  router.query.curriculum_name, href: '/mocks?course_id='+router.query.course_id+'&group_id='+router.query.group_id+"&group_name="+router.query.group_name+"&curriculum_id="+router.query.curriculum_id+"&curriculum_name="+router.query.curriculum_name, current: true },
         { name: '改卷列表', href: '#', current: false}
     ]
 
     React.useEffect(() => {
-        loadData(0)
+        setPage(0)
+        loadData()
       }, []);
     
-    const loadData = (page: number) => {
-        UsersPaperService.practices_can_correct({course: course_id,page: page,count: 10}).then((docs: any) => {
+    const loadData = () => {
+        UsersPaperService.practices_can_correct({course: course_id,page: page,count: count}).then((docs: any) => {
             setData(docs)
             console.log(docs);
+            setPage(2)
+            if( docs.length < count ){
+                setNodata(true)
+            }
             
+        })
+    }
+    const loadMoreData = () => {
+        console.log("page",page);
+        if( nodata ) return ;
+        setLoading(true)
+        UsersPaperService.practices_can_correct({course: course_id,page: page,count: count}).then((docs: any) => {
+            setData(data.concat(docs))
+            console.log(docs);
+            setPage(page => page + 1)
+            if( docs.length < count ){
+                setNodata(true)
+            }
+            
+        }).finally(()=>{
+            setLoading(false)
         })
     }
 
     const listClick = (paper: Paper) =>{
-        console.log(paper);
         Router.push({
             pathname: '/mocks/WaitingCorrection', 
             query: { 
@@ -89,14 +114,11 @@ export default function CorrectionScreen() {
                         ))}
                     </ul>
                 </div>
-                <div className="max-w-screen-lg w-full mt-6">
-                    <a
-                    href="#"
-                    className="w-full flex justify-center items-center px-4 py-2 border border-gray-300 shadow-sm text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50"
-                    >
-                    View all
-                    </a>
-                </div>
+                <LoadMore
+                    loadMoreData={loadMoreData}
+                    loading={loading}
+                    nodata={nodata}
+                    />
             </div>
         </div>
         <Footer/>

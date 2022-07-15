@@ -6,18 +6,33 @@ import QuestionActionButton from './QuestionActionButton';
 import MyLine from '../MyLine';
 import { useServices } from '../../services';
 import UsersQuestionService from '../../services/users_question_service';
+import MyInputModal from '../MyInputModal';
+import Router from 'next/router';
+import {
+  ref,
+  uploadBytesResumable ,
+  getDownloadURL 
+} from "firebase/storage";
+import storage from '../../../firebase.js'
+import { Util } from '../../../utils/util';
+import MyLoader from '../MyLoader';
+import Link from 'next/link';
 
 export default function PaperPageView(props: any) {
     const { t } = useServices();
-    // const [users_question, setUsersQuestion] = useState(props.users_question)
     const [num, setNum] = useState(0)
+    const [data, setData] = useState({
+      score: props.users_question.score
+    })
+    const [loading, setLoading] = useState(false);
+
     
       // 點擊入去手畫圖
       const onImageClick = async (index = -1) => {
         if (props.edit_mode == UsersPaperEditMode.teacher_edit_mode) {
             onImageCorrecting(index)
         } else {
-            onImageAnswer(index)
+          onImageAnswer(index)
         }
     }
 
@@ -25,30 +40,52 @@ export default function PaperPageView(props: any) {
         console.log("onImageAnswer")
         const { navigation, users_question } = props;
         var url = users_question.get_image_answer_path_by_index(index)
-        navigation.push('CorrectingAnswerScreen', {
-          users_question: props.users_question,
-          answer_index: index,
-          url: url,
-          color: 'blue',
-          onImageFinish: async (path: string) => {
-            handleImage({ uq_id: props.users_question.id, image: { path: path } }, index);
+        Router.push({
+          pathname: '/mocks/CorrectingAnswerScreen', 
+          query:{
+            answer_index: index,
+            url: url,
+            color: 'blue',
+            // onImageFinish: async (path: string) => {
+            //   handleImage({ uq_id: props.users_question.id, image: { path: path } }, index);
+            // }
           }
-        });
+        })
+        // navigation.push('CorrectingAnswerScreen', {
+        //   users_question: props.users_question,
+        //   answer_index: index,
+        //   url: url,
+        //   color: 'blue',
+        //   onImageFinish: async (path: string) => {
+        //     handleImage({ uq_id: props.users_question.id, image: { path: path } }, index);
+        //   }
+        // });
       }
 
     const onImageCorrecting = async (index = -1) => {
         console.log("onImageCorrecting")
         const { navigation, users_question } = props;
         var url = users_question.get_image_answer_path_by_index(index)
-        navigation.push('CorrectingAnswerScreen', {
-          users_question: props.users_question,
-          answer_index: index,
-          url: url,
-          color: 'red',
-          onImageFinish: async (path: string) => {
-            handleImage({ uq_id: props.users_question.id, image: { path: path } }, index, true);
+        // navigation.push('CorrectingAnswerScreen', {
+        //   users_question: props.users_question,
+        //   answer_index: index,
+        //   url: url,
+        //   color: 'red',
+        //   onImageFinish: async (path: string) => {
+        //     handleImage({ uq_id: props.users_question.id, image: { path: path } }, index, true);
+        //   }
+        // });
+        Router.push({
+          pathname: '/mocks/CorrectingAnswerScreen', 
+          query:{
+            answer_index: index,
+            url: url,
+            color: 'blue',
+            // onImageFinish: async (path: string) => {
+            //   handleImage({ uq_id: props.users_question.id, image: { path: path } }, index);
+            // }
           }
-        });
+        })
       }
 
      const  onTextAnswer = async (text = '') => {
@@ -81,26 +118,57 @@ export default function PaperPageView(props: any) {
         // index == -1 代表 addImage
      
         if (data.uq_id == props.users_question.id) {
-        //   this.setState({ uploading: true })
-          try {
-            const uploadUrl = "https://oimg.m2mda.com/web_uploads/2020-08-07/6c854c2d-69bf-aec6-8988-80d2734afedf.jpg"
+          setLoading(true)
+          const storageRef = ref(storage, `web_uploads/`+ Util.get_url_extension(data.file.name))
+          const uploadTask = uploadBytesResumable(storageRef, data.file);
+          uploadTask.on(
+            "state_changed",
+            (snapshot) => {
+                const percent = Math.round(
+                    (snapshot.bytesTransferred / snapshot.totalBytes) * 100
+                );
+                // update progress
+                // setPercent(percent);
+                console.log(percent);
+                
+            },
+            (err) => console.log(err),
+            () => {
+                // download url
+                getDownloadURL(uploadTask.snapshot.ref).then((uploadUrl) => {
+                    console.log("uploadUrl",uploadUrl);
+                    if (correcting) {
+                      props.users_question.set_image_data_to_correction_with_index(uploadUrl, index)
+                    } else {
+                      props.users_question.set_image_data_to_answer_with_index(uploadUrl, index)
+                    }
+                    UsersQuestionService.save_to_server(props.users_question);
+                    update_users_paper_for_local_use()
+                    setLoading(false)
 
-            // const uploadUrl = await new UploadFileApi().uploadFile(data.image.path, "/users_papers/" + props.users_paper.id);
-            if (correcting) {
-              // console.log(correcting)
-              // console.log(uploadUrl)
-              props.users_question.set_image_data_to_correction_with_index(uploadUrl, index)
-            } else {
-              props.users_question.set_image_data_to_answer_with_index(uploadUrl, index)
+                });
             }
-            // UsersQuestionService.save_to_server(props.users_question);
-            update_users_paper_for_local_use()
-          } catch (e) {
-            console.log(e);
-            alert("Upload failed, sorry :(");
-          } finally {
-            // this.setState({ uploading: false });
-          }
+          );
+        //   this.setState({ uploading: true })
+          // try {
+          //   const uploadUrl = "https://oimg.m2mda.com/web_uploads/2020-08-07/6c854c2d-69bf-aec6-8988-80d2734afedf.jpg"
+
+          //   // const uploadUrl = await new UploadFileApi().uploadFile(data.image.path, "/users_papers/" + props.users_paper.id);
+          //   if (correcting) {
+          //     // console.log(correcting)
+          //     // console.log(uploadUrl)
+          //     props.users_question.set_image_data_to_correction_with_index(uploadUrl, index)
+          //   } else {
+          //     props.users_question.set_image_data_to_answer_with_index(uploadUrl, index)
+          //   }
+          //   // UsersQuestionService.save_to_server(props.users_question);
+          //   update_users_paper_for_local_use()
+          // } catch (e) {
+          //   console.log(e);
+          //   alert("Upload failed, sorry :(");
+          // } finally {
+          //   // this.setState({ uploading: false });
+          // }
         }
       }
 
@@ -166,9 +234,9 @@ export default function PaperPageView(props: any) {
           const reader = new FileReader();
           reader.readAsDataURL(file);
           reader.onload = async () => {
-            // console.log(reader.result);
+            console.log(reader.result);
 
-            await handleImage({ uq_id: props.users_question.id, image: reader.result });
+            await handleImage({ uq_id: props.users_question.id, file: file});
 
             // setImgsSrc((imgs) => [...imgs, reader.result]);
             e.target.value = null;//上传完图片后要清空file，下次可以继续上传
@@ -179,9 +247,33 @@ export default function PaperPageView(props: any) {
         }
       };
 
+    const [visable, setVisable] = useState(false)
+    const cancelClick = () => {
+      setVisable(false)
+    }
+    const handleScoreConfirm = (score: any) => {
+      setVisable(false)
+      if( score != '' ){
+        setData({
+          ...data,
+          score: score
+        })
+        props.users_question.score = parseInt(score);
+        UsersQuestionService.save_to_server(props.users_question);
+        update_users_paper_for_local_use()
+      
+        console.log("score:", score);
+      }
+     
+  }
+
+    const editScore = () => {
+      setVisable(true)
+      console.log("score:", data.score);
+    }
     const uploadImageView = () => {
         return (
-            <div className="mt-8 flex justify-center px-6 pt-5 pb-6 border-2 border-gray-300 border-dashed rounded-md">
+            <div  className="mt-8   flex justify-center px-6 pt-5 pb-6 border-2 border-gray-300 border-dashed rounded-md">
                 <div className="space-y-1 text-center">
                     <svg
                     className="mx-auto h-12 w-12 text-gray-400"
@@ -197,16 +289,15 @@ export default function PaperPageView(props: any) {
                         strokeLinejoin="round"
                     />
                     </svg>
-                    <div className="flex text-sm text-gray-600">
+                    <div className="flex text-sm text-gray-600 justify-center">
                     <label
                         className="cursor-pointer bg-white rounded-md font-medium text-indigo-600 hover:text-indigo-500 focus-within:outline-none focus-within:ring-2 focus-within:ring-offset-2 focus-within:ring-indigo-500"
                     >
-                        <span>Upload a file</span>
-                        <input  name="file-upload" multiple type="file" className="sr-only" onChange={handleFileSelect}/>
+                        <span>上傳圖片</span>
+                        <input  name="file-upload" multiple type="file" className="sr-only" onChange={handleFileSelect} />
                     </label>
-                    <p className="pl-1">or drag and drop</p>
                     </div>
-                    <p className="text-xs text-gray-500">PNG, JPG, GIF up to 10MB</p>
+                    <p className="text-xs text-gray-500">PNG, JPG, up to 10MB</p>
                 </div>
             </div>
         )
@@ -226,10 +317,20 @@ export default function PaperPageView(props: any) {
                         props.paper_page['paper_pageable_type'] == PaperPageableType.Question && props.paper_page['kind'] == 'mc' ? t.do('exam_all.choice_question') : ''
                     }
 
-                    {/* {props.paper_page.paper_pageable_type == PaperPageableType.MediaPage  ? '附加信息' : props.paper_page.kind == 'mc'  ? '選擇題' : ''} */}
                 </label>
             </div>
             <img src={props.paper_page.content}/>
+            <div className='flex w-full  p-2'>
+                {
+                  props.paper_page.tag_list?.split(',').map((tag: string, index: number) => {
+                    return (
+                      <span key={index} className="inline-flex items-center mx-2 px-3 py-0.5 rounded-full text-sm font-medium bg-purple-100 text-purple-800">
+                      {tag}
+                    </span>
+                    )
+                  })
+                }
+            </div>
             {/* <MyLine/> */}
             <div className='flex w-full justify-end p-2'>
                 {props.paper_page.paper_pageable_type == PaperPageableType.Question ?
@@ -239,10 +340,10 @@ export default function PaperPageView(props: any) {
                             <label className=' text-red-500'>{props.paper_page.score}</label>
                         </div>
                     : 
-                    <div>
-                        <label>{t.do('exam_all.goal')}</label>
-                        <label className=' text-red-500'>{0}</label>
-                        <label>{' / '}{props.paper_page.score}</label>
+                    <div className=' cursor-pointer' onClick={() => editScore() }>
+                        <span>{t.do('exam_all.goal')}</span>
+                        <span className=' text-red-500'>{data.score}</span>
+                        <span>{' / '}{props.paper_page.score}</span>
                     </div>
                 
                 : 
@@ -271,11 +372,14 @@ export default function PaperPageView(props: any) {
                 />
               : null
             }
-            
+            <div className='w-full'>
+              <MyLoader loading={loading}/>
+            </div>
 
             {props.paper_page.paper_pageable_type == PaperPageableType.Question && props.edit_mode == UsersPaperEditMode.user_edit_mode && props.paper_page['kind'] != 'mc' ?
                 uploadImageView()
             :null}
+            <MyInputModal visable={visable} cancelClick={cancelClick} confirmClick={handleScoreConfirm} max_score={props.paper_page.score} score={data.score}/>
         </li>
     )
 }

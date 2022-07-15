@@ -29,7 +29,7 @@ export default function UsersPaperScreen(props: any) {
     const [edit_mode, setEditMode] = React.useState('');
     const pages = [
     { name: '模擬試', href: '/mocks/groups', current: true },
-    { name:  router.query.description, href: '#', current: true }
+    { name:  paper?.description, href: '#', current: true }
     ]
     var m = 1;
     var q = 1;

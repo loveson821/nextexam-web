@@ -112,8 +112,7 @@ const mocks: NextPage = () => {
             Router.push({pathname: '/mocks/UsersPaperScreen', query: {
                 paper_id: lastMock?.id,
                 user_paper_id: lastMock?.users_paper_id,
-                editMode: UsersPaperEditMode.user_edit_mode,
-                description: lastMock?.description
+                editMode: UsersPaperEditMode.user_edit_mode
             }})
         //   navigation.navigate('UsersPaperScreen', {
         //     paper_id: lastMock.id,

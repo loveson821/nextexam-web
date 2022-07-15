@@ -58,7 +58,7 @@ export default function MyAnswerView(props: any) {
                 }
                
               </div>
-              <img src={url} />
+              <img className=' cursor-pointer' src={url} onClick={() => { onEditAnswer(index) } }/>
                 <MyLine/>
             </div>
           
