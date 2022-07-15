@@ -1,3 +1,4 @@
+import User from "../../models/User";
 import axiosInstance from "../helper/axiosInstance";
 
 export default class AuthService {
@@ -20,4 +21,19 @@ export default class AuthService {
             })
         })
     }
+
+    static save(user: User) {
+      return new Promise((resolve, reject) => {
+          axiosInstance
+          .put('me.json', { user: user }).then((res) => {
+              if (res.data.success) {
+                  resolve(res.data);
+                } else {
+                  reject(res.data.error);
+                }
+          }).catch((err) => {
+              reject(err.response ? err.response.data : { error: 'Something went wrong, try agin' })
+          })
+      })
+  }
 }
