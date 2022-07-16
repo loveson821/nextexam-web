@@ -175,7 +175,7 @@ export default function info() {
             <div className=" w-9/12 mx-auto md:px-8 xl:px-0">
             <div className="pt-10 pb-16">
                 <div className="px-4 sm:px-6 md:px-0 flex justify-between">
-                    <h1  className="text-3xl font-extrabold text-gray-900">個人資料</h1>
+                    <h1  className="text-3xl font-extrabold text-gray-900">{t.do('me.info.title')}</h1>
                     {
                         userData?.has_school_section == true ? 
                             <a
@@ -199,7 +199,7 @@ export default function info() {
                     <div className="mt-6">
                         <dl className="divide-y divide-gray-200">
                         <div className="py-4 sm:py-5 sm:grid sm:grid-cols-3 sm:gap-4">
-                            <dt className="text-sm font-medium text-gray-500">暱稱</dt>
+                            <dt className="text-sm font-medium text-gray-500">{t.do('me.info.nick')}</dt>
                             <dd className="mt-1 flex text-sm text-gray-900 sm:mt-0 sm:col-span-2">
                             <span className="flex-grow">{userData?.name}</span>
                             <span className="ml-4 flex-shrink-0">
@@ -219,7 +219,7 @@ export default function info() {
                             </dd>
                         </div>
                         <div className="py-4 sm:py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:pt-5">
-                            <dt className="text-sm font-medium text-gray-500">頭像</dt>
+                            <dt className="text-sm font-medium text-gray-500">{t.do('me.info.avatar')}</dt>
                             <dd className="mt-1 flex text-sm text-gray-900 sm:mt-0 sm:col-span-2">
                             <span className="flex-grow">
                                 <MyZoomImage url={userData?.avatar}  className={'h-8 w-8 rounded-full'}/>
@@ -235,7 +235,7 @@ export default function info() {
                             </dd>
                         </div>
                         <div className="py-4 sm:py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:pt-5">
-                            <dt className="text-sm font-medium text-gray-500">郵箱</dt>
+                            <dt className="text-sm font-medium text-gray-500">{t.do('me.info.email')}</dt>
                             <dd className="mt-1 flex text-sm text-gray-900 sm:mt-0 sm:col-span-2">
                             <span className="flex-grow">{userData?.email}</span>
                             </dd>
@@ -259,7 +259,7 @@ export default function info() {
                             </dd>
                         </div>
                         <div className="py-4 sm:py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:border-b sm:border-gray-200">
-                            <dt className="text-sm font-medium text-gray-500">所在地區</dt>
+                            <dt className="text-sm font-medium text-gray-500">{t.do('me.info.school_region')}</dt>
                             <dd className="mt-1 flex text-sm text-gray-900 sm:mt-0 sm:col-span-2">
                             <span className="flex-grow">{userData?.school_region}</span>
                             <span className="ml-4 flex-shrink-0">
@@ -268,7 +268,7 @@ export default function info() {
                             </dd>
                         </div>
                         <div className="py-4 sm:py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:border-b sm:border-gray-200">
-                            <dt className="text-sm font-medium text-gray-500">學校</dt>
+                            <dt className="text-sm font-medium text-gray-500">{t.do('me.info.school')}</dt>
                             <dd className="mt-1 flex text-sm text-gray-900 sm:mt-0 sm:col-span-2">
                             <span className="flex-grow">{userData?.school}</span>
                             <span className="ml-4 flex-shrink-0">

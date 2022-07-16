@@ -28,14 +28,14 @@ export const zh = {
     enrolled_time: '報名時間: ',
     time_used: '已用時',
     suggest_time_in_hms: '做卷時間: ',
-    read: '在確認做卷前，請仔細閱讀以下須知:'+
-    '1. 模擬考試只能在指定時間內開始及做卷，考試時間結束前5分鐘你將收到自動提醒,考試時間一旦結束,考卷將會被自動提交，請把握好做卷時間;'+
-    '2. 同一份試卷只能做一次;'+
-    '3. 在準備做卷時，自行安排一個安靜及充足的時間，並一次性完成模擬考試;'+
-    '4. 由於部分題目需要拍照上傳(如：作文)，請你在考試開始前自行準備紙筆作答;'+
-    '5. 為保證改卷準確度及評估質量，請在上傳圖片答案時，請選擇高清晰度的圖片上傳;'+
-    '6. 在作答同一條題目時，你只能選擇一種填寫答案形式 （打字作答/手機繪圖作答/上傳圖片作答），不能同時使用兩種形式作答;'+
-      '提交後,你的模擬試卷將由專人批改及評估，你可以在一個星期內通過應用程式查看你的考評報告。'
+    read: '在確認做卷前，請仔細閱讀以下須知:<br/>'+
+    '1. 模擬考試只能在指定時間內開始及做卷，考試時間結束前5分鐘你將收到自動提醒,考試時間一旦結束,考卷將會被自動提交，請把握好做卷時間;<br/>'+
+    '2. 同一份試卷只能做一次;<br/>'+
+    '3. 在準備做卷時，自行安排一個安靜及充足的時間，並一次性完成模擬考試;<br/>'+
+    '4. 由於部分題目需要拍照上傳(如：作文)，請你在考試開始前自行準備紙筆作答;<br/>'+
+    '5. 為保證改卷準確度及評估質量，請在上傳圖片答案時，請選擇高清晰度的圖片上傳;<br/>'+
+    '6. 在作答同一條題目時，你只能選擇一種填寫答案形式 （打字作答/手機繪圖作答/上傳圖片作答），不能同時使用兩種形式作答;<br/>'+
+      '提交後,你的模擬試卷將由專人批改及評估，你可以在一個星期內通過應用程式查看你的考評報告。<br/>'
 
   },
   ebook: {
@@ -297,15 +297,15 @@ export const en = {
     open_time: 'Opening time: ',
     enrolled_time: 'Enroll time: ',
     time_used: 'Use time ',
-    suggest_time_in_hms: 'Do volume time: ',
-    read: 'Please read the following instructions carefully before doing the paper: '+
-    '1. The mock exam can only be started and completed within the specified time. An automatic reminder will be sent 5 minutes before the test time ends. '+
-    '2. You can only do the same test paper once. '+
-    '3. Please arrange a quiet and sufficient time to complete the test at one time before you do the paper;  '+
-    '4. Please prepare your own pen and paper before the test because some questions need to be photographed and uploaded (such as writing).  '+
-    '5. In order to ensure accuracy and evaluation quality, please select a picture with high resolution when uploading the answer; '+
-    '6. When answering the same question, you can choose only one form of answer (typing/drawing/uploading pictures). You cannot answer both forms at the same time.'+
-      'After submission, your test paper will be marked and evaluated by specialist. Within one week, you will be able to view your evaluation report in ExamHero APP. '
+    suggest_time_in_hms: 'Do volume time: <br/>',
+    read: 'Please read the following instructions carefully before doing the paper: <br/>'+
+    '1. The mock exam can only be started and completed within the specified time. An automatic reminder will be sent 5 minutes before the test time ends. <br/>'+
+    '2. You can only do the same test paper once. <br/>'+
+    '3. Please arrange a quiet and sufficient time to complete the test at one time before you do the paper;  <br/>'+
+    '4. Please prepare your own pen and paper before the test because some questions need to be photographed and uploaded (such as writing).  <br/>'+
+    '5. In order to ensure accuracy and evaluation quality, please select a picture with high resolution when uploading the answer; <br/>'+
+    '6. When answering the same question, you can choose only one form of answer (typing/drawing/uploading pictures). You cannot answer both forms at the same time.<br/>'+
+      'After submission, your test paper will be marked and evaluated by specialist. Within one week, you will be able to view your evaluation report in ExamHero APP. <br/>'
 
   },
   ebook: {

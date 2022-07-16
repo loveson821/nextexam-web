@@ -33,7 +33,6 @@ export default function Header() {
       var user = new User(JSON.parse(_user))
       setUser(user)
     }
-    console.log(router.pathname);
     if( router.pathname.indexOf('mocks') != -1){
       setData({
         isHome: false,
@@ -58,7 +57,7 @@ export default function Header() {
   const logout = () => {
     localStorage.setItem('token','')
     localStorage.setItem('user','')
-    router.push('/users/sign_in')
+    router.push('/auth/sign_in')
   }
   const navigation = [
     { name: '首頁', href: '/', current: data.isHome },
@@ -123,7 +122,7 @@ export default function Header() {
                   href={
                     loggedIn ? 
                     'https://www.examhero.com/appkit/messages?access_token='+token
-                    : '/users/sign_in'}
+                    : '/auth/sign_in'}
                   className="bg-gray-800 p-1 rounded-full text-gray-400 hover:text-white focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-800 focus:ring-white"
                 >
                   <span className="sr-only">View notifications</span>
@@ -160,7 +159,7 @@ export default function Header() {
                             href="/users/info"
                             className={classNames(active ? 'bg-gray-100' : '', 'block px-4 py-2 text-sm text-gray-700')}
                           >
-                            個人資料
+                            {t.do('me.info.title')}
                           </a>
                         )}
                       </Menu.Item>
@@ -170,7 +169,7 @@ export default function Header() {
                             href="/users/modify_password"
                             className={classNames(active ? 'bg-gray-100' : '', 'block px-4 py-2 text-sm text-gray-700')}
                           >
-                            修改密碼
+                            {t.do('me.manage.modify_password.title')}
                           </a>
                         )}
                       </Menu.Item>
@@ -180,7 +179,7 @@ export default function Header() {
                             onClick={logout}
                             className={classNames(active ? 'bg-gray-100' : '', 'block cursor-pointer px-4 py-2 text-sm text-gray-700')}
                           >
-                            登出
+                            {t.do('general.logout')}
                           </a>
                         )}
                       </Menu.Item>
@@ -190,7 +189,7 @@ export default function Header() {
                 : 
                 <div>
                   <a
-                    href={'/users/sign_in'}
+                    href={'/auth/sign_in'}
                     className={classNames(
                       'text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium'
                     )}
@@ -198,7 +197,7 @@ export default function Header() {
                     {t.do('general.sign_in')}
                   </a>
                   <a
-                    href={'/users/sign_up'}
+                    href={'/auth/sign_up'}
                     className={classNames(
                       'text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium'
                     )}

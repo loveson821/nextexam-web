@@ -49,9 +49,14 @@ export default function MyModal(props: any) {
                     {t.do('general.tip')}
                   </Dialog.Title>
                   <div className="mt-2">
-                    <p className="text-sm text-gray-500">
+                    {/* <p  className="text-sm text-gray-500">
                       {props.description}
-                    </p>
+                    </p> */}
+                    <span dangerouslySetInnerHTML={{
+                        __html: props.description
+                      }} className="text-sm text-gray-500">
+                                          
+                    </span>
                   </div>
                 </div>
               </div>

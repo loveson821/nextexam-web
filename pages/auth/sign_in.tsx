@@ -82,7 +82,7 @@ const sign_in: NextPage = () => {
           <div className="flex items-center justify-between">
 
             <div className="text-sm">
-              <a href="#" className="font-medium text-indigo-600 hover:text-indigo-500">
+              <a href="/auth/forget_password" className="font-medium text-indigo-600 hover:text-indigo-500">
               {t.do('sign_in.forget_password')}
               </a>
             </div>
@@ -99,7 +99,7 @@ const sign_in: NextPage = () => {
           </div>
           <div>
             <a
-              href='/users/sign_up'
+              href='/auth/sign_up'
               className="w-full cursor-pointer flex justify-center py-2 px-4 border  rounded-md shadow-sm text-sm font-medium text-black bg-white hover:bg-white"
             >
               {t.do('general.sign_up')}

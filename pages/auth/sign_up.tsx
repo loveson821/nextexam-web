@@ -6,6 +6,8 @@ import  {FaLock, FaUser}  from "react-icons/fa";
 import { User } from '../../models';
 import { validate_email } from '../../utils/validate';
 import Alerts from '../components/alerts';
+import Footer from '../components/footer';
+import Header from '../components/header';
 import MyModal from '../components/MyModal';
 import axiosInstance from '../helper/axiosInstance';
 import { useServices } from '../services';
@@ -50,7 +52,7 @@ const sign_up: NextPage = () => {
         email: data.email
       })
         AuthService.signUp(_user).then((data:any) => {
-            router.push("/users/sign_in")
+            router.push("/auth/sign_in")
         }).catch(res => {
           console.log(res);
           if( !res.success ){
@@ -86,8 +88,9 @@ const sign_up: NextPage = () => {
           setVisable(false)
       }
   return (
-    <>
-     <div className="min-h-full flex flex-col justify-center py-12 sm:px-6 lg:px-8">
+    <div className=' min-h-screen h-full relative'>
+    <Header/>
+     <div className="min-h-full flex flex-col justify-center py-12 pb-40 sm:px-6 lg:px-8">
          
          <div className="sm:mx-auto sm:w-full sm:max-w-md">
            <img
@@ -192,7 +195,8 @@ const sign_up: NextPage = () => {
          </div>
        </div>
        <MyModal visable={visable} cancelClick={cancelClick} confirmClick={confirmClick} description={description}/>
-    </>
+       <Footer/>
+    </div>
    
   )
 }

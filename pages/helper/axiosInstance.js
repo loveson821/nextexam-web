@@ -1,8 +1,6 @@
 import axios from 'axios';
-import { reject } from 'lodash';
 let headers = {"Content-Type": "application/json"};
 
-// AsyncStorage.setItem('token', '2UWirLmhUxspMPjcE5gH')
 const axiosInstance = axios.create({
   baseURL: "https://www.examhero.com/api/",
   headers,
@@ -12,6 +10,7 @@ axiosInstance.interceptors.request.use(
   async (config) => {
     // const token = "X7msRyi7MLDJPjg59gS3"
     const token = localStorage.getItem('token');
+    // console.log("token", token);
     if (token) {
       config.headers.Authorization = `Bearer ${token}`;
     }
@@ -22,6 +21,18 @@ axiosInstance.interceptors.request.use(
     return Promise.reject(error);
   },
 );
+
+// 添加请求拦截器
+axiosInstance.interceptors.request.use(config=>{
+  const { url } = config;
+  console.log("utl..",config);
+  // startsWith() ---以什么开头;  这两个请求路径不需要token 
+  if(!url.startsWith('users')){ 
+    const token = localStorage.getItem('token');
+    if( !token ) window.location = "/auth/sign_in"
+  }
+  return config
+})
 
 axiosInstance.interceptors.response.use(
   (response) =>
@@ -35,7 +46,7 @@ axiosInstance.interceptors.response.use(
       });
     }
     if (error.response.status === 401) {
-      window.location = "/users/sign_in"
+      window.location = "/auth/sign_in"
       // navigate(LOGOUT, {tokenExpired: true});
     }else if (error.response.status === 404) {
       // navigate(LOGOUT, {tokenExpired: true});

@@ -5,7 +5,6 @@ import React, { useState } from 'react';
 import Group from '../../models/Group';
 import LastMock from '../../models/LastMock';
 import { UsersPaperEditMode } from '../../utils/enums';
-import Alerts from '../components/alerts';
 import Bar from '../components/bar';
 import { ExamPaper } from '../components/ExamPaper';
 import Footer from '../components/footer';
@@ -13,6 +12,7 @@ import Header from '../components/header'
 import MyModal from '../components/MyModal';
 import { useServices } from '../services';
 import MocksService from '../services/mocks_services';
+import UsersPaperService from '../services/users_paper_service';
 
 export async function getServerSideProps () {
   // Pass data to the page via props
@@ -31,6 +31,7 @@ const mocks: NextPage = () => {
     const [curriculum_id] = useState( parseInt( router.query.curriculum_id+""))
     const [visable, setVisable] = useState(false)
     const [description, setDescription] = useState('')
+    const [isTodo, setIsTodo] = useState(false)
     const pages = [
       { name: '模擬試', href: '/mocks/groups', current: true },
       { name:  router.query.group_name, href: '/mocks/courses?group_id='+router.query.group_id+"&group_name="+router.query.group_name, current: true },
@@ -42,16 +43,6 @@ const mocks: NextPage = () => {
       }, []);
 
     const loadData = () => {
-        // MocksService.groups().then((docs: any) => {
-        //     console.log("docs: ", docs);
-
-        //     if( docs )
-        //       setGroups(docs)
-            
-        // }).catch((error) => {
-        //     console.error(error);
-        // })
-
         MocksService.getLastMockDetail(curriculum_id,course_id).then((doc: any) => {
             if (doc) {
                 setLastMock(new LastMock(doc))
@@ -63,7 +54,7 @@ const mocks: NextPage = () => {
         }).finally(() => {
         })
 
-        MocksService.course_assignments(course_id,0, 10).then((data: any) => {
+        MocksService.course_assignments(course_id,0, 100).then((data: any) => {
             if (data.docs) {
                 console.log(data);
                 var arrs: any = []
@@ -85,52 +76,36 @@ const mocks: NextPage = () => {
 
     const enrollButtonClick = () => {
         if (lastMock == null) {
-          alert(t.do('mocks.start_tip'))
+          showTip(t.do('mocks.start_tip'))
           return;
         }
         if (lastMock.isNone()) {
           if (lastMock.canEnrolled()) {
               Router.push("https://www.examhero.com/appkit/papers/" + lastMock.id + "/enroll_info?access_token=" + localStorage.getItem('token'))
           } else if (!lastMock.canEnrolled()) {
-            // alert(t.do('mocks.enrolled_tip'))
-            setVisable(true)
-            setDescription(t.do('mocks.enrolled_tip'))
+            showTip(t.do('mocks.enrolled_tip'))
             return;
           } else if (lastMock.enrolledNotBeing()) {
-            setVisable(true)
-            setDescription(t.do('mocks.start_tip'))
+            showTip(t.do('mocks.start_tip'))
           } else if (lastMock.isFinish()) {
-            setVisable(true)
-            setDescription(t.do('mocks.enrollment_period'))
+            showTip(t.do('mocks.enrollment_period'))
           } else {
-            // setVisible(true)
+            setIsTodo(true)
+            showTip(t.do('mocks.read'))
           }
         } else if (lastMock?.isDoing() && lastMock?.isFinish()) {
-          setVisable(true)
-          setDescription(t.do('mocks.has_end'))
+          showTip(t.do('mocks.has_end'))
         } else if (lastMock && lastMock.id && lastMock?.isDoing()) {
             Router.push({pathname: '/mocks/UsersPaperScreen', query: {
                 paper_id: lastMock?.id,
                 user_paper_id: lastMock?.users_paper_id,
                 editMode: UsersPaperEditMode.user_edit_mode
             }})
-        //   navigation.navigate('UsersPaperScreen', {
-        //     paper_id: lastMock.id,
-        //     user_paper_id: lastMock.users_paper_id,
-        //     editMode: UsersPaperEditMode.user_edit_mode,
-        //   })
         } else if (lastMock?.isDone()) {
           Router.push("https://www.examhero.com/"+ "/embed/me/transcript?course=" + course_id + "&access_token=" + localStorage.getItem('token'))
-        //   navigation.navigate('MyWebComponent', {
-        //     title: t.do('mocks.report'),
-        //     url: env.DOMAIN + "/embed/me/transcript?course=" + route.params.course_id + "&access_token=" + auth.token,
-        //   })
+
         } else {
           Router.push("https://www.examhero.com/"+ "/embed/me/transcript?course=" + course_id+ "&access_token=" + localStorage.getItem('token'))
-        //   navigation.navigate('MyWebComponent', {
-        //     title: t.do('mocks.report'),
-        //     url: env.DOMAIN + "/embed/me/transcript?course=" + route.params.course_id + "&access_token=" + auth.token,
-        //   })
         }
     
       }
@@ -145,16 +120,52 @@ const mocks: NextPage = () => {
               group_id: router.query.group_id,
               group_name: router.query.group_name,
           }
-      })
-
-        // Router.push('/mocks/CorrectionScreen?course_id='+course_id)
+        })
       }
 
+      
+      /**
+       * 開始做卷
+       */
+      const startTodoData = () => {
+        if (lastMock && lastMock.id) {
+          UsersPaperService.start_edit_paper(lastMock.id).then((data: any) => {
+            if (data.doc) {
+              Router.push({
+                pathname: '/mocks/UsersPaperScreen', 
+                query: { 
+                  paper_id: lastMock.id,
+                  user_paper_id: data.doc.id,
+                  editMode: UsersPaperEditMode.user_edit_mode,
+                }
+              })
+            } else {
+              showTip(data.error)
+            }
+          }).catch((err) => {
+            showTip(err.toString())
+
+          }).finally(() => {
+
+          })
+        }
+      }
+
+      const showTip = (description: string) => {
+        setVisable(true)
+        setDescription(description)
+      }
+      
       const cancelClick = () => {
         setVisable(false)
       }
       const confirmClick = () => {
           setVisable(false)
+          if( isTodo ){
+            setIsTodo(false)
+            startTodoData()
+          }
+        
       }
 
   return (
