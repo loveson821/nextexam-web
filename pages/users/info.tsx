@@ -8,6 +8,17 @@ import MyDropdown from '../components/MyDropdown'
 import useCallbackState from '../../utils/useCallbackState';
 import AuthService from '../services/auth_services'
 import MyInfoInputModal from '../components/MyInfoInputModal'
+import {
+    ref,
+    uploadBytesResumable ,
+    getDownloadURL 
+} from "firebase/storage";
+import storage from '../../firebase.js'
+import { Util } from '../../utils/util'
+import Zoom from 'react-medium-image-zoom'
+import 'react-medium-image-zoom/dist/styles.css'
+import MyZoomImage from '../components/MyZoomImage'
+import Footer from '../components/footer'
 
 export default function info() {
     const { t} = useServices();
@@ -15,6 +26,11 @@ export default function info() {
     const [userData, setUserData] = useCallbackState({
         ...user,
       })
+    const [visable, setVisable] = useState(false)
+    const [type, setType] = useState('')
+    const [value, setValue] = useState('')
+    const [token, setToken] =  useState('')
+
     let careers = [t.do('me.student'), t.do('me.teacher'), t.do('me.persons'), t.do('me.other')];
     let regions = [t.do('me.mo'), t.do('me.hk'), t.do('me.other')];
     let grades = [t.do('me.grade_15'), t.do('me.grade_14'), t.do('me.grade_13'), t.do('me.grade_12'), t.do('me.grade_11'), t.do('me.grade_10'),
@@ -27,7 +43,19 @@ export default function info() {
             setUser(user)
             setUserData(user)
         }
+        if (localStorage.getItem('token') != null && localStorage.getItem('token') !== '') {
+            var toekn:any = localStorage.getItem('token')
+            setToken(toekn)
+        }
+        loadData()
     },[]);
+
+    const loadData = () => {
+        AuthService.getInfo().then((data: any) => {
+            setUserData(data.doc)
+            localStorage.setItem('user', JSON.stringify(data.doc))
+        })
+    }
 
     const handleSubmit = async (user: User) => {
         // console.log(userData);
@@ -61,17 +89,11 @@ export default function info() {
         })
     }
 
-    const [visable, setVisable] = useState(false)
-    const [type, setType] = useState('')
-    const [value, setValue] = useState('')
+    
     const cancelClick = () => {
       setVisable(false)
     }
-    const handleScoreConfirm = (type: string,value: string) => {
-        console.log('type',type);
-        console.log("value", value);
-        
-        
+    const handleConfirm = (type: string,value: string) => {
       setVisable(false)
       switch (type) {
         case 'nickname':
@@ -96,14 +118,75 @@ export default function info() {
      
   }
 
+  const handleFileSelect = (e: any) => {
+    for (const file of e.target.files) {
+      const reader = new FileReader();
+      reader.readAsDataURL(file);
+      reader.onload = async () => {
+        console.log(reader.result);
+        await handleImage(file);
+        e.target.value = null;//上传完图片后要清空file，下次可以继续上传
+      };
+      reader.onerror = () => {
+        console.log(reader.error);
+      };
+    }
+  };
+
+  const handleImage = async (file: any) => {
+    if( !file ) return ;
+    //   setLoading(true)
+      const storageRef = ref(storage, `avatar/`+ Util.get_url_extension(file.name))
+      const uploadTask = uploadBytesResumable(storageRef, file);
+      uploadTask.on(
+        "state_changed",
+        (snapshot) => {
+            const percent = Math.round(
+                (snapshot.bytesTransferred / snapshot.totalBytes) * 100
+            );
+            // update progress
+            // setPercent(percent);
+            console.log(percent);
+            
+        },
+        (err) => console.log(err),
+        () => {
+            // download url
+            getDownloadURL(uploadTask.snapshot.ref).then((uploadUrl) => {
+                console.log("uploadUrl",uploadUrl);
+                setUserData({
+                    ...user,
+                    avatar: uploadUrl
+                }, function (user: User)  {
+                    handleSubmit(user)
+                })
+                // setLoading(false)
+
+            });
+        }
+        );
+        
+    }
+
   return (
-    <>  
+    <div className=' min-h-screen h-full relative'>  
         <Header/>
-        <main className="flex-1">
+        <main className="w-full  flex-1  pb-40">
             <div className=" w-9/12 mx-auto md:px-8 xl:px-0">
             <div className="pt-10 pb-16">
-                <div className="px-4 sm:px-6 md:px-0">
-                <h1  className="text-3xl font-extrabold text-gray-900">個人資料</h1>
+                <div className="px-4 sm:px-6 md:px-0 flex justify-between">
+                    <h1  className="text-3xl font-extrabold text-gray-900">個人資料</h1>
+                    {
+                        userData?.has_school_section == true ? 
+                            <a
+                                href={'https://www.examhero.com/appkit/teacher_dashboard?access_token='+token}
+                                className="flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+                                >
+                                {t.do('me.manage.center')}
+                            </a>
+                        : ''
+                    }
+
                 </div>
                 <div className="px-4 sm:px-6 md:px-0">
                 <div className="py-2">
@@ -139,20 +222,15 @@ export default function info() {
                             <dt className="text-sm font-medium text-gray-500">頭像</dt>
                             <dd className="mt-1 flex text-sm text-gray-900 sm:mt-0 sm:col-span-2">
                             <span className="flex-grow">
-                                <img
-                                className="h-8 w-8 rounded-full"
-                                src={userData?.avatar}
-                                alt=""
-                                />
+                                <MyZoomImage url={userData?.avatar}  className={'h-8 w-8 rounded-full'}/>
                             </span>
                             <span className="ml-4 flex-shrink-0 flex items-start space-x-4">
-                                <button
-                                type="button"
-                                
-                                className="bg-white rounded-md font-medium text-purple-600 hover:text-purple-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-purple-500"
+                                <label
+                                    className="cursor-pointer bg-white rounded-md font-medium text-indigo-600 hover:text-indigo-500 focus-within:outline-none focus-within:ring-2 focus-within:ring-offset-2 focus-within:ring-indigo-500"
                                 >
-                                Update
-                                </button>
+                                    <span>Update</span>
+                                    <input  name="file-upload" multiple type="file" className="sr-only" onChange={handleFileSelect} />
+                                </label>
                             </span>
                             </dd>
                         </div>
@@ -217,8 +295,9 @@ export default function info() {
                 </div>
             </div>
             </div>
-            <MyInfoInputModal visable={visable} cancelClick={cancelClick} confirmClick={handleScoreConfirm} value={value} type={type}/>
+            <MyInfoInputModal visable={visable} cancelClick={cancelClick} confirmClick={handleConfirm} value={value} type={type}/>
         </main>
-    </>
+        <Footer/>
+    </div>
   )
 }

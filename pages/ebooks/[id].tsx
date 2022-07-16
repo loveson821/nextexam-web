@@ -10,6 +10,7 @@ import Bar from '../components/bar';
 import Footer from '../components/footer';
 import Header from '../components/header';
 import MyModal from '../components/MyModal';
+import MyZoomImage from '../components/MyZoomImage';
 import { useServices } from '../services';
 import EbookService from '../services/ebook_services';
 
@@ -80,10 +81,7 @@ export default function detail() {
                 </div>
                 <div className='max-w-screen-lg w-full p-2  m-4 flex flex-row '>
                     <div className="w-40 rounded-lg overflow-hidden bg-gray-200 aspect-w-1 aspect-h-1 hover:opacity-75">
-                        <img
-                        src={book?.cover}
-                        className="w-full h-full object-center object-cover"
-                        />
+                        <MyZoomImage url={book?.cover}  className={'w-full h-full object-center object-cover'}/>
                     </div>
 
                     <div className='ml-4'>

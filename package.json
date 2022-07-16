@@ -23,6 +23,7 @@
     "react-canvas-draw": "^1.2.1",
     "react-dom": "18.2.0",
     "react-icons": "^4.4.0",
+    "react-medium-image-zoom": "^4.4.3",
     "react-spinners": "^0.13.3",
     "react-uuid": "^1.0.2"
   },

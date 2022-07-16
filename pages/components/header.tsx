@@ -6,14 +6,16 @@ import { User } from '../../models';
 import { Fragment } from 'react'
 import { Disclosure, Menu, Transition } from '@headlessui/react'
 import { BellIcon, MenuIcon, XIcon } from '@heroicons/react/outline'
+import { useServices } from '../services';
 
 
 
 export default function Header() {
-
+  const { t } = useServices();
   const [loggedIn, setLoggedIn] = React.useState(false);
   const [user, setUser] = React.useState<User>()
   const router = useRouter();
+  const [token, setToken] =  useState('')
   const [data, setData] = useState({
     isHome: false,
     isMock: false,
@@ -23,6 +25,8 @@ export default function Header() {
   React.useEffect(() => {
     if (localStorage.getItem('token') != null && localStorage.getItem('token') !== '') {
       setLoggedIn(true);
+      var toekn:any = localStorage.getItem('token')
+      setToken(toekn)
     }
     var _user = localStorage.getItem('user')
     if ( _user != null && _user !== '') {
@@ -115,15 +119,20 @@ export default function Header() {
                 </div>
               </div>
               <div className="absolute inset-y-0 right-0 flex items-center pr-2 sm:static sm:inset-auto sm:ml-6 sm:pr-0">
-                <button
-                  type="button"
+                <a
+                  href={
+                    loggedIn ? 
+                    'https://www.examhero.com/appkit/messages?access_token='+token
+                    : '/users/sign_in'}
                   className="bg-gray-800 p-1 rounded-full text-gray-400 hover:text-white focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-800 focus:ring-white"
                 >
                   <span className="sr-only">View notifications</span>
                   <BellIcon className="h-6 w-6" aria-hidden="true" />
-                </button>
+                </a>
 
-                {/* Profile dropdown */}
+                {
+                  loggedIn ? 
+                
                 <Menu as="div" className="ml-3 relative">
                   <div>
                     <Menu.Button className="bg-gray-800 flex text-sm rounded-full focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-800 focus:ring-white">
@@ -158,7 +167,7 @@ export default function Header() {
                       <Menu.Item>
                         {({ active }) => (
                           <a
-                            href="#"
+                            href="/users/modify_password"
                             className={classNames(active ? 'bg-gray-100' : '', 'block px-4 py-2 text-sm text-gray-700')}
                           >
                             修改密碼
@@ -178,6 +187,27 @@ export default function Header() {
                     </Menu.Items>
                   </Transition>
                 </Menu>
+                : 
+                <div>
+                  <a
+                    href={'/users/sign_in'}
+                    className={classNames(
+                      'text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium'
+                    )}
+                  >
+                    {t.do('general.sign_in')}
+                  </a>
+                  <a
+                    href={'/users/sign_up'}
+                    className={classNames(
+                      'text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium'
+                    )}
+                  >
+                    {t.do('general.sign_up')}
+                  </a>
+                </div>
+                
+              }
               </div>
             </div>
           </div>

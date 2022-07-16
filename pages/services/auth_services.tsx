@@ -22,6 +22,23 @@ export default class AuthService {
         })
     }
 
+    static signUp(user: User) {
+      return new Promise((resolve, reject) => {
+          axiosInstance
+          .post('users.json', {
+              user: user
+            }).then((res) => {
+              if (res.data.success) {
+                  resolve(res.data);
+                } else {
+                  reject(res.data);
+                }
+          }).catch((err) => {
+              reject(err.response ? err.response.data : { error: 'Something went wrong, try agin' })
+          })
+      })
+  }
+
     static save(user: User) {
       return new Promise((resolve, reject) => {
           axiosInstance
@@ -36,4 +53,36 @@ export default class AuthService {
           })
       })
   }
+
+  static getInfo() {
+    return new Promise((resolve, reject) => {
+        axiosInstance
+        .get('me.json').then((res) => {
+            if (res.data.success) {
+                resolve(res.data);
+              } else {
+                reject(res.data.error);
+              }
+        }).catch((err) => {
+            reject(err.response ? err.response.data : { error: 'Something went wrong, try agin' })
+        })
+    })
+  }
+
+  static modify_password (password: string) {
+    return new Promise((resolve, reject) => {
+      axiosInstance
+        .post('me/reset_password.json', { password: password })
+        .then((res) => {
+          if (res.data.success) {
+            resolve(res);
+          } else {
+            reject(res.data.error);
+          }
+        })
+        .catch((err) => {
+          reject(err.response ? err.response.data : { error: 'Something went wrong, try agin' })
+        });
+    });
+  };
 }

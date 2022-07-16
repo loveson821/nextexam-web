@@ -1512,6 +1512,11 @@ flatted@^3.1.0:
   resolved "https://registry.npmjs.org/flatted/-/flatted-3.2.6.tgz"
   integrity sha512-0sQoMh9s0BYsm+12Huy/rkKxVu4R1+r96YX5cG44rHV0pQ6iC3Q+mkoMFaGWObMFYQxCVT+ssG1ksneA2MI9KQ==
 
+focus-options-polyfill@1.5.1:
+  version "1.5.1"
+  resolved "https://registry.npmmirror.com/focus-options-polyfill/-/focus-options-polyfill-1.5.1.tgz#0f422580d9d1fb65651f2968b547032eb17dab3c"
+  integrity sha512-7yH20IePROHJLLbJvqqtsG420jE6DuukccapiB/WagtUpnc98r9NzHbX5rnjCDgdZqLgcqlzGjn+8l0Zb8Zf9w==
+
 follow-redirects@^1.14.9:
   version "1.15.1"
   resolved "https://registry.npmmirror.com/follow-redirects/-/follow-redirects-1.15.1.tgz"
@@ -2415,6 +2420,14 @@ react-is@^16.13.1:
   version "16.13.1"
   resolved "https://registry.npmjs.org/react-is/-/react-is-16.13.1.tgz"
   integrity sha512-24e6ynE2H+OKt4kqsOvNd8kBpV65zoxbA4BVsEOB3ARVWQki/DHzaUoC5KuON/BiccDaCCTZBuOcfZs70kR8bQ==
+
+react-medium-image-zoom@^4.4.3:
+  version "4.4.3"
+  resolved "https://registry.npmmirror.com/react-medium-image-zoom/-/react-medium-image-zoom-4.4.3.tgz#d5e3074becef7be4bfe35ebcd291eac462093bf5"
+  integrity sha512-I928Z6mEMRUup4CPa+XtASiSuFzdVb1ecztXpF7xAJddXv4XZSE4n5gleZNYCn5wEU1LQY5LiN4aNW4KgrOVIA==
+  dependencies:
+    focus-options-polyfill "1.5.1"
+    tslib "^2.4.0"
 
 react-spinners@^0.13.3:
   version "0.13.3"

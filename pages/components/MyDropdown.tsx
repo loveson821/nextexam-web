@@ -1,18 +1,9 @@
 /* This example requires Tailwind CSS v2.0+ */
-import { Fragment } from 'react'
-import { Menu, Transition } from '@headlessui/react'
+import { Menu, Transition } from '@headlessui/react';
 import {
-  ArchiveIcon,
-  ArrowCircleRightIcon,
-  ChevronDownIcon,
-  DuplicateIcon,
-  HeartIcon,
-  PencilAltIcon,
-  TrashIcon,
-  CheckCircleIcon,
-  UserAddIcon,
-} from '@heroicons/react/solid'
-import { useServices } from '../services';
+  ChevronDownIcon
+} from '@heroicons/react/solid';
+import { Fragment } from 'react';
 
 function classNames(...classes: string[]) {
   return classes.filter(Boolean).join(' ')
