@@ -56,7 +56,7 @@ export default function MyInfoInputModal(props: any) {
                 </div>
                 <div className="mt-3 text-center sm:mt-0 sm:ml-4 sm:text-left">
                   <Dialog.Title as="h3" className="text-lg leading-6 font-medium text-gray-900">
-                    修改
+                    {props.title || '編輯'}
                   </Dialog.Title>
                   <div className="mt-2">
                     <label htmlFor="email" className="block text-sm font-medium text-gray-700">
