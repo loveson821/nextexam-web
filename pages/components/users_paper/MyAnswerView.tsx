@@ -6,10 +6,19 @@ import { useServices } from '../../services';
 import MyLine from '../MyLine';
 import { MailIcon, PencilAltIcon, TrashIcon } from '@heroicons/react/outline';
 import { RadioGroup } from '@headlessui/react';
+import MyInfoInputModal from '../MyInfoInputModal';
 
 export default function MyAnswerView(props: any) {
     const { t } = useServices();
     const [num, setNum] = useState(0)
+    const [visable, setVisable] = useState(false)
+    const [value, setValue] = useState('')
+    const [data, setData] = useState({
+      title: '',
+      type: '',
+      remark: props.users_question.remark,
+      proof: props.users_question.proofread,
+    })
 
       const isAnswering = () => {
         return props.edit_mode == UsersPaperEditMode.user_edit_mode || props.edit_mode == UsersPaperEditMode.user_start_mode
@@ -322,6 +331,77 @@ export default function MyAnswerView(props: any) {
           }
         }
       }
+
+      const show_edit_error = () => {
+        return (
+          <div className="p-3">
+            <div  onClick={()=>{
+               setData({
+                ...data,
+                title: '錯什麼?',
+                type: 'errors',
+              })
+              setValue(data.remark)
+              setVisable(true)
+              }} className="cursor-pointer bg-white text-lg font-medium text-gray-900">
+                <span className=' text-red-500 underline'>
+                  {t.do('exam_all.errors')}
+                </span>
+            </div>
+            <span className='m-6 text-red-500 text-sm'>
+              {props.users_question.remark || '無'}
+            </span>
+        </div>
+        )
+      }
+
+      const show_edit_proof = () => {
+        return (
+          <div className="p-3">
+            <div  onClick={()=>{
+              setData({
+                ...data,
+                title: '查核留言',
+                type: 'proof'
+              })
+              setValue(data.proof)
+              setVisable(true)
+              }} className="cursor-pointer bg-white text-lg font-medium text-gray-900">
+                <span className=' text-red-500 underline'>
+                  {t.do('exam_all.proofread_text')}
+                </span>
+            </div>
+            <span className='m-6 text-red-500 text-sm'>
+              {props.users_question.proofread || '無'}
+            </span>
+        </div>
+        )
+      }
+
+      const onHandleError = (type: any, value: string) => {
+        setVisable(false)
+        switch (type) {
+          case 'errors':
+            setData({
+              ...data,
+              remark: value
+            })
+            props.handleErrorRemark(value)
+            break;
+          case 'proof':
+            setData({
+              ...data,
+              proof: value
+            })
+            props.handleProofRemark(value)
+          default:
+            break;
+        }
+       
+      }
+      const cancelClick = () => {
+        setVisable(false)
+      }
     return (
         <>
           <div key={props.users_question.id}>
@@ -333,6 +413,7 @@ export default function MyAnswerView(props: any) {
                   }
               </span>
             </div>
+           
           </div>
           {!props.users_question?.hasAnswer() && !props.users_question?.isMC() &&
             <div className='w-full flex py-10 justify-center items-center'>
@@ -350,7 +431,11 @@ export default function MyAnswerView(props: any) {
             </div>
           }
 
+          {isCorrecting() && show_edit_error()}
+          {isProofing() && show_edit_proof()}
+
           </div>
+          <MyInfoInputModal visable={visable} cancelClick={cancelClick} confirmClick={onHandleError} value={value} title={data.title} type={data.type}/>
         </>
     )
 }
