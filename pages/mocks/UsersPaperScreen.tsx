@@ -9,7 +9,7 @@ import Header from '../components/header'
 import { useServices } from '../services';
 import PaperService from '../services/paper_service';
 import UsersPaperService from '../services/users_paper_service';
-import _ from 'lodash';
+import _, { parseInt } from 'lodash';
 import PaperPageView from '../components/users_paper/PaperPageView';
 import { PaperPageableType, UsersPaperEditMode } from '../../utils/enums';
 import { Router, useRouter } from 'next/router';
@@ -26,7 +26,7 @@ export default function UsersPaperScreen(props: any) {
     const [paper, setPaper] = React.useState<Paper>();
     const [data, setData] = React.useState([]);
     const [num, setNum] = useState(0)
-    const [edit_mode, setEditMode] = React.useState('');
+    const [edit_mode, setEditMode] = React.useState(0);
     const pages = [
     { name: '模擬試', href: '/mocks/groups', current: true },
     { name:  paper?.description, href: '#', current: true }
@@ -65,8 +65,7 @@ export default function UsersPaperScreen(props: any) {
         // setEditMode(UsersPaperEditMode.user_edit_mode);
         if (router.query.editMode != undefined) {
             console.log(router.query.editMode);
-            
-          setEditMode(router.query.editMode+"");
+             setEditMode(parseInt(router.query.editMode+""));
         }
       };
 
@@ -77,20 +76,45 @@ export default function UsersPaperScreen(props: any) {
         return new UsersQuestion(uq);
       };
 
-    // const submit = () => {
-    //     console.log("users_paper", users_paper);
-        
-    // }
-
     const force_submit = async () => {
         if (users_paper == undefined || users_paper.id == undefined) return
-        console.log("users_paper", users_paper);
-        router.back()
-        // UsersPaperService.submit(users_paper.id).then((res) => {
-        //   router.back()
-        // }).catch((err) => {
-        //   alert(err.toString());
-        // })
+        // console.log("users_paper", users_paper);
+        // router.back()
+        switch (edit_mode) {
+            case UsersPaperEditMode.user_edit_mode:
+                UsersPaperService.submit(users_paper.id).then((res) => {
+                    alert(t.do('general.save_success'))
+                    router.back()
+                  }).catch((err) => {
+                    alert(err.toString());
+                  })
+                break;
+            case UsersPaperEditMode.teacher_edit_mode:
+                var comment = ''
+                _.forEach(users_paper.users_questions, function (uq, index) {
+                    if (uq.remark) {
+                        comment += "(Q" + (index + 1) + ") " + uq.remark + "\n"
+                    }
+                })
+                UsersPaperService.submit_correction(users_paper.id, users_paper.users_questions, comment).then((res) => {
+                    alert(t.do('general.save_success'))
+                    router.back()
+                  }).catch((err) => {
+                    alert(err.toString());
+                  })
+                break;
+            case UsersPaperEditMode.proof_mode:
+                UsersPaperService.submit_proofread(users_paper?.id,users_paper.users_questions).then((res) => {
+                    alert(t.do('general.save_success'))
+                    router.back();
+                }).catch((err) => {
+                    alert(err.toString());
+                })
+              break;
+            default:
+                break;
+        }
+       
       }
 
     const update = () => {

@@ -25,7 +25,6 @@ axiosInstance.interceptors.request.use(
 // 添加请求拦截器
 axiosInstance.interceptors.request.use(config=>{
   const { url } = config;
-  console.log("utl..",config);
   // startsWith() ---以什么开头;  这两个请求路径不需要token 
   if(!url.startsWith('users')){ 
     const token = localStorage.getItem('token');

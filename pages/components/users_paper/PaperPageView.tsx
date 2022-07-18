@@ -210,6 +210,14 @@ export default function PaperPageView(props: any) {
         UsersQuestionService.save_to_server(props.users_question);
         update_users_paper_for_local_use()
       }
+
+      const  handleProofRemark = (proofread = '') => {
+        // this.setState({ remark: remark })
+        props.users_question.proofread = proofread
+        UsersQuestionService.save_to_server(props.users_question);
+        update_users_paper_for_local_use()
+
+      }
       
      const videoTapeText = () => {
         if (props.paper_page['tape'])
@@ -366,6 +374,7 @@ export default function PaperPageView(props: any) {
                     onRemovingAnswer={onRemovingAnswer}
                     onRemovingCorrection={onRemovingCorrection}
                     handleErrorRemark={handleErrorRemark}
+                    handleProofRemark={handleProofRemark}
                     edit_mode={props.edit_mode}
                     num = { num}
 
