@@ -7,6 +7,7 @@ import MyLine from '../MyLine';
 import { MailIcon, PencilAltIcon, TrashIcon } from '@heroicons/react/outline';
 import { RadioGroup } from '@headlessui/react';
 import MyInfoInputModal from '../MyInfoInputModal';
+import CorrectingAnwerModal from '../../mocks/CorrectingAnswerModal';
 
 export default function MyAnswerView(props: any) {
     const { t } = useServices();
@@ -133,7 +134,7 @@ export default function MyAnswerView(props: any) {
           <div className='w-full flex py-10 justify-center items-center'>
 
             <RadioGroup value={mcValue} onChange={select} className="mt-2">
-              <div className="grid grid-cols-3 gap-3 sm:grid-cols-6">
+              <div className="grid grid-cols-5 gap-3 sm:grid-cols-6">
                 {memoryOptions.map((option) => (
                   <RadioGroup.Option
                     key={option}
@@ -173,7 +174,7 @@ export default function MyAnswerView(props: any) {
             </div>
             <div className='w-full flex py-10 justify-center items-center'>
             <RadioGroup value={uq.question.compare_answer} onChange={()=>{}} className="mt-2">
-              <div className="grid grid-cols-3 gap-3 sm:grid-cols-6">
+              <div className="grid grid-cols-5 gap-3 sm:grid-cols-6">
                 {memoryOptions.map((option) => (
                   <RadioGroup.Option
                     key={option}
@@ -221,7 +222,7 @@ export default function MyAnswerView(props: any) {
        */
       const correcting_image_view = (url: string, index: number) => {
         return (
-          <div className=' group bg-black' key={index}>
+          <div className=' group ' key={index}>
               <div className='flex relative justify-end '>
                 <button
                     type="button"
@@ -245,7 +246,7 @@ export default function MyAnswerView(props: any) {
                     {t.do('exam_all.rewriting')}
                   </button>
                 </div>
-                <div onClick={() => { onEditAnswer(index) }}>
+                <div className='cursor-pointer' onClick={() => { onEditAnswer(index) }}>
                   <img src={props.users_question.correction_on_index(index)} />
                 </div>
 

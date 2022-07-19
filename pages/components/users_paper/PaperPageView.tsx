@@ -9,14 +9,16 @@ import UsersQuestionService from '../../services/users_question_service';
 import MyInputModal from '../MyInputModal';
 import Router from 'next/router';
 import {
-  ref,
+  uploadString,
   uploadBytesResumable ,
-  getDownloadURL 
+  getDownloadURL, 
+  ref
 } from "firebase/storage";
 import storage from '../../../firebase.js'
 import { Util } from '../../../utils/util';
 import MyLoader from '../MyLoader';
 import Link from 'next/link';
+import CorrectingAnwerModal from '../../mocks/CorrectingAnswerModal';
 
 export default function PaperPageView(props: any) {
     const { t } = useServices();
@@ -25,7 +27,14 @@ export default function PaperPageView(props: any) {
       score: props.users_question.score
     })
     const [loading, setLoading] = useState(false);
-
+    const [showCorrAnswer, setShowCorrAnswer] = useState(false)
+    const [canvas, setCanvas] = useState({
+      color: 'red',
+      uq_id: '',
+      index: 0,
+      url: '',
+      edit_mode: UsersPaperEditMode.user_edit_mode
+    })
     
       // 點擊入去手畫圖
       const onImageClick = async (index = -1) => {
@@ -40,17 +49,26 @@ export default function PaperPageView(props: any) {
         console.log("onImageAnswer")
         const { navigation, users_question } = props;
         var url = users_question.get_image_answer_path_by_index(index)
-        Router.push({
-          pathname: '/mocks/CorrectingAnswerScreen', 
-          query:{
-            answer_index: index,
-            url: url,
-            color: 'blue',
-            // onImageFinish: async (path: string) => {
-            //   handleImage({ uq_id: props.users_question.id, image: { path: path } }, index);
-            // }
-          }
+        setCanvas({
+          color: 'blue',
+          uq_id: props.users_question.id,
+          index: index,
+          url: url,
+          edit_mode: UsersPaperEditMode.user_edit_mode 
         })
+        setShowCorrAnswer(true)
+
+        // Router.push({
+        //   pathname: '/mocks/CorrectingAnswerScreen', 
+        //   query:{
+        //     answer_index: index,
+        //     url: url,
+        //     color: 'blue',
+        //     // onImageFinish: async (path: string) => {
+        //     //   handleImage({ uq_id: props.users_question.id, image: { path: path } }, index);
+        //     // }
+        //   }
+        // })
         // navigation.push('CorrectingAnswerScreen', {
         //   users_question: props.users_question,
         //   answer_index: index,
@@ -75,18 +93,35 @@ export default function PaperPageView(props: any) {
         //     handleImage({ uq_id: props.users_question.id, image: { path: path } }, index, true);
         //   }
         // });
-        Router.push({
-          pathname: '/mocks/CorrectingAnswerScreen', 
-          query:{
-            answer_index: index,
-            url: url,
-            color: 'blue',
-            // onImageFinish: async (path: string) => {
-            //   handleImage({ uq_id: props.users_question.id, image: { path: path } }, index);
-            // }
-          }
+        setCanvas({
+          color: 'red',
+          uq_id: props.users_question.id,
+          index: index,
+          url: url,
+          edit_mode: UsersPaperEditMode.teacher_edit_mode 
         })
+        setShowCorrAnswer(true)
+        // Router.push({
+        //   pathname: '/mocks/CorrectingAnswerScreen', 
+        //   query:{
+        //     answer_index: index,
+        //     url: url,
+        //     color: 'blue',
+        //     // onImageFinish: (path: string) => {
+        //     //   return console.log("path", path);
+              
+        //     //   // return handleImage({ uq_id: props.users_question.id, image: { path: path } }, index);
+        //     // }
+        //   }
+        // })
       }
+
+    const handleCorrAnswerFinish = (canvas: any, path: string) => {
+      // console.log("canvas",canvas);
+      // console.log("path",path);
+      setShowCorrAnswer(false)
+      handleImage({ uq_id: canvas.uq_id, file: path }, canvas.index, canvas.edit_mode == UsersPaperEditMode.teacher_edit_mode);
+    }
 
      const  onTextAnswer = async (text = '') => {
         const { navigation } = props;
@@ -119,36 +154,53 @@ export default function PaperPageView(props: any) {
      
         if (data.uq_id == props.users_question.id) {
           setLoading(true)
-          const storageRef = ref(storage, `web_uploads/`+ Util.get_url_extension(data.file.name))
-          const uploadTask = uploadBytesResumable(storageRef, data.file);
-          uploadTask.on(
-            "state_changed",
-            (snapshot) => {
-                const percent = Math.round(
-                    (snapshot.bytesTransferred / snapshot.totalBytes) * 100
-                );
-                // update progress
-                // setPercent(percent);
-                console.log(percent);
-                
-            },
-            (err) => console.log(err),
-            () => {
-                // download url
-                getDownloadURL(uploadTask.snapshot.ref).then((uploadUrl) => {
-                    console.log("uploadUrl",uploadUrl);
-                    if (correcting) {
-                      props.users_question.set_image_data_to_correction_with_index(uploadUrl, index)
-                    } else {
-                      props.users_question.set_image_data_to_answer_with_index(uploadUrl, index)
-                    }
-                    UsersQuestionService.save_to_server(props.users_question);
-                    update_users_paper_for_local_use()
-                    setLoading(false)
+          const storageRef = ref(storage, `web_uploads/`+ Util.get_url_extension(data.file?.name))
+          
+          //---上傳base64格式的圖片
+          uploadString(storageRef, data.file, 'data_url').then((snapshot) => {
+            getDownloadURL(snapshot.ref).then((uploadUrl) => {
+              if (correcting) {
+                props.users_question.set_image_data_to_correction_with_index(uploadUrl, index)
+              } else {
+                props.users_question.set_image_data_to_answer_with_index(uploadUrl, index)
+              }
+              UsersQuestionService.save_to_server(props.users_question);
+              update_users_paper_for_local_use()
+              setLoading(false)
+            })
+            
+          },(err) => console.log(err),);
 
-                });
-            }
-          );
+          //---下面的方式是上傳file格式的
+          // const uploadTask = uploadBytesResumable(storageRef, data.file);
+          // uploadTask.on(
+          //   "state_changed",
+          //   (snapshot) => {
+          //       const percent = Math.round(
+          //           (snapshot.bytesTransferred / snapshot.totalBytes) * 100
+          //       );
+          //       // update progress
+          //       // setPercent(percent);
+          //       console.log(percent);
+                
+          //   },
+          //   (err) => console.log(err),
+          //   () => {
+          //       // download url
+          //       getDownloadURL(uploadTask.snapshot.ref).then((uploadUrl) => {
+          //           console.log("uploadUrl",uploadUrl);
+          //           if (correcting) {
+          //             props.users_question.set_image_data_to_correction_with_index(uploadUrl, index)
+          //           } else {
+          //             props.users_question.set_image_data_to_answer_with_index(uploadUrl, index)
+          //           }
+          //           UsersQuestionService.save_to_server(props.users_question);
+          //           update_users_paper_for_local_use()
+          //           setLoading(false)
+
+          //       });
+          //   }
+          // );
         //   this.setState({ uploading: true })
           // try {
           //   const uploadUrl = "https://oimg.m2mda.com/web_uploads/2020-08-07/6c854c2d-69bf-aec6-8988-80d2734afedf.jpg"
@@ -244,7 +296,8 @@ export default function PaperPageView(props: any) {
           reader.onload = async () => {
             console.log(reader.result);
 
-            await handleImage({ uq_id: props.users_question.id, file: file});
+            await handleImage({ uq_id: props.users_question.id, file: reader.result});
+            // await handleImage({ uq_id: props.users_question.id, file: file});
 
             // setImgsSrc((imgs) => [...imgs, reader.result]);
             e.target.value = null;//上传完图片后要清空file，下次可以继续上传
@@ -388,6 +441,8 @@ export default function PaperPageView(props: any) {
             {props.paper_page.paper_pageable_type == PaperPageableType.Question && props.edit_mode == UsersPaperEditMode.user_edit_mode && props.paper_page['kind'] != 'mc' ?
                 uploadImageView()
             :null}
+
+            <CorrectingAnwerModal visable={showCorrAnswer} cancelClick={()=>setShowCorrAnswer(false)} confirmClick={handleCorrAnswerFinish} canvas={canvas}/>
             <MyInputModal visable={visable} cancelClick={cancelClick} confirmClick={handleScoreConfirm} max_score={props.paper_page.score} score={data.score}/>
         </li>
     )

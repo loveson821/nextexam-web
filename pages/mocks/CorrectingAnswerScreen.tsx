@@ -1,4 +1,4 @@
-import React, { Component, useEffect } from "react";
+import React, { Component, useEffect, useRef, useState } from "react";
 import { render } from "react-dom";
 
 import CanvasDraw from "react-canvas-draw";
@@ -6,51 +6,51 @@ import Router, { useRouter } from "next/router";
 // import classNames from "./index.css";
 
 import html2canvas from "html2canvas";
+import { NextPage } from "next";
 
-export default class CorrectingAnswerScreen extends Component {
-  // router = useRouter()
-  state = {
-    color: "#000000",
-    width: 400,
-    height: 400,
-    brushRadius: 1,
-    lazyRadius: 2,
-    backgroundImg:
+export default function CorrectingAnswerScreen(props: any) {
+    let saveableCanvas = useRef()
+    const router = useRouter()
+    const [data] = useState({
+      color: "red",
+      width: 400,
+      height: 400,
+      brushRadius: 1,
+      lazyRadius: 2,
+      backgroundImg:
       "https://upload.wikimedia.org/wikipedia/commons/a/a1/Nepalese_Mhapuja_Mandala.jpg",
-    imgs: [
-      "https://upload.wikimedia.org/wikipedia/commons/a/a1/Nepalese_Mhapuja_Mandala.jpg",
-      "https://i.imgur.com/a0CGGVC.jpg",
-    ],
-  };
-
-  render() {
-    // const router = useRouter()
+      imgs: [
+        "https://upload.wikimedia.org/wikipedia/commons/a/a1/Nepalese_Mhapuja_Mandala.jpg",
+        "https://i.imgur.com/a0CGGVC.jpg",
+      ],
+    })
+   
     // console.log(url);
     return (
       <div id="demo">
-        <p>Try it out! Draw something, hit "Save" and then "Load".--</p>
+        <p>{router.query.url}   Try it out! Draw something, hit "Save" and then "Load".--</p>
         <div className="flex justify-between ">
           <button
             onClick={() => {
               localStorage.setItem(
                 "savedDrawing",
-                this.saveableCanvas.getSaveData()
+                saveableCanvas.getSaveData()
               );
-              console.log(this.saveableCanvas.getSaveData());
+              console.log(saveableCanvas.getSaveData());
             }}
           >
             Save
           </button>
           <button
             onClick={() => {
-              this.saveableCanvas.eraseAll();
+              saveableCanvas.eraseAll();
             }}
           >
             Erase
           </button>
           <button
             onClick={() => {
-              this.saveableCanvas.undo();
+              saveableCanvas.undo();
             }}
           >
             Undo
@@ -73,29 +73,24 @@ export default class CorrectingAnswerScreen extends Component {
         <div id="drawing-area" style={{ display: "inline-flex" }}>
           <CanvasDraw
             style={{ display: "inline-flex" }}
-            ref={(canvasDraw) => (this.saveableCanvas = canvasDraw)}
-            brushColor={this.state.color}
-            brushRadius={this.state.brushRadius}
-            lazyRadius={this.state.lazyRadius}
-            canvasWidth={this.state.width}
-            canvasHeight={this.state.height}
-            imgSrc={this.state.backgroundImg}
+            ref={(canvasDraw: any) => (saveableCanvas = canvasDraw)}
+            brushColor={data.color}
+            brushRadius={data.brushRadius}
+            lazyRadius={data.lazyRadius}
+            canvasWidth={data.width}
+            canvasHeight={data.height}
+            imgSrc={data.backgroundImg}
           />
         </div>
 
-        <p>
+        {/* <p>
           That's it for now! Take a look at the{" "}
           <a href="https://github.com/mBeierl/react-canvas-draw/tree/master/demo/src">
             source code of these examples
           </a>
           .
-        </p>
+        </p> */}
       </div>
     );
-  }
+  
 }
-
-// if (typeof window !== 'undefined') {
-//   render(<CorrectingAnswerScreen />, document.querySelector("#demo"));
-// }
-// render(<CorrectingAnswerScreen />, document.querySelector("#demo"));
