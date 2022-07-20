@@ -9,6 +9,14 @@ import MyModal from "../components/MyModal";
 import { useServices } from "../services";
 import EbookService from "../services/ebook_services";
 
+export async function getServerSideProps(context: any) {
+  // console.log(context);
+  return {
+    props: {
+    }, // will be passed to the page component as props
+  }
+}
+
   const index: NextPage = () => {
     const { t } = useServices();
     const [groups, setGroups] = useState<Group[]>([]);

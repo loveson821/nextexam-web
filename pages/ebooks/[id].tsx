@@ -1,7 +1,8 @@
 import { ChevronRightIcon } from '@heroicons/react/outline';
 import moment from 'moment';
+import { NextPage } from 'next';
 import Router, { useRouter } from 'next/router';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import Book from '../../models/Book';
 import Chapter from '../../models/Chapter';
 import Group from '../../models/Group';
@@ -14,15 +15,35 @@ import MyZoomImage from '../components/MyZoomImage';
 import { useServices } from '../services';
 import EbookService from '../services/ebook_services';
 
-export async function getServerSideProps () {
-// Pass data to the page via props
-return { props: { } }
-}
+// export async function getServerSideProps ({ query }: any) {
+//     const book_id = 20
+//     const res = await fetch(`https://www.examhero.com/api/books/${book_id}.json`, { 
+//         method: 'get', 
+//         headers: new Headers({
+//           'Authorization': 'Bearer X7msRyi7MLDJPjg59gS3', 
+//           'Content-Type': 'application/x-www-form-urlencoded'
+//         }), 
+//       })
+//     const posts = await res.json()
 
-export default function detail() {
+//     return { props: { posts: posts, id: query.id} }
+// }
+
+export async function getServerSideProps(context: any) {
+    // console.log(context);
+    return {
+      props: {
+        id: context.query.id
+      }, // will be passed to the page component as props
+    }
+  }
+
+
+//   const index: NextPage = () => {
+const detail: NextPage = (props: any) => {
     const router = useRouter();
     const {t} = useServices();
-    const [id, setId] = React.useState(parseInt(router.query.id+""));
+    const [id, setId] = React.useState(props.id);
     const [book, setBook] = useState<Book>();
     const [group, setGroup] = useState<Group>();
     const [visable, setVisable] = useState(false)
@@ -32,7 +53,7 @@ export default function detail() {
         { name:  router.query.book_name, href: '#', current: true }
       ]
 
-    React.useEffect(() => {
+    useEffect(() => {
         loadData();
       }, []);
 
@@ -49,18 +70,20 @@ export default function detail() {
         })
     };
     const sectionClick = (section: Section) => {
-        if (group != null
-            && (group.vpass != null
-                && group.vpass.invalid_date != null
-                && moment(group.vpass.invalid_date).isAfter(moment().format("YYYY-MM-DD")))
-        ){
-            return ;
+        // if (group != null
+        //     && (group.vpass != null
+        //         && group.vpass.invalid_date != null
+        //         && moment(group.vpass.invalid_date).isAfter(moment().format("YYYY-MM-DD")))
+        // ){
+        //     return ;
             
-        }
+        // }
 
         if( section.premium ) {
             setVisable(true)
-            setDescription("請下載【考試英雄】App進行訂閱~")
+            setDescription("請下載【考試英雄】App進行訂閱和閲讀~")
+        }else{
+            window.open(section.pdf_url+"")
         }
     }
 
@@ -124,3 +147,4 @@ export default function detail() {
         </div>
     )
 }
+export default detail
