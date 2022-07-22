@@ -5,6 +5,9 @@ import Group from "../../models/Group";
 import Bar from "../components/bar";
 import { useServices } from "../services";
 import EbookService from "../services/ebook_services";
+import useSWR from "swr";
+import Loading from "../components/Loading";
+import MyModal from "../components/MyModal";
 
 export async function getServerSideProps(context: any) {
   // console.log(context);
@@ -22,29 +25,39 @@ export async function getServerSideProps(context: any) {
     const pages = [
       { name: '電子書', href: '#', current: true }
     ]
-    
+
+    const { data, error } = useSWR(`me/groups_v2.json`,() => EbookService.groups_v2())
     React.useEffect(() => {
-        loadData();
-      }, []);
-      const loadData = () => {
-        EbookService.groups_v2().then((docs: any) => {
-            console.log("docs: ", docs);
-            let arr: any = []
-            if( docs ){
-              docs.map((doc: any)  => {
-                doc?.groups?.map((group: any)  => {
-                  arr.push(group)
-                })
-                
-              })
-              
-            }
-              setGroups(arr)
+        if( data ){
+          let arr: any = []
+          data.map((doc: any)  => {
+            doc?.groups?.map((group: any)  => {
+              arr.push(group)
+            })
             
-        }).catch((error) => {
-            console.error(error);
-        })
-    }
+          })
+          setGroups(arr)
+        }
+      }, [data]);
+    //   const loadData = () => {
+    //     EbookService.groups_v2().then((docs: any) => {
+    //         console.log("docs: ", docs);
+    //         let arr: any = []
+    //         if( docs ){
+    //           docs.map((doc: any)  => {
+    //             doc?.groups?.map((group: any)  => {
+    //               arr.push(group)
+    //             })
+                
+    //           })
+              
+    //         }
+    //           setGroups(arr)
+            
+    //     }).catch((error) => {
+    //         console.error(error);
+    //     })
+    // }
 
     const subscriptionView = (group: Group) => {
       group = new Group(group)
@@ -111,6 +124,7 @@ export async function getServerSideProps(context: any) {
             ))}
             </ul>
       </div>
+      <MyModal visable={visable} cancelClick={cancelClick} confirmClick={confirmClick} description={description} />
       </>
     )
   }

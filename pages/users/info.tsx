@@ -2,7 +2,7 @@ import {
     getDownloadURL, ref,
     uploadBytesResumable
 } from "firebase/storage"
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import 'react-medium-image-zoom/dist/styles.css'
 import storage from '../../firebase.js'
 import { User } from '../../models'
@@ -13,6 +13,8 @@ import MyInfoInputModal from '../components/MyInfoInputModal'
 import MyZoomImage from '../components/MyZoomImage'
 import { useServices } from '../services'
 import AuthService from '../services/auth_services'
+import Loading from "../components/Loading";
+import useSWR from "swr";
 
 export default function info() {
     const { t} = useServices();
@@ -41,15 +43,25 @@ export default function info() {
             var toekn:any = localStorage.getItem('token')
             setToken(toekn)
         }
-        loadData()
+        // loadData()
     },[]);
 
-    const loadData = () => {
-        AuthService.getInfo().then((data: any) => {
+    const { data, error } = useSWR(`me.json`,() => AuthService.getInfo())
+
+    useEffect(() => {
+        // loadData();
+        if( data ){
             setUserData(data.doc)
             localStorage.setItem('user', JSON.stringify(data.doc))
-        })
-    }
+        }
+      }, [data]);
+      
+    // const loadData = () => {
+    //     AuthService.getInfo().then((data: any) => {
+    //         setUserData(data.doc)
+    //         localStorage.setItem('user', JSON.stringify(data.doc))
+    //     })
+    // }
 
     const handleSubmit = async (user: User) => {
         // console.log(userData);

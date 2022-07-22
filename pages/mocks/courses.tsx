@@ -6,7 +6,8 @@ import Course from "../../models/Course";
 import Curriculum from "../../models/Curriculum";
 import Bar from "../components/bar";
 import MocksService from "../services/mocks_services";
-
+import useSWR from "swr";
+import Loading from "../components/Loading";
 
 
 export async function getServerSideProps () {
@@ -16,28 +17,14 @@ export async function getServerSideProps () {
 
   const courses: NextPage = () => {
     const router = useRouter();
-    const [courses, setCourses] = useState<Course[]>([]);
     const [group_id] = useState( parseInt( router.query.group_id+""))
     const pages = [
         { name: '模擬試', href: '/mocks/groups', current: true },
         { name:  router.query.group_name, href: '#', current: true },
         { name:  "選擇科目", href: '#', current: true }
       ]
+    const { data: courses, error } = useSWR('courses/index_v'+group_id,() => MocksService.courses(group_id))
 
-    React.useEffect(() => {
-        loadData();
-      }, []);
-      const loadData = () => {
-        MocksService.courses(group_id).then((docs: any) => {
-            console.log("docs: ", docs);
-
-            if( docs )
-                setCourses(docs)
-            
-        }).catch((error) => {
-            console.error(error);
-        })
-    }
     const handleClick = (course_id?: number, curriculum?: Curriculum) => {
         router.push({
             pathname: '/mocks', 
@@ -49,6 +36,9 @@ export async function getServerSideProps () {
                 group_name: router.query.group_name
             }})
     }
+    // if( !courses ){
+    //     return <Loading/>
+    //   }
     return (
       <>   
             <div className=" max-w-screen-lg w-full">

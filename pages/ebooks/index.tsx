@@ -5,33 +5,37 @@ import Group from '../../models/Group';
 import Bar from '../components/bar';
 import { useServices } from '../services';
 import EbookService from '../services/ebook_services';
-
+import useSWR from "swr";
+import Loading from "../components/Loading";
 
 export default function index() {
     const { t } = useServices();
     const [group, setGroup] = useState<Group>();
     const router = useRouter();
-    const [data, setData] = useState([]);
+    // const [data, setData] = useState([]);
     const [group_id, setId] = React.useState(parseInt(router.query.group_id+""));
     const pages = [
       { name: '電子書', href: '/ebooks/groups', current: true },
       { name:  router.query.group_name, href: '#', current: true }
     ]
+
+    const { data, error } = useSWR(`books_${group_id}.json`,() => EbookService.list(group_id))
+
     React.useEffect(() => {
-        loadData();
+        // loadData();
       }, []);
 
-    const loadData = () => {
-        EbookService.list(group_id).then((docs: any) => {
-            if (docs) {
-                console.log(docs);
-                setData(docs)
-            }
-        }).catch((error) => {
-            console.error(error);
-        }).finally(() => {
-        })
-    };
+    // const loadData = () => {
+    //     EbookService.list(group_id).then((docs: any) => {
+    //         if (docs) {
+    //             console.log(docs);
+    //             setData(docs)
+    //         }
+    //     }).catch((error) => {
+    //         console.error(error);
+    //     }).finally(() => {
+    //     })
+    // };
 
   const detailClick = (book:Book) => {
     router.push({ pathname:'/ebooks/'+book.id, query: {

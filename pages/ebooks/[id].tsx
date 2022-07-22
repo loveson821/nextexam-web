@@ -10,6 +10,9 @@ import Bar from '../components/bar';
 import MyZoomImage from '../components/MyZoomImage';
 import { useServices } from '../services';
 import EbookService from '../services/ebook_services';
+import useSWR from "swr";
+import Loading from "../components/Loading";
+import MyModal from '../components/MyModal';
 
 // export async function getServerSideProps ({ query }: any) {
 //     const book_id = 20
@@ -49,9 +52,15 @@ const detail: NextPage = (props: any) => {
         { name:  router.query.book_name, href: '#', current: true }
       ]
 
+    const { data, error } = useSWR(`books/${id}.json`,() => EbookService.detail(id))
+
     useEffect(() => {
-        loadData();
-      }, []);
+        // loadData();
+        if( data ){
+            setBook(data)
+            setGroup(data.group)
+        }
+      }, [data]);
 
     const loadData = () => {
         EbookService.detail(id).then((doc: any) => {
@@ -133,6 +142,7 @@ const detail: NextPage = (props: any) => {
                     </div>
                 ))}
             </nav>
+            <MyModal visable={visable} cancelClick={cancelClick} confirmClick={confirmClick} description={description} />
         </>
     )
 }

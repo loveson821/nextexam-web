@@ -172,7 +172,7 @@ const sign_up: NextPage = () => {
                  <button
                    type="submit"
                    onClick={submit}
-                   className="w-full flex justify-center py-2 px-4 border  rounded-md shadow-sm text-sm font-medium text-black bg-white hover:bg-white"
+                   className="w-full flex justify-center py-2 px-4 border  rounded-md shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700"
                  >
                    {t.do('general.confirm')}
                  </button>

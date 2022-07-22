@@ -8,6 +8,9 @@ import { ExamPaper } from '../components/ExamPaper';
 import { useServices } from '../services';
 import MocksService from '../services/mocks_services';
 import UsersPaperService from '../services/users_paper_service';
+import useSWR from "swr";
+import Loading from "../components/Loading";
+import MyModal from '../components/MyModal';
 
 export async function getServerSideProps () {
   // Pass data to the page via props
@@ -33,40 +36,60 @@ const mocks: NextPage = () => {
       { name:  router.query.curriculum_name, href: '#', current: true }
     ]
 
+    const { data, error } = useSWR(`curriculums/${curriculum_id}/last_mock`,() => MocksService.getLastMockDetail(curriculum_id,course_id))
+    const { data: _data, error: _error } = useSWR(`courses/${course_id}/assignments.json`,() => MocksService.course_assignments(course_id,0, 100))
+
     React.useEffect(() => {
-        loadData();
-      }, []);
+        if( data ){
+          setLastMock(new LastMock(data))
+        }
+      }, [data]);
+
+    React.useEffect(() => {
+      if( _data ){
+        // console.log(_data);
+        var arrs: any = []
+        _data.docs.map((doc: any) => {
+            doc.assignments.map((assignment: any) => {
+              arrs.push(assignment)
+            })
+          })
+        setAssignments(arrs)
+        setRole(_data.role)
+        set_published_papers_can_do_count(_data.published_papers_can_do_count)
+      }
+    }, [_data]);
 
     const loadData = () => {
-        MocksService.getLastMockDetail(curriculum_id,course_id).then((doc: any) => {
-            if (doc) {
-                setLastMock(new LastMock(doc))
-            }
-            console.log(doc);
+        // MocksService.getLastMockDetail(curriculum_id,course_id).then((doc: any) => {
+        //     if (doc) {
+        //         setLastMock(new LastMock(doc))
+        //     }
+        //     console.log(doc);
             
-        }).catch((error) => {
-            console.error(error);
-        }).finally(() => {
-        })
+        // }).catch((error) => {
+        //     console.error(error);
+        // }).finally(() => {
+        // })
 
-        MocksService.course_assignments(course_id,0, 100).then((data: any) => {
-            if (data.docs) {
-                console.log(data);
-                var arrs: any = []
-                data.docs.map((doc: any) => {
-                    doc.assignments.map((assignment: any) => {
-                      arrs.push(assignment)
-                    })
-                  })
-                setAssignments(arrs)
+        // MocksService.course_assignments(course_id,0, 100).then((data: any) => {
+        //     if (data.docs) {
+        //         console.log(data);
+        //         var arrs: any = []
+        //         data.docs.map((doc: any) => {
+        //             doc.assignments.map((assignment: any) => {
+        //               arrs.push(assignment)
+        //             })
+        //           })
+        //         setAssignments(arrs)
                 
-            }
-            setRole(data.role)
-            set_published_papers_can_do_count(data.published_papers_can_do_count)
-        }).catch((error) => {
-            console.error(error);
-        }).finally(() => {
-        })
+        //     }
+        //     setRole(data.role)
+        //     set_published_papers_can_do_count(data.published_papers_can_do_count)
+        // }).catch((error) => {
+        //     console.error(error);
+        // }).finally(() => {
+        // })
     };
 
     const enrollButtonClick = () => {
@@ -126,11 +149,12 @@ const mocks: NextPage = () => {
       }
 
       const open_report_page = () => {
-        Router.push("https://www.examhero.com/"+ "/embed/me/transcript?course=" + course_id + "&access_token=" + localStorage.getItem('token'))
+        window.open("https://www.examhero.com/"+ "/embed/me/transcript?course=" + course_id + "&access_token=" + localStorage.getItem('token'))
+        // Router.push("https://www.examhero.com/"+ "/embed/me/transcript?course=" + course_id + "&access_token=" + localStorage.getItem('token'))
       }
       
       const open_enroll_page = (lastMock: any) => {
-        Router.push("https://www.examhero.com/appkit/papers/" + lastMock.id + "/enroll_info?access_token=" + localStorage.getItem('token'))
+        window.open("https://www.examhero.com/appkit/papers/" + lastMock.id + "/enroll_info?access_token=" + localStorage.getItem('token'))
       }
       /**
        * 開始做卷
@@ -189,7 +213,9 @@ const mocks: NextPage = () => {
           }
         
       }
-
+      // if( !lastMock ){
+      //   return <Loading/>
+      // }
   return (
       <>
       <div className=" max-w-screen-lg w-full">
@@ -248,6 +274,7 @@ const mocks: NextPage = () => {
                 ))
             }
         </div>
+        <MyModal visable={visable} cancelClick={cancelClick} confirmClick={confirmClick} description={description} />
   </>
   )
 }
