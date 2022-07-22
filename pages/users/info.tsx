@@ -169,9 +169,7 @@ export default function info() {
     }
 
   return (
-    <div className=' min-h-screen h-full relative'>  
-        <Header/>
-        <main className="w-full  flex-1  pb-40">
+    <>  
             <div className=" w-9/12 mx-auto md:px-8 xl:px-0">
             <div className="pt-10 pb-16">
                 <div className="px-4 sm:px-6 md:px-0 flex justify-between">
@@ -296,8 +294,7 @@ export default function info() {
             </div>
             </div>
             <MyInfoInputModal visable={visable} cancelClick={cancelClick} confirmClick={handleConfirm} value={value} type={type}/>
-        </main>
-        <Footer/>
-    </div>
+        </>
+
   )
 }

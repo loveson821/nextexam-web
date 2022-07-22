@@ -88,9 +88,8 @@ const sign_up: NextPage = () => {
           setVisable(false)
       }
   return (
-    <div className=' min-h-screen h-full relative'>
-    <Header/>
-     <div className="min-h-full flex flex-col justify-center py-12 pb-40 sm:px-6 lg:px-8">
+    <>
+     <div className="min-h-full flex flex-col justify-center py-12 sm:px-6 lg:px-8">
          
          <div className="sm:mx-auto sm:w-full sm:max-w-md">
            <img
@@ -195,8 +194,7 @@ const sign_up: NextPage = () => {
          </div>
        </div>
        <MyModal visable={visable} cancelClick={cancelClick} confirmClick={confirmClick} description={description}/>
-       <Footer/>
-    </div>
+    </>
    
   )
 }

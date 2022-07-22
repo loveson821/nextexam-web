@@ -30,10 +30,7 @@ const pages = [
         })
     }
     return (
-      <div className=' min-h-screen h-full relative'>
-      <Header/>
-      <div className='w-full pb-40'>
-    <div className='flex flex-col w-full pt-2 justify-center items-center'>
+      <>
       <div className=" max-w-screen-lg w-full">
       <Bar pages={pages}/>
         <ul role="list" className="mt-2 grid grid-cols-1 gap-6 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
@@ -62,10 +59,7 @@ const pages = [
             ))}
             </ul>
       </div>
-      </div>
-    </div>
-    <Footer/>
-    </div>
+      </>
     )
   }
   export default index

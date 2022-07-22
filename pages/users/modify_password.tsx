@@ -120,9 +120,7 @@ export default function ModifyPassword() {
 
   return (
 
-    <div className=' min-h-screen h-full relative'>  
-    <Header/>
-    <main className="w-full  flex-1  pb-40">
+    <>  
         <div className=" w-9/12 mx-auto md:px-8 xl:px-0">
 
           <div className="flex flex-col w-full pt-2 justify-center items-center">
@@ -171,9 +169,7 @@ export default function ModifyPassword() {
           </div>
         </div>
         </div>
-            <MyModal visable={visable} cancelClick={cancelClick} confirmClick={confirmClick} description={description} />
-        </main>
-      <Footer/>
-    </div>
+        <MyModal visable={visable} cancelClick={cancelClick} confirmClick={confirmClick} description={description} />
+    </>
   );
 };

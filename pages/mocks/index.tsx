@@ -79,35 +79,42 @@ const mocks: NextPage = () => {
           showTip(t.do('mocks.start_tip'))
           return;
         }
-        if (lastMock.isNone()) {
-          if (lastMock.canEnrolled()) {
-              Router.push("https://www.examhero.com/appkit/papers/" + lastMock.id + "/enroll_info?access_token=" + localStorage.getItem('token'))
-          } else if (!lastMock.canEnrolled()) {
-            showTip(t.do('mocks.enrolled_tip'))
-            return;
-          } else if (lastMock.enrolledNotBeing()) {
-            showTip(t.do('mocks.start_tip'))
-          } else if (lastMock.isFinish()) {
-            showTip(t.do('mocks.enrollment_period'))
-          } else {
-            setIsTodo(true)
-            showTip(t.do('mocks.read'))
-          }
-        } else if (lastMock?.isDoing() && lastMock?.isFinish()) {
-          showTip(t.do('mocks.has_end'))
-        } else if (lastMock && lastMock.id && lastMock?.isDoing()) {
-            Router.push({pathname: '/mocks/UsersPaperScreen', query: {
-                paper_id: lastMock?.id,
-                user_paper_id: lastMock?.users_paper_id,
-                editMode: UsersPaperEditMode.user_edit_mode
-            }})
-        } else if (lastMock?.isDone()) {
-          Router.push("https://www.examhero.com/"+ "/embed/me/transcript?course=" + course_id + "&access_token=" + localStorage.getItem('token'))
 
-        } else {
-          Router.push("https://www.examhero.com/"+ "/embed/me/transcript?course=" + course_id+ "&access_token=" + localStorage.getItem('token'))
+         // 如果已經做卷了
+        if (lastMock.users_paper_id != undefined && !lastMock.isNone()) {
+          if (lastMock.status == "correcting" || lastMock.status == "done" || lastMock.status == "submited" || lastMock.status == "proofreading" || lastMock.status == "wait_proofread") {
+            // 跳去睇報告
+            open_report_page()
+          } else {
+            // 繼續做卷
+            start_do_paper()
+          }
+
+          return
         }
-    
+
+         // 可以報名，又未報名，彈出 website
+        if (lastMock.canEnroll() && !lastMock.isEnrolled()) {
+          open_enroll_page(lastMock)
+          return
+        }
+
+        // 未可以開始
+        if (!lastMock.canStart()) {
+          showTip(t.do('mocks.start_tip'))
+          return
+        }
+
+        // 未報名，已經開始
+        if (!lastMock.canEnroll() && !lastMock.isEnrolled()) {
+          showTip(t.do('mocks.enrolled_tip'))
+          return
+        }
+
+        // 做卷前提示，檢查有冇報名卷，開始做卷
+        setIsTodo(true)
+        showTip(t.do('mocks.read'))
+  
       }
       const listButtonClick = () => {
         Router.push({
@@ -123,12 +130,32 @@ const mocks: NextPage = () => {
         })
       }
 
+      const open_report_page = () => {
+        Router.push("https://www.examhero.com/"+ "/embed/me/transcript?course=" + course_id + "&access_token=" + localStorage.getItem('token'))
+      }
       
+      const open_enroll_page = (lastMock: any) => {
+        Router.push("https://www.examhero.com/appkit/papers/" + lastMock.id + "/enroll_info?access_token=" + localStorage.getItem('token'))
+      }
       /**
        * 開始做卷
        */
-      const startTodoData = () => {
+      const start_do_paper = () => {
         if (lastMock && lastMock.id) {
+
+          if (lastMock.isDoing() && lastMock.users_paper_id != undefined) {
+            Router.push({
+              pathname: '/mocks/UsersPaperScreen', 
+              query: { 
+                paper_id: lastMock.id,
+                user_paper_id: lastMock.users_paper_id,
+                editMode: UsersPaperEditMode.user_edit_mode,
+              }
+            })
+    
+            return
+          }
+
           UsersPaperService.start_edit_paper(lastMock.id).then((data: any) => {
             if (data.doc) {
               Router.push({
@@ -163,16 +190,13 @@ const mocks: NextPage = () => {
           setVisable(false)
           if( isTodo ){
             setIsTodo(false)
-            startTodoData()
+            start_do_paper()
           }
         
       }
 
   return (
-   <div className=' min-h-screen h-full relative'>
-      <Header/>
-      <div className='w-full pb-40'>
-    <div className='flex flex-col w-full pt-2 justify-center items-center'>
+      <>
       <div className=" max-w-screen-lg w-full">
         <Bar pages={pages}/>
       </div>
@@ -229,12 +253,7 @@ const mocks: NextPage = () => {
                 ))
             }
         </div>
-
-    </div>
-    </div>
-    <MyModal visable={visable} cancelClick={cancelClick} confirmClick={confirmClick} description={description}/>
-    <Footer/>
-    </div>
+  </>
   )
 }
 

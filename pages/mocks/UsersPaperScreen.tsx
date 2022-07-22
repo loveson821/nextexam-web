@@ -123,62 +123,56 @@ export default function UsersPaperScreen(props: any) {
         
     }
     return (
-        <div className=' min-h-screen h-full relative'>
-            <Header/>
-            <div className='w-full pb-40'>
-                <div className='flex flex-col w-full pt-2 justify-center items-center'>
-                    <div className="max-w-screen-lg w-full ">
-                        <Bar pages={pages} />
-                    </div>
-                    <div className="max-w-screen-lg w-full flex sm:rounded-md">
-                        <ul role="list" className=" max-w-3xl space-y-6">
-                            {paper?.paper_pages.map((item:any, index) => (
-                                <PaperPageView 
-                                    key={index}
-                                    mIndex={item.paper_pageable_type == PaperPageableType.MediaPage? m++ : m}
-                                    qIndex={item.paper_pageable_type == PaperPageableType.Question? q++ : q}
-                                    paper_page={item} 
-                                    users_paper={users_paper}
-                                    users_question={users_question_for_paper_page(users_paper, item)}
-                                    edit_mode={edit_mode}
-                                    update={update}
-                                    />
-                            ))}
-                            
-                        </ul>
+        <>
+            <div className="max-w-screen-lg w-full ">
+                <Bar pages={pages} />
+            </div>
+            <div className="max-w-screen-lg w-full flex sm:rounded-md">
+                <ul role="list" className=" max-w-3xl space-y-6">
+                    {paper?.paper_pages.map((item:any, index) => (
+                        <PaperPageView 
+                            key={index}
+                            mIndex={item.paper_pageable_type == PaperPageableType.MediaPage? m++ : m}
+                            qIndex={item.paper_pageable_type == PaperPageableType.Question? q++ : q}
+                            paper_page={item} 
+                            users_paper={users_paper}
+                            users_question={users_question_for_paper_page(users_paper, item)}
+                            edit_mode={edit_mode}
+                            update={update}
+                            />
+                    ))}
+                    
+                </ul>
 
-                        <div className='hidden sm:block ml-4 z-10 max-h-screen overflow:scroll'>
+                <div className='hidden sm:block ml-4 z-10 max-h-screen overflow:scroll'>
+                    
+                    <div className="flex flex-col m-0 fixed  bg-white shadow px-4 py-5 sm:px-6   justify-between">
+                        <div className='grid sm:grid-cols-2 lg:grid-cols-3 gap-2'>
                             
-                            <div className="flex flex-col m-0 fixed  bg-white shadow px-4 py-5 sm:px-6   justify-between">
-                                <div className='grid sm:grid-cols-2 lg:grid-cols-3 gap-2'>
-                                    
-                                    {users_paper?.users_questions?.map((item:UsersQuestion, index) => (
-                                        <span
-                                            key={index}
-                                            className={item.hasAnswer() ? 
-                                                'inline-flex items-center justify-center  h-10 w-10 m-1  border border-transparent rounded-full shadow-sm text-white bg-green-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500'
-                                                : 'inline-flex items-center justify-center  h-10 w-10 m-1  border border-transparent rounded-full shadow-sm text-white bg-gray-500  hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500'}
-                                            >
-                                            <a href={'#paper_'+item.question?.id} className='text-sm' aria-hidden="true" >{item.question?.paper_pageable_type == 'MediaPage' ? 'M'+mm++ : 'Q'+qq++ }</a>
-                                        </span>
-                                    ))}
-                                </div>
-                            </div>
+                            {users_paper?.users_questions?.map((item:UsersQuestion, index) => (
+                                <span
+                                    key={index}
+                                    className={item.hasAnswer() ? 
+                                        'inline-flex items-center justify-center  h-10 w-10 m-1  border border-transparent rounded-full shadow-sm text-white bg-green-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500'
+                                        : 'inline-flex items-center justify-center  h-10 w-10 m-1  border border-transparent rounded-full shadow-sm text-white bg-gray-500  hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500'}
+                                    >
+                                    <a href={'#paper_'+item.question?.id} className='text-sm' aria-hidden="true" >{item.question?.paper_pageable_type == 'MediaPage' ? 'M'+mm++ : 'Q'+qq++ }</a>
+                                </span>
+                            ))}
                         </div>
                     </div>
-                    <div className="max-w-screen-lg flex sm:rounded-md m-4 justify-center">
-                        <button
-                            type="button"
-                            onClick={force_submit}
-                            className="inline-flex items-center px-4 py-2 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
-                            >
-                            {t.do('general.submit')}
-                        </button>
-                    </div>
-                   
                 </div>
             </div>
-            <Footer/>
-        </div>
+            <div className="max-w-screen-lg flex sm:rounded-md m-4 justify-center">
+                <button
+                    type="button"
+                    onClick={force_submit}
+                    className="inline-flex items-center px-4 py-2 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+                    >
+                    {t.do('general.submit')}
+                </button>
+            </div>
+            
+        </>
     )
 }

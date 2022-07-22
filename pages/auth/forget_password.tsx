@@ -51,7 +51,6 @@ export default function ForgetPassword  () {
 
   return (
     <>
-    <Header/>
     <div className="min-h-full flex flex-col justify-center py-12 sm:px-6 lg:px-8">
         
         <div className="sm:mx-auto sm:w-full sm:max-w-md">
@@ -101,7 +100,6 @@ export default function ForgetPassword  () {
         </div>
       </div>
       <MyModal visable={visable} cancelClick={cancelClick} confirmClick={confirmClick} description={description}/>
-      <Footer/>
    </>
   );
 };

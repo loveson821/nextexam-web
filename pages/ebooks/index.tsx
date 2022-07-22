@@ -43,10 +43,7 @@ export default function index() {
   }
 
   return (
-    <div className=' min-h-screen h-full relative'>
-    <Header/>
-    <div className='w-full pb-40'>
-    <div className='flex flex-col w-full pt-2 justify-center items-center'>
+    <>
         <div className='max-w-screen-lg w-full'>
           <Bar pages={pages}/>
         </div>
@@ -69,9 +66,6 @@ export default function index() {
             </div>
           ))}
         </div>
-      </div>
-    </div>
-    <Footer/>
-    </div>
+      </>
   )
 }

@@ -388,53 +388,45 @@ export default function WaitingCorrection() {
         )
     }
   return (
-    <div className=' min-h-screen h-full relative'>
-        <Header/>
-        
-        <div className='w-full pb-40'>
-            <div className='flex flex-col w-full pt-2 justify-center items-center'>
-            <div className="max-w-screen-lg w-full ">
-                <Bar pages={pages}/>
-            </div>
-            <div className="max-w-screen-lg w-full bg-white shadow sm:rounded-md">
-                    {
-                        i_correcting?.length > 0 ? 
-                        <div className='p-4  flex flex-shrink-0 flex-row justify-between items-center  mt-2 mb-2 bg-slate-500'>
-                            <p className=' text-white text-center'>{t.do('exam_status.correctioning_exams')}</p>
-                        </div> 
-                        : null
-                    }
-                      
-                    <ul role="list" className="divide-y divide-gray-200">
-                        {i_correcting?.map((item:any, index) => (
-                            _renderItem(item, index)
-                        ))}
-                    </ul>
-                </div>
-
-                <div className="max-w-screen-lg w-full bg-white shadow sm:rounded-md">
-                    <div className='p-4  flex flex-shrink-0 flex-row justify-between items-center  mt-2 mb-2 bg-slate-500'>
-                        <p className=' text-white text-center'>{t.do('exam_status.all_exams')}</p>
-                        <div className=''>
-                            <Dropdown onSwitch={loadData}/>
-                        </div>
-                        
-                    </div>   
-                    <ul role="list" className="divide-y divide-gray-200">
-                        {others?.map((item:any, index) => (
-                            _renderItem(item,index)
-                        ))}
-                    </ul>
-                </div>
-                <LoadMore
-                    loadMoreData={loadMoreData}
-                    loading={loading}
-                    nodata={nodata}
-                    />
-            </div>
+    <>
+        <div className="max-w-screen-lg w-full ">
+            <Bar pages={pages}/>
         </div>
-        <MyModal visable={visable} cancelClick={cancelClick} confirmClick={confirmClick} description={description}/>
-        <Footer/>
-    </div>
+        <div className="max-w-screen-lg w-full bg-white shadow sm:rounded-md">
+            {
+                i_correcting?.length > 0 ? 
+                <div className='p-4  flex flex-shrink-0 flex-row justify-between items-center  mt-2 mb-2 bg-slate-500'>
+                    <p className=' text-white text-center'>{t.do('exam_status.correctioning_exams')}</p>
+                </div> 
+                : null
+            }
+                
+            <ul role="list" className="divide-y divide-gray-200">
+                {i_correcting?.map((item:any, index) => (
+                    _renderItem(item, index)
+                ))}
+            </ul>
+        </div>
+
+        <div className="max-w-screen-lg w-full bg-white shadow sm:rounded-md">
+            <div className='p-4  flex flex-shrink-0 flex-row justify-between items-center  mt-2 mb-2 bg-slate-500'>
+                <p className=' text-white text-center'>{t.do('exam_status.all_exams')}</p>
+                <div className=''>
+                    <Dropdown onSwitch={loadData}/>
+                </div>
+                
+            </div>   
+            <ul role="list" className="divide-y divide-gray-200">
+                {others?.map((item:any, index) => (
+                    _renderItem(item,index)
+                ))}
+            </ul>
+        </div>
+        <LoadMore
+            loadMoreData={loadMoreData}
+            loading={loading}
+            nodata={nodata}
+            />
+    </>
   )
 }

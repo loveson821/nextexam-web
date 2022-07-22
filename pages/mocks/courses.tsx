@@ -54,10 +54,7 @@ export async function getServerSideProps () {
             }})
     }
     return (
-      <div className=' min-h-screen h-full relative'>
-      <Header/>
-      <div className='w-full pb-40'>
-        <div className='flex flex-col w-full pt-2 justify-center items-center'>    
+      <>   
             <div className=" max-w-screen-lg w-full">
                 <Bar pages={pages}/>
                 <nav className="mt-2 max-w-screen-lg w-full h-full border rounded-sm overflow-y-auto" aria-label="Directory">
@@ -85,10 +82,7 @@ export async function getServerSideProps () {
                     ))}
                 </nav>
             </div>
-        </div>
-        </div>
-        <Footer/>
-    </div>
+        </>
     )
   }
   export default courses

@@ -73,8 +73,16 @@ export default class LastMock extends JSModel {
    * 
    * @returns 可以報名
    */
-  canEnrolled() {
+  canEnroll() {
     return !this.enrolled && this.enrollment_period
+  }
+
+  isEnrolled() {
+    return this.enrolled || false
+  }
+
+  canStart() {
+    return this.enrolled && moment(this.can_start_at).isBefore(moment().format("YYYY-MM-DD HH:mm")) && !this.isFinish()
   }
 
   /**
@@ -175,12 +183,30 @@ export default class LastMock extends JSModel {
         showText = t.do('mocks.report')
         break;
       case 'none':
-        if (!this.enrolled && this.enrollment_period) {
-          showText = t.do('mocks.enrolled')
-        } else if (!this.enrolled && !this.enrollment_period) {
-          showText =  t.do('mocks.enrollment_period')
+        if (this.canEnroll()) {
+          if (this.isEnrolled()) {
+            if (!this.canStart()) {
+              if (this.isFinish()) {
+                showText = t.do('mocks.has_end')
+              } else {
+                showText = t.do('mocks.wait_start')
+              }
+            } else {
+              showText = t.do('mocks.start_do')
+            }
+          }
         } else {
-          showText = t.do('mocks.wait_start')
+          // 過左報名時間
+          if (!this.isEnrolled()) {
+            // 又未報名
+            showText = t.do('mocks.enrollment_period')
+          } else {
+            if (!this.canStart()) {
+              showText = t.do('mocks.wait_start')
+            } else {
+              showText = t.do('mocks.start_do')
+            }
+          }
         }
         break;
       default:
