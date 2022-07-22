@@ -1,18 +1,16 @@
+import _, { parseInt } from 'lodash';
+import { useRouter } from 'next/router';
 import React, { useState } from 'react';
 import { UsersQuestion } from '../../models';
 import Paper from '../../models/Paper';
 import PaperPage from '../../models/PaperPage';
 import UsersPaper from '../../models/UsersPaper';
+import { PaperPageableType, UsersPaperEditMode } from '../../utils/enums';
 import Bar from '../components/bar';
-import Footer from '../components/footer'
-import Header from '../components/header'
+import PaperPageView from '../components/users_paper/PaperPageView';
 import { useServices } from '../services';
 import PaperService from '../services/paper_service';
 import UsersPaperService from '../services/users_paper_service';
-import _, { parseInt } from 'lodash';
-import PaperPageView from '../components/users_paper/PaperPageView';
-import { PaperPageableType, UsersPaperEditMode } from '../../utils/enums';
-import { Router, useRouter } from 'next/router';
 
 export async function getServerSideProps () {
     // Pass data to the page via props

@@ -1,16 +1,12 @@
 /* This example requires Tailwind CSS v2.0+ */
-import { CheckCircleIcon, ChevronRightIcon, MailIcon } from '@heroicons/react/solid'
+import { CheckCircleIcon, ChevronRightIcon } from '@heroicons/react/solid';
 import { useRouter } from 'next/router';
 import React, { useState } from 'react';
 import { UsersPaperEditMode } from '../../utils/enums';
 import Bar from '../components/bar';
 import Dropdown from '../components/dropdowns';
-import Footer from '../components/footer'
-import Header from '../components/header'
 import LoadMore from '../components/LoadMore';
-import MyModal from '../components/MyModal';
 import { useServices } from '../services';
-import MocksService from '../services/mocks_services';
 import UsersPaperService from '../services/users_paper_service';
 
 export default function WaitingCorrection() {

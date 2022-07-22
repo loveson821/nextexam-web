@@ -1,16 +1,12 @@
 import { ChevronRightIcon } from '@heroicons/react/outline';
-import moment from 'moment';
 import { NextPage } from 'next';
-import Router, { useRouter } from 'next/router';
+import { useRouter } from 'next/router';
 import React, { useEffect, useState } from 'react';
 import Book from '../../models/Book';
 import Chapter from '../../models/Chapter';
 import Group from '../../models/Group';
 import Section from '../../models/section';
 import Bar from '../components/bar';
-import Footer from '../components/footer';
-import Header from '../components/header';
-import MyModal from '../components/MyModal';
 import MyZoomImage from '../components/MyZoomImage';
 import { useServices } from '../services';
 import EbookService from '../services/ebook_services';

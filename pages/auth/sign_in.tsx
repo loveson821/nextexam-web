@@ -1,9 +1,6 @@
-import type { NextPage } from 'next'
-import Link from 'next/link';
+import type { NextPage } from 'next';
 import { useRouter } from 'next/router';
 import { useState } from 'react';
-import  {FaLock, FaUser}  from "react-icons/fa";
-import axiosInstance from '../helper/axiosInstance';
 import { useServices } from '../services';
 import AuthService from '../services/auth_services';
 

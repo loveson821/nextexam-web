@@ -1,11 +1,8 @@
-import { Router, useRouter } from 'next/router';
-import React from 'react';
-import { useState } from 'react';
+import { useRouter } from 'next/router';
+import React, { useState } from 'react';
 import Book from '../../models/Book';
 import Group from '../../models/Group';
 import Bar from '../components/bar';
-import Footer from '../components/footer';
-import Header from '../components/header'
 import { useServices } from '../services';
 import EbookService from '../services/ebook_services';
 

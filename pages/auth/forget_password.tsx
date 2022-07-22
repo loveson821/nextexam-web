@@ -1,7 +1,5 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { validate_email } from '../../utils/validate';
-import Footer from '../components/footer';
-import Header from '../components/header';
 import MyModal from '../components/MyModal';
 import { useServices } from '../services';
 import AuthService from '../services/auth_services';

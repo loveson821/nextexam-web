@@ -1,24 +1,18 @@
-import { Switch } from '@headlessui/react'
-import React from 'react'
-import { useState } from 'react'
-import { User } from '../../models'
-import Header from '../components/header'
-import { useServices } from '../services'
-import MyDropdown from '../components/MyDropdown'
-import useCallbackState from '../../utils/useCallbackState';
-import AuthService from '../services/auth_services'
-import MyInfoInputModal from '../components/MyInfoInputModal'
 import {
-    ref,
-    uploadBytesResumable ,
-    getDownloadURL 
-} from "firebase/storage";
-import storage from '../../firebase.js'
-import { Util } from '../../utils/util'
-import Zoom from 'react-medium-image-zoom'
+    getDownloadURL, ref,
+    uploadBytesResumable
+} from "firebase/storage"
+import React, { useState } from 'react'
 import 'react-medium-image-zoom/dist/styles.css'
+import storage from '../../firebase.js'
+import { User } from '../../models'
+import useCallbackState from '../../utils/useCallbackState'
+import { Util } from '../../utils/util'
+import MyDropdown from '../components/MyDropdown'
+import MyInfoInputModal from '../components/MyInfoInputModal'
 import MyZoomImage from '../components/MyZoomImage'
-import Footer from '../components/footer'
+import { useServices } from '../services'
+import AuthService from '../services/auth_services'
 
 export default function info() {
     const { t} = useServices();

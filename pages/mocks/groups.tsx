@@ -3,8 +3,6 @@ import Link from "next/link";
 import React, { useState } from "react";
 import Group from "../../models/Group";
 import Bar from "../components/bar";
-import Footer from "../components/footer";
-import Header from "../components/header";
 import MocksService from "../services/mocks_services";
 
 const pages = [

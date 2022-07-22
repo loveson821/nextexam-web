@@ -1,12 +1,9 @@
 /* This example requires Tailwind CSS v2.0+ */
-import { Fragment, useRef, useState } from 'react'
 import { Dialog, Transition } from '@headlessui/react'
-import { ExclamationIcon } from '@heroicons/react/outline'
-import React from 'react'
+import html2canvas from "html2canvas"
+import { Fragment, useRef, useState } from 'react'
+import CanvasDraw from "react-canvas-draw"
 import { useServices } from '../services'
-import html2canvas from "html2canvas";
-import CanvasDraw from "react-canvas-draw";
-import { useRouter } from 'next/router'
 
 export default function CorrectingAnwerModal(props: any) {
   const [open, setOpen] = useState(false)

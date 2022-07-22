@@ -3,9 +3,6 @@ import Link from "next/link";
 import React, { useState } from "react";
 import Group from "../../models/Group";
 import Bar from "../components/bar";
-import Footer from "../components/footer";
-import Header from "../components/header";
-import MyModal from "../components/MyModal";
 import { useServices } from "../services";
 import EbookService from "../services/ebook_services";
 

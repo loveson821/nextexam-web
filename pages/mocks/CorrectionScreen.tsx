@@ -1,12 +1,9 @@
 /* This example requires Tailwind CSS v2.0+ */
-import { CheckCircleIcon, ChevronRightIcon, MailIcon } from '@heroicons/react/solid'
+import { ChevronRightIcon } from '@heroicons/react/solid';
 import Router, { useRouter } from 'next/router';
 import React, { useState } from 'react';
 import Paper from '../../models/Paper';
 import Bar from '../components/bar';
-import Dropdown from '../components/dropdowns';
-import Footer from '../components/footer'
-import Header from '../components/header'
 import LoadMore from '../components/LoadMore';
 import { useServices } from '../services';
 import UsersPaperService from '../services/users_paper_service';

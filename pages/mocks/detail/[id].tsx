@@ -1,16 +1,13 @@
-import Link from 'next/link';
+import moment from 'moment';
 import Router, { useRouter } from 'next/router';
 import React, { useState } from 'react';
-import Header from '../../components/header';
-import PaperService from '../../services/paper_service';
-import LastMock from '../../../models/LastMock';
-import Bar from '../../components/bar';
-import moment from 'moment';
 import { User, UsersPaper } from '../../../models';
-import { useServices } from '../../services';
-import UsersPaperService from '../../services/users_paper_service';
+import LastMock from '../../../models/LastMock';
 import { ExamType, UsersPaperEditMode } from '../../../utils/enums';
-import Footer from '../../components/footer';
+import Bar from '../../components/bar';
+import { useServices } from '../../services';
+import PaperService from '../../services/paper_service';
+import UsersPaperService from '../../services/users_paper_service';
 
 export async function getServerSideProps () {
     // Pass data to the page via props
@@ -214,10 +211,7 @@ export default function detail() {
           return time
         }
       return (
-        <div className=' min-h-screen h-full relative'>
-        <Header/>
-        <div className='w-full pb-40'>
-            <div className='flex flex-col w-full pt-2 justify-center items-center'>
+        <>
             <div className="max-w-screen-lg w-full bg-white shadow overflow-hidden sm:rounded-lg">
               <Bar pages={pages}/>
               <div className="-ml-4 -mt-4 px-4 py-5  flex justify-between items-center flex-wrap sm:flex-nowrap">
@@ -345,9 +339,6 @@ export default function detail() {
                 </dl>
               </div>
             </div>
-          </div>
-        </div>
-        <Footer/>
-        </div>
+          </>
       )
 }

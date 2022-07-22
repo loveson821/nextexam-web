@@ -1,15 +1,9 @@
-import type { NextPage } from 'next'
-import Link from 'next/link';
+import type { NextPage } from 'next';
 import { useRouter } from 'next/router';
 import { useState } from 'react';
-import  {FaLock, FaUser}  from "react-icons/fa";
 import { User } from '../../models';
 import { validate_email } from '../../utils/validate';
-import Alerts from '../components/alerts';
-import Footer from '../components/footer';
-import Header from '../components/header';
 import MyModal from '../components/MyModal';
-import axiosInstance from '../helper/axiosInstance';
 import { useServices } from '../services';
 import AuthService from '../services/auth_services';
 

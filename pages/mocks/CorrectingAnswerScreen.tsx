@@ -1,12 +1,10 @@
-import React, { Component, useEffect, useRef, useState } from "react";
-import { render } from "react-dom";
+import { useRef, useState } from "react";
 
+import { useRouter } from "next/router";
 import CanvasDraw from "react-canvas-draw";
-import Router, { useRouter } from "next/router";
 // import classNames from "./index.css";
 
 import html2canvas from "html2canvas";
-import { NextPage } from "next";
 
 export default function CorrectingAnswerScreen(props: any) {
     let saveableCanvas = useRef()

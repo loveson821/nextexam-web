@@ -1,15 +1,10 @@
-import type { NextPage } from 'next'
-import Link from 'next/link';
+import type { NextPage } from 'next';
 import Router, { useRouter } from 'next/router';
 import React, { useState } from 'react';
-import Group from '../../models/Group';
 import LastMock from '../../models/LastMock';
 import { UsersPaperEditMode } from '../../utils/enums';
 import Bar from '../components/bar';
 import { ExamPaper } from '../components/ExamPaper';
-import Footer from '../components/footer';
-import Header from '../components/header'
-import MyModal from '../components/MyModal';
 import { useServices } from '../services';
 import MocksService from '../services/mocks_services';
 import UsersPaperService from '../services/users_paper_service';

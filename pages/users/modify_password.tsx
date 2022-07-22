@@ -1,8 +1,6 @@
 
 import router from 'next/router';
 import React, { useState } from 'react';
-import Footer from '../components/footer';
-import Header from '../components/header';
 import MyModal from '../components/MyModal';
 import { useServices } from '../services';
 import AuthService from '../services/auth_services';

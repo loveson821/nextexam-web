@@ -1,14 +1,10 @@
 import { ChevronRightIcon } from "@heroicons/react/outline";
 import { NextPage } from "next";
-import Link from "next/link";
 import { useRouter } from "next/router";
 import React, { useState } from "react";
 import Course from "../../models/Course";
 import Curriculum from "../../models/Curriculum";
-import Group from "../../models/Group";
 import Bar from "../components/bar";
-import Footer from "../components/footer";
-import Header from "../components/header";
 import MocksService from "../services/mocks_services";
 
 
