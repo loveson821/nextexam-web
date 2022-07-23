@@ -1,12 +1,13 @@
 /* This example requires Tailwind CSS v2.0+ */
 import { ChevronRightIcon } from '@heroicons/react/solid';
 import Router, { useRouter } from 'next/router';
-import React, { useState } from 'react';
+import { useState } from 'react';
+import useSWRInfinite from "swr/infinite";
 import Paper from '../../models/Paper';
 import Bar from '../components/bar';
 import LoadMore from '../components/LoadMore';
+import axiosInstance from '../helper/axiosInstance';
 import { useServices } from '../services';
-import UsersPaperService from '../services/users_paper_service';
 
 export async function getServerSideProps () {
     // Pass data to the page via props
@@ -16,12 +17,7 @@ export async function getServerSideProps () {
 export default function CorrectionScreen() {
     const { t} = useServices();
     const router = useRouter();
-    const [data, setData] = React.useState([]);
     const [course_id] = useState( parseInt( router.query.course_id+""))
-    const [loading, setLoading] = useState(false)
-    const [nodata, setNodata] = useState(false);
-    const [page, setPage] = useState(0);
-    const count = 10;
     const pages = [
         { name: '模擬試', href: '/mocks/groups', current: true },
         { name:  router.query.group_name, href: '/mocks/courses?group_id='+router.query.group_id+"&group_name="+router.query.group_name, current: true },
@@ -29,38 +25,22 @@ export default function CorrectionScreen() {
         { name: '改卷列表', href: '#', current: false}
     ]
 
-    React.useEffect(() => {
-        setPage(0)
-        loadData()
-      }, []);
+    const fetcher = (url: string) => axiosInstance.get(url).then((res) => res.data.docs);
+     const { data , error,size, setSize, mutate, isValidating } = useSWRInfinite(
+         (index) =>
+             `me/practices_can_correct.json?course=${course_id}&count=${PAGE_SIZE}&page=${index+1}`,
+             fetcher
+         );
+    const PAGE_SIZE = 10;
+    const datas = data ? [].concat(...data) : [];
     
-    const loadData = () => {
-        UsersPaperService.practices_can_correct({course: course_id,page: page,count: count}).then((docs: any) => {
-            setData(docs)
-            console.log(docs);
-            setPage(2)
-            if( docs.length < count ){
-                setNodata(true)
-            }
-            
-        })
-    }
-    const loadMoreData = () => {
-        console.log("page",page);
-        if( nodata ) return ;
-        setLoading(true)
-        UsersPaperService.practices_can_correct({course: course_id,page: page,count: count}).then((docs: any) => {
-            setData(data.concat(docs))
-            console.log(docs);
-            setPage(page => page + 1)
-            if( docs.length < count ){
-                setNodata(true)
-            }
-            
-        }).finally(()=>{
-            setLoading(false)
-        })
-    }
+    const isLoadingInitialData = !data && !error;
+    const isLoadingMore =
+        isLoadingInitialData ||
+        (size > 0 && data && typeof data[size - 1] === "undefined");
+    const isEmpty = data?.[0]?.length === 0;
+    const isReachingEnd =
+        isEmpty || (data && data[data.length - 1]?.length < PAGE_SIZE);
 
     const listClick = (paper: Paper) =>{
         Router.push({
@@ -77,6 +57,26 @@ export default function CorrectionScreen() {
         })
         
     }
+    const _renderItem = (paper: Paper, index: number) => {
+        return (
+            <li key={index} onClick={() => listClick(paper)}>
+                <a  className="block cursor-pointer hover:bg-gray-50">
+                <div className="flex items-center px-4 py-4 sm:px-6">
+                    <div className="min-w-0 flex-1 flex items-center">
+                    <div className="flex-shrink-0 m-2">
+                        <p className='text-gray-900'>{paper.description}</p>
+                    </div>
+                    </div>
+                    <div className='flex flex-row'>
+                        <label className='hidden md:block'>{t.do('exam_status.wait_correction')}</label>
+                        <label className='text-red-500'>( {paper.correcting_count + paper.submited_count}  /  {paper.done_count + paper.correcting_count + paper.submited_count} )</label>
+                        <ChevronRightIcon className="h-5 w-5 text-gray-400" aria-hidden="true" />
+                    </div>
+                </div>
+                </a>
+            </li>
+        )
+    }
   return (
     <>
         <div className="max-w-screen-lg w-full ">
@@ -87,30 +87,16 @@ export default function CorrectionScreen() {
                 <p className=' text-white text-center'>{t.do('exam_all.correction_list')}</p>
             </div>   
             <ul role="list" className="divide-y divide-gray-200">
-                {data?.map((item:any, index) => (
-                <li key={index} onClick={() => listClick(item)}>
-                    <a  className="block cursor-pointer hover:bg-gray-50">
-                    <div className="flex items-center px-4 py-4 sm:px-6">
-                        <div className="min-w-0 flex-1 flex items-center">
-                        <div className="flex-shrink-0 m-2">
-                            <p className='text-gray-900'>{item.description}</p>
-                        </div>
-                        </div>
-                        <div className='flex flex-row'>
-                            <label className='hidden md:block'>{t.do('exam_status.wait_correction')}</label>
-                            <label className='text-red-500'>( {item.correcting_count + item.submited_count}  /  {item.done_count + item.correcting_count + item.submited_count} )</label>
-                            <ChevronRightIcon className="h-5 w-5 text-gray-400" aria-hidden="true" />
-                        </div>
-                    </div>
-                    </a>
-                </li>
+                {datas?.map((item:any, index) => (
+                    _renderItem(item,index)
                 ))}
             </ul>
         </div>
         <LoadMore
-            loadMoreData={loadMoreData}
-            loading={loading}
-            nodata={nodata}
+            disabled = {isLoadingMore || isReachingEnd}
+            loadMoreData={() => setSize(size + 1)}
+            isLoadingMore = {isLoadingMore}
+            isReachingEnd = {isReachingEnd}
             />
     </>
   )

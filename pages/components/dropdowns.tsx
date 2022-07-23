@@ -12,22 +12,23 @@ import {
   CheckCircleIcon,
   UserAddIcon,
 } from '@heroicons/react/solid'
+import { useServices } from '../services';
 
 function classNames(...classes: string[]) {
   return classes.filter(Boolean).join(' ')
 }
 
 export default function Dropdown(props:any) {
-
-    const switchStatus = (status: string) => {
-        props.onSwitch(status)
-    }
+  const { t} = useServices();
+  const switchStatus = (status: string) => {
+      props.onSwitch(status)
+  }
 
   return (
     <Menu as="div" className="relative inline-block text-left">
       <div>
         <Menu.Button className="inline-flex justify-center w-full rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white text-sm font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-100 focus:ring-indigo-500">
-          全部
+          {props.title}
           <ChevronDownIcon className="-mr-1 ml-2 h-5 w-5" aria-hidden="true" />
         </Menu.Button>
       </div>
@@ -53,7 +54,7 @@ export default function Dropdown(props:any) {
                   )}
                 >
                   <PencilAltIcon className="mr-3 h-5 w-5 text-gray-400 group-hover:text-gray-500" aria-hidden="true" />
-                  全部
+                  {t.do('exam_status.all')}
                 </a>
               )}
             </Menu.Item>
@@ -67,7 +68,7 @@ export default function Dropdown(props:any) {
                   )}
                 >
                   <DuplicateIcon className="mr-3 h-5 w-5 text-gray-400 group-hover:text-gray-500" aria-hidden="true" />
-                  未改
+                  {t.do('exam_status.un_correction')}
                 </a>
               )}
             </Menu.Item>
@@ -81,7 +82,7 @@ export default function Dropdown(props:any) {
                   )}
                 >
                   <ArchiveIcon className="mr-3 h-5 w-5 text-gray-400 group-hover:text-gray-500" aria-hidden="true" />
-                  正在改
+                  {t.do('exam_status.correcting')}
                 </a>
               )}
             </Menu.Item>
@@ -98,7 +99,7 @@ export default function Dropdown(props:any) {
                     className="mr-3 h-5 w-5 text-gray-400 group-hover:text-gray-500"
                     aria-hidden="true"
                   />
-                  查核
+                  {t.do('exam_status.proofread')}
                 </a>
               )}
             </Menu.Item>
@@ -112,7 +113,7 @@ export default function Dropdown(props:any) {
                   )}
                 >
                   <CheckCircleIcon className="flex-shrink-0 mr-3 h-5 w-5 text-green-400" aria-hidden="true" />
-                  已改
+                  {t.do('exam_status.done_correction')}
                 </a>
               )}
             </Menu.Item>

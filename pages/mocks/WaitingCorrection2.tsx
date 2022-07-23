@@ -9,23 +9,21 @@ import LoadMore from '../components/LoadMore';
 import MyModal from '../components/MyModal';
 import { useServices } from '../services';
 import UsersPaperService from '../services/users_paper_service';
-import useSWR from "swr";
-import axiosInstance from "../helper/axiosInstance";
-import useSWRInfinite from "swr/infinite";
-const querystring = require('query-string');
-export async function getServerSideProps () {
-    // Pass data to the page via props
-    return { props: { } }
-  }
 
 export default function WaitingCorrection() {
     const { t} = useServices();
     const router = useRouter();
+    const [data, setData] = React.useState([]);
+    const [i_correcting, setI_correcting] = React.useState([])
+    const [others, setOthers] = React.useState([])
     const [paper_id, setPaper_id] = useState(parseInt( router.query.paper_id+""))
     const [visable, setVisable] = useState(false)
     const [description, setDescription] = useState('')
+    const [loading, setLoading] = useState(false)
+    const [nodata, setNodata] = useState(false);
+    const [page, setPage] = useState(1);
+    const count = 10;
     const [status, setStatus] = useState('')
-    const [statusTitle, setStatusTitle] = useState('')
     
     const pages = [
         { name: '模擬試', href: '/mocks/groups', current: true },
@@ -34,63 +32,45 @@ export default function WaitingCorrection() {
         { name:  '改卷列表', href: '/mocks/CorrectionScreen?course_id='+router.query.course_id+'&group_id='+router.query.group_id+"&group_name="+router.query.group_name+"&curriculum_id="+router.query.curriculum_id+"&curriculum_name="+router.query.curriculum_name, current: false}
     ]
 
+    React.useEffect(() => {
+        loadData('')
+      }, []);
     
-    //獲取正在批改的試卷
-    const fetcher_correcting = (url: string) => axiosInstance.get(url).then((res) => res.data.i_correcting);
-    const { data: i_correctings , error: _error } = useSWRInfinite(
-        (index) =>
-            `me/paper_can_correct_list/${paper_id}.json?count=${PAGE_SIZE}&page=${index+1}&status=${status}&i_correcting=true`,
-            fetcher_correcting
-        );
-    const i_correcting = i_correctings ? [].concat(...i_correctings) : [];
-
-     //獲取全部試卷加狀態
-     const fetcher = (url: string) => axiosInstance.get(url).then((res) => res.data.others);
-     const { data , error,size, setSize, mutate, isValidating } = useSWRInfinite(
-         (index) =>
-             `me/paper_can_correct_list/${paper_id}.json?count=${PAGE_SIZE}&page=${index+1}&status=${status}`,
-             fetcher
-         );
-    const PAGE_SIZE = 10;
-    const others = data ? [].concat(...data) : [];
-    
-    const isLoadingInitialData = !data && !error;
-    const isLoadingMore =
-        isLoadingInitialData ||
-        (size > 0 && data && typeof data[size - 1] === "undefined");
-    const isEmpty = data?.[0]?.length === 0;
-    const isReachingEnd =
-        isEmpty || (data && data[data.length - 1]?.length < PAGE_SIZE);
-
-        
-    const switchStatus = (status: string) => {
+    const loadData = (status: string) => {
+        console.log(paper_id);
+        setPaper_id( parseInt( router.query.paper_id+""))
         setStatus(status)
-        switch (status) {
-            case '':
-                setStatusTitle(t.do('exam_status.all'))
-                break;
-            case 'submited':
-                setStatusTitle(t.do('exam_status.un_correction'))
-                break;
-            case 'correcting':
-                setStatusTitle(t.do('exam_status.correcting'))
-                break;
-            case 'proofread':
-                setStatusTitle(t.do('exam_status.proofread'))
-                break;
-            case 'done':
-                setStatusTitle(t.do('exam_status.done_correction'))
-                break;
-            default:
-                setStatusTitle(t.do('exam_status.all'))
-                break;
-        }
+        UsersPaperService.load_waiting_correct_users_papers(paper_id,{status: status,page: page, count: count }).then((data: any) => {
+            setOthers(data.others)
+            setI_correcting(data.i_correcting)
+            if( data.others?.length < count ){
+                setNodata(true)
+            }
+            setPage(2)
+        })
+    }
+    const loadMoreData = () => {
+        console.log("page",page);
+        if( nodata ) return ;
+        setLoading(true)
+        UsersPaperService.load_waiting_correct_users_papers(paper_id,{status: status ,page: page, count: count }).then((data: any) => {
+            setOthers(others.concat(data.others))
+
+            setPage(page => page + 1)
+            if( data.others?.length < count ){
+                setNodata(true)
+            }
+            
+        }).finally(()=>{
+            setLoading(false)
+        })
     }
 
     const showTip = (description: string) => {
         setVisable(true)
         setDescription(description)
       }
+      
 
     const cancelClick = () => {
         setVisable(false)
@@ -284,8 +264,6 @@ export default function WaitingCorrection() {
         </li>
         )
     }
-
-   
   return (
     <>
         <div className="max-w-screen-lg w-full ">
@@ -311,7 +289,7 @@ export default function WaitingCorrection() {
             <div className='p-4  flex flex-shrink-0 flex-row justify-between items-center  mt-2 mb-2 bg-slate-500'>
                 <p className=' text-white text-center'>{t.do('exam_status.all_exams')}</p>
                 <div className=''>
-                    <Dropdown title={statusTitle} onSwitch={switchStatus}/>
+                    <Dropdown onSwitch={loadData}/>
                 </div>
                 
             </div>   
@@ -322,10 +300,9 @@ export default function WaitingCorrection() {
             </ul>
         </div>
         <LoadMore
-            disabled = {isLoadingMore || isReachingEnd}
-            loadMoreData={() => setSize(size + 1)}
-            isLoadingMore = {isLoadingMore}
-            isReachingEnd = {isReachingEnd}
+            loadMoreData={loadMoreData}
+            loading={loading}
+            nodata={nodata}
             />
         <MyModal visable={visable} cancelClick={cancelClick} confirmClick={confirmClick} description={description} />
     </>

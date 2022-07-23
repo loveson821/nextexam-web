@@ -46,7 +46,7 @@ export default function info() {
         // loadData()
     },[]);
 
-    const { data, error } = useSWR(`me.json`,() => AuthService.getInfo())
+    const { data, error } = useSWR([`me.json`,token],() => AuthService.getInfo())
 
     useEffect(() => {
         // loadData();
