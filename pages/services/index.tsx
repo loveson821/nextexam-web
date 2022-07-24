@@ -14,7 +14,7 @@ export const StoresProvider = ({ children }: any) => (
 
 export const useServices = (): ContextServices => React.useContext(servicesContext);
 
-export const initServices = async (en: string) => {
+export const initServices = async () => {
   for (const key in services) {
     if (Object.prototype.hasOwnProperty.call(services, key)) {
       const s = (services as Services)[key];
