@@ -57,6 +57,7 @@ export default function Header() {
   const logout = () => {
     localStorage.setItem('token','')
     localStorage.setItem('user','')
+    setLoggedIn(false);
     router.push('/auth/sign_in')
   }
   const navigation = [
@@ -89,12 +90,12 @@ export default function Header() {
               <div className="flex-1 flex items-center justify-center sm:items-stretch sm:justify-start">
                 <div className="flex-shrink-0 flex items-center">
                   <img
-                    className="block lg:hidden h-8 w-auto"
+                    className="block lg:hidden h-8 w-auto rounded-lg"
                     src="https://examhero.com/website/logo-light.png"
                     alt="考試英雄"
                   />
                   <img
-                    className="hidden lg:block h-8 w-auto"
+                    className="hidden lg:block h-8 w-auto rounded-lg"
                     src="https://examhero.com/website/logo-light.png"
                     alt="考試英雄"
                   />

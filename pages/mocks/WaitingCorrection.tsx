@@ -12,7 +12,7 @@ import UsersPaperService from '../services/users_paper_service';
 import useSWR from "swr";
 import axiosInstance from "../helper/axiosInstance";
 import useSWRInfinite from "swr/infinite";
-const querystring = require('query-string');
+
 export async function getServerSideProps () {
     // Pass data to the page via props
     return { props: { } }
@@ -311,7 +311,7 @@ export default function WaitingCorrection() {
             <div className='p-4  flex flex-shrink-0 flex-row justify-between items-center  mt-2 mb-2 bg-slate-500'>
                 <p className=' text-white text-center'>{t.do('exam_status.all_exams')}</p>
                 <div className=''>
-                    <Dropdown title={statusTitle} onSwitch={switchStatus}/>
+                    <Dropdown title={statusTitle || t.do('exam_status.all')} onSwitch={switchStatus}/>
                 </div>
                 
             </div>   

@@ -1,12 +1,13 @@
 /* This example requires Tailwind CSS v2.0+ */
 const navigation = {
     main: [
-      { name: 'About', href: '#' },
-      { name: 'Blog', href: '#' },
-      { name: 'Jobs', href: '#' },
-      { name: 'Press', href: '#' },
-      { name: 'Accessibility', href: '#' },
-      { name: 'Partners', href: '#' },
+      { name: '首頁', href: '/', target: '' },
+      { name: '模擬試', href: '/mocks/groups', target: '' },
+      { name: '電子書', href: '/ebooks/groups', target: '' },
+      { name: '聯繫客服', href: 'https://www.facebook.com/ExamHero%E8%80%83%E8%A9%A6%E8%8B%B1%E9%9B%84-103599311302555', target: '_blank' },
+      { name: 'IOS下載', href: 'https://apps.apple.com/us/app/%E8%80%83%E8%A9%A6%E8%8B%B1%E9%9B%84/id1404196946?l=zh&ls=1', target: '_blank' },
+      { name: 'Android下載', href: 'https://play.google.com/store/apps/details?id=com.courseday.exam', target: '_blank' },
+      
     ],
     social: [
       {
@@ -80,13 +81,13 @@ const navigation = {
           <nav className="-mx-5 -my-2 flex flex-wrap justify-center" aria-label="Footer">
             {navigation.main.map((item) => (
               <div key={item.name} className="px-5 py-2">
-                <a href={item.href} className="text-base text-gray-500 hover:text-gray-900">
+                <a href={item.href} target={item.target} className="text-base text-gray-500 hover:text-gray-900">
                   {item.name}
                 </a>
               </div>
             ))}
           </nav>
-          <div className="mt-8 flex justify-center space-x-6">
+          <div className="mt-8 flex justify-center space-x-6 invisible">
             {navigation.social.map((item) => (
               <a key={item.name} href={item.href} className="text-gray-400 hover:text-gray-500">
                 <span className="sr-only">{item.name}</span>

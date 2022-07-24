@@ -15,7 +15,8 @@ const sign_in: NextPage = () => {
         AuthService.signIn(data.username, data.password).then((data:any) => {
             localStorage.setItem('token', `${data.doc.authentication_token}`);
             localStorage.setItem('user', JSON.stringify(data.doc));
-            router.push("/")
+            // router.push("/")
+            window.location.href = "/"
         }).catch(res => alert(res.toString()))
     }
     function handleChange(e:any) {
