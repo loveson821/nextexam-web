@@ -1,17 +1,11 @@
 /* This example requires Tailwind CSS v2.0+ */
-import { Fragment } from 'react'
-import { Menu, Transition } from '@headlessui/react'
+import { Menu, Transition } from '@headlessui/react';
 import {
-  ArchiveIcon,
-  ArrowCircleRightIcon,
-  ChevronDownIcon,
-  DuplicateIcon,
-  HeartIcon,
-  PencilAltIcon,
-  TrashIcon,
-  CheckCircleIcon,
-  UserAddIcon,
-} from '@heroicons/react/solid'
+  CheckCircleIcon, ChevronDownIcon, CollectionIcon,
+  EyeIcon,
+  FlagIcon, PencilAltIcon
+} from '@heroicons/react/solid';
+import { Fragment } from 'react';
 import { useServices } from '../services';
 
 function classNames(...classes: string[]) {
@@ -53,7 +47,7 @@ export default function Dropdown(props:any) {
                     'group flex items-center px-4 py-2 text-sm'
                   )}
                 >
-                  <PencilAltIcon className="mr-3 h-5 w-5 text-gray-400 group-hover:text-gray-500" aria-hidden="true" />
+                  <CollectionIcon className="mr-3 h-5 w-5 text-gray-400 group-hover:text-gray-500" aria-hidden="true" />
                   {t.do('exam_status.all')}
                 </a>
               )}
@@ -67,7 +61,7 @@ export default function Dropdown(props:any) {
                     'group flex items-center px-4 py-2 text-sm'
                   )}
                 >
-                  <DuplicateIcon className="mr-3 h-5 w-5 text-gray-400 group-hover:text-gray-500" aria-hidden="true" />
+                  <FlagIcon className="mr-3 h-5 w-5 text-red-400 group-hover:text-red-500" aria-hidden="true" />
                   {t.do('exam_status.un_correction')}
                 </a>
               )}
@@ -81,7 +75,7 @@ export default function Dropdown(props:any) {
                     'group flex items-center px-4 py-2 text-sm'
                   )}
                 >
-                  <ArchiveIcon className="mr-3 h-5 w-5 text-gray-400 group-hover:text-gray-500" aria-hidden="true" />
+                  <PencilAltIcon className="mr-3 h-5 w-5 text-red-400 group-hover:text-red-500" aria-hidden="true" />
                   {t.do('exam_status.correcting')}
                 </a>
               )}
@@ -95,8 +89,8 @@ export default function Dropdown(props:any) {
                     'group flex items-center px-4 py-2 text-sm'
                   )}
                 >
-                  <ArrowCircleRightIcon
-                    className="mr-3 h-5 w-5 text-gray-400 group-hover:text-gray-500"
+                  <EyeIcon
+                    className="mr-3 h-5 w-5 text-green-400 group-hover:text-green-500"
                     aria-hidden="true"
                   />
                   {t.do('exam_status.proofread')}

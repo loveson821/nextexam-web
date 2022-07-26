@@ -46,6 +46,7 @@ export default function index() {
   return (
     <>
         <div className='max-w-screen-lg w-full'>
+        <Loading visable={!data}/>
           <Bar pages={pages}/>
         </div>
         <div className="max-w-screen-lg w-full -mx-px border-l border-gray-200 grid grid-cols-2 sm:mx-0 md:grid-cols-3 lg:grid-cols-4">

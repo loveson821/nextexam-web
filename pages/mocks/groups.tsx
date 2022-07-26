@@ -1,15 +1,13 @@
 import { NextPage } from "next";
 import Link from "next/link";
-import React, { useState } from "react";
+import useSWR from "swr";
 import Group from "../../models/Group";
 import Bar from "../components/bar";
-import axiosInstance from "../helper/axiosInstance";
-import MocksService from "../services/mocks_services";
-import useSWR from "swr";
 import Loading from "../components/Loading";
+import MocksService from "../services/mocks_services";
 
 const pages = [
-  { name: '模擬試', href: '/groups', current: true },
+  { name: '模擬試', href: '/mocks/groups', current: true },
   { name: '選擇模擬試', href: '#', current: true }
 ]
 
@@ -27,6 +25,7 @@ const pages = [
     return (
       <>
       <div className=" max-w-screen-lg w-full">
+        <Loading visable={!groups}/>
         <Bar pages={pages}/>
         <ul role="list" className="mt-2 grid grid-cols-1 gap-6 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
             {groups?.map((group: Group) => (

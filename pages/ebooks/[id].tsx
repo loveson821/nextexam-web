@@ -102,6 +102,7 @@ const detail: NextPage = (props: any) => {
     return (
         <>
             <div className='max-w-screen-lg w-full'>
+                <Loading visable={!data}/>
                 <Bar pages={pages}/>
             </div>
             <div className='max-w-screen-lg w-full p-2  m-4 flex flex-row '>

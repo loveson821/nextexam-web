@@ -219,6 +219,7 @@ const mocks: NextPage = () => {
   return (
       <>
       <div className=" max-w-screen-lg w-full">
+        <Loading visable={!lastMock}/>
         <Bar pages={pages}/>
       </div>
         <div className='max-w-screen-lg w-full mt-2 grid  grid-cols-3  gap-4'>

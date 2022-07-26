@@ -1,6 +1,8 @@
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
+import Loading from './components/Loading'
 
 export default function Home() {
+  const [visable, setVisable] = useState(true)
   useEffect(() => {
 
 
@@ -8,6 +10,7 @@ export default function Home() {
 
   return (
     <div className=''>
+      {/* <Loading visable={visable} cancelClick={()=>{setVisable(false)}} /> */}
       刷题
     </div>
   )

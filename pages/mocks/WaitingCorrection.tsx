@@ -1,5 +1,5 @@
 /* This example requires Tailwind CSS v2.0+ */
-import { CheckCircleIcon, ChevronRightIcon } from '@heroicons/react/solid';
+import { CheckCircleIcon, ChevronRightIcon, EyeIcon, FlagIcon, PencilAltIcon } from '@heroicons/react/solid';
 import { useRouter } from 'next/router';
 import React, { useState } from 'react';
 import { UsersPaperEditMode } from '../../utils/enums';
@@ -254,16 +254,32 @@ export default function WaitingCorrection() {
                             {item.teacher?.name}
                         </p>
                         <p className="mt-2 flex items-center text-sm text-gray-500">
-                        <CheckCircleIcon className="flex-shrink-0 mr-1.5 h-5 w-5 text-green-400" aria-hidden="true" />
+                        
                             {
                                 item.status == 'done' || item.status == 'wait_proofread'?
-                                    <label>{t.do('exam_status.done_correction')}</label>
+                                    <>
+                                        <CheckCircleIcon className="flex-shrink-0 mr-1.5 h-5 w-5 text-green-400" aria-hidden="true" />
+                                        <label className='text-green-400'>{t.do('exam_status.done_correction')}</label>
+                                    </>
+                                    
                                 : item.status == 'correcting' ?
-                                    <label style={{color: '#4CAF50'}}>{t.do('exam_status.correcting')}</label>
+                                    <>
+                                        <PencilAltIcon className="flex-shrink-0 mr-1.5 h-5 w-5 text-red-400" aria-hidden="true" />
+                                        <label className='text-red-400'>{t.do('exam_status.correcting')}</label>
+                                    </>
+                                    
                                 : item.status == 'submited' ?
-                                    <label style={{color:'#FF6C6C'}}>{t.do('exam_status.none_correction')}</label>
+                                    <>
+                                        <FlagIcon className="flex-shrink-0 mr-1.5 h-5 w-5 text-red-400" aria-hidden="true" />
+                                        <label className='text-red-400'>{t.do('exam_status.none_correction')}</label>
+                                    </>
+                                    
                                 : item.status == 'proofreading' ?
-                                    <label>{t.do('exam_status.proofreading')}</label>
+                                    <>
+                                        <EyeIcon className="flex-shrink-0 mr-1.5 h-5 w-5 text-green-400" aria-hidden="true" />
+                                        <label className='text-green-400'>{t.do('exam_status.proofreading')}</label>
+                                    </>
+                                    
                                 : null
                             }
 

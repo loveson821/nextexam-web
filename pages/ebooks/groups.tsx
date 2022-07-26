@@ -96,6 +96,7 @@ export async function getServerSideProps(context: any) {
     return (
       <>
       <div className=" max-w-screen-lg w-full">
+      <Loading visable={!data}/>
       <Bar pages={pages}/>
         <ul role="list" className="my-2 grid grid-cols-1 gap-6 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
             {groups.map((group: Group) => (
