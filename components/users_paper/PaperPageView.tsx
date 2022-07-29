@@ -365,7 +365,7 @@ export default function PaperPageView(props: any) {
         )
     }
     return (
-        <li id={'paper_'+props.paper_page.paper_pageable_id} key={props.paper_page.id} className="bg-white shadow overflow-hidden   sm:rounded-md">            
+        <li id={'paper_'+props.paper_page.paper_pageable_id} key={props.paper_page.id} className="w-full bg-white shadow overflow-hidden   sm:rounded-md">            
             <div className='bg-indigo-600  px-2 py-2 flex flex-row justify-between  items-center'>
                 <label className='text-white'>
                     {
@@ -381,7 +381,7 @@ export default function PaperPageView(props: any) {
 
                 </label>
             </div>
-            <Image width={100} height={100} src={props.paper_page.content} alt=''/>
+            <img src={props.paper_page.content} alt=''/>
             <div className='flex w-full  p-2'>
                 {
                   props.paper_page.tag_list?.split(',').map((tag: string, index: number) => {

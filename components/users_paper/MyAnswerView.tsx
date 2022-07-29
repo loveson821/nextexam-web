@@ -69,7 +69,7 @@ export default function MyAnswerView(props: any) {
                 }
                
               </div>
-              <Image alt='' width={100} height={100} className=' cursor-pointer' src={url} onClick={() => { onEditAnswer(index) } }/>
+              <img alt='' className=' cursor-pointer' src={url} onClick={() => { onEditAnswer(index) } }/>
                 <MyLine/>
             </div>
           
@@ -248,7 +248,7 @@ export default function MyAnswerView(props: any) {
                   </button>
                 </div>
                 <div className='cursor-pointer' onClick={() => { onEditAnswer(index) }}>
-                  <Image alt='' width={100} height={100} src={props.users_question.correction_on_index(index)} />
+                  <img alt='' src={props.users_question.correction_on_index(index)} />
                 </div>
 
               </div>
@@ -256,7 +256,7 @@ export default function MyAnswerView(props: any) {
     
             { !props.users_question.hasCorrectionOnIndex(index) && 
               <div onClick={() => { onEditAnswer(index) }}>
-                <Image alt='' width={100} height={100} src={url} />
+                <img alt='' src={url} />
               </div>
             }
           </div>
