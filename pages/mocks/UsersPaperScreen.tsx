@@ -126,7 +126,7 @@ export default function UsersPaperScreen(props: any) {
                 <Bar pages={pages} />
             </div>
             <div className="max-w-screen-lg w-full flex sm:rounded-md">
-                <ul role="list" className=" max-w-3xl space-y-6">
+                <ul role="list" className="w-full max-w-3xl space-y-6">
                     {paper?.paper_pages.map((item:any, index) => (
                         <PaperPageView 
                             key={index}
