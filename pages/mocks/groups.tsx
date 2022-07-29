@@ -5,9 +5,9 @@ import React from "react";
 import { useState } from "react";
 import useSWR from "swr";
 import Group from "../../models/Group";
-import Bar from "../components/bar";
-import Loading from "../components/Loading";
-import MocksService from "../services/mocks_services";
+import Bar from "../../components/bar";
+import Loading from "../../components/Loading";
+import MocksService from "../../services/mocks_services";
 
 const pages = [
   { name: '模擬試', href: '/mocks/groups', current: true },

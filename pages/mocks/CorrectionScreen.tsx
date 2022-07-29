@@ -4,10 +4,10 @@ import Router, { useRouter } from 'next/router';
 import { useState } from 'react';
 import useSWRInfinite from "swr/infinite";
 import Paper from '../../models/Paper';
-import Bar from '../components/bar';
-import LoadMore from '../components/LoadMore';
-import axiosInstance from '../helper/axiosInstance';
-import { useServices } from '../services';
+import Bar from '../../components/bar';
+import LoadMore from '../../components/LoadMore';
+import axiosInstance from '../../helper/axiosInstance';
+import { useServices } from '../../services';
 
 export async function getServerSideProps () {
     // Pass data to the page via props

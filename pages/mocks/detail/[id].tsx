@@ -5,11 +5,11 @@ import React, { useState } from 'react';
 import { User, UsersPaper } from '../../../models';
 import LastMock from '../../../models/LastMock';
 import { ExamType, UsersPaperEditMode } from '../../../utils/enums';
-import Bar from '../../components/bar';
-import MyZoomImage from '../../components/MyZoomImage';
-import { useServices } from '../../services';
-import PaperService from '../../services/paper_service';
-import UsersPaperService from '../../services/users_paper_service';
+import Bar from '../../../components/bar';
+import MyZoomImage from '../../../components/MyZoomImage';
+import { useServices } from '../../../services';
+import PaperService from '../../../services/paper_service';
+import UsersPaperService from '../../../services/users_paper_service';
 
 export async function getServerSideProps() {
   // Pass data to the page via props

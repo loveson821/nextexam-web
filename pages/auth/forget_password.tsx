@@ -1,9 +1,9 @@
 import Image from 'next/image';
 import { useState } from 'react';
 import { validate_email } from '../../utils/validate';
-import MyModal from '../components/MyModal';
-import { useServices } from '../services';
-import AuthService from '../services/auth_services';
+import MyModal from '../../components/MyModal';
+import { useServices } from '../../services';
+import AuthService from '../../services/auth_services';
 
 export default function ForgetPassword  () {
   const { t} = useServices();

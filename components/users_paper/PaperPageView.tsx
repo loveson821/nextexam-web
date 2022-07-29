@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import _ from 'lodash';
-import { PaperPageableType, UsersPaperEditMode } from '../../../utils/enums';
+import { PaperPageableType, UsersPaperEditMode } from '../../utils/enums';
 import MyAnswerView from './MyAnswerView';
 import QuestionActionButton from './QuestionActionButton';
 import MyLine from '../MyLine';
@@ -14,11 +14,11 @@ import {
   getDownloadURL, 
   ref
 } from "firebase/storage";
-import storage from '../../../firebase.js'
-import { Util } from '../../../utils/util';
+import storage from '../../firebase.js'
+import { Util } from '../../utils/util';
 import MyLoader from '../MyLoader';
 import Link from 'next/link';
-import CorrectingAnwerModal from '../../mocks/CorrectingAnswerModal';
+import CorrectingAnwerModal from '../../pages/mocks/CorrectingAnswerModal';
 import Image from 'next/image';
 
 export default function PaperPageView(props: any) {

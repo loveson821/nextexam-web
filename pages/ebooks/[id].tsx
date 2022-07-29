@@ -6,13 +6,13 @@ import Book from '../../models/Book';
 import Chapter from '../../models/chapter';
 import Group from '../../models/Group';
 import Section from '../../models/section';
-import Bar from '../components/bar';
-import MyZoomImage from '../components/MyZoomImage';
-import { useServices } from '../services';
-import EbookService from '../services/ebook_services';
+import Bar from '../../components/bar';
+import MyZoomImage from '../../components/MyZoomImage';
+import { useServices } from '../../services';
+import EbookService from '../../services/ebook_services';
 import useSWR from "swr";
-import Loading from "../components/Loading";
-import MyModal from '../components/MyModal';
+import Loading from "../../components/Loading";
+import MyModal from '../../components/MyModal';
 import Image from 'next/image';
 import Zoom from 'react-medium-image-zoom'
 // export async function getServerSideProps ({ query }: any) {

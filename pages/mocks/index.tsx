@@ -3,14 +3,14 @@ import Router, { useRouter } from 'next/router';
 import React, { useState } from 'react';
 import LastMock from '../../models/LastMock';
 import { UsersPaperEditMode } from '../../utils/enums';
-import Bar from '../components/bar';
-import  ExamPaper  from '../components/ExamPaper';
-import { useServices } from '../services';
-import MocksService from '../services/mocks_services';
-import UsersPaperService from '../services/users_paper_service';
+import Bar from '../../components/bar';
+import  ExamPaper  from '../../components/ExamPaper';
+import { useServices } from '../../services';
+import MocksService from '../../services/mocks_services';
+import UsersPaperService from '../../services/users_paper_service';
 import useSWR from "swr";
-import Loading from "../components/Loading";
-import MyModal from '../components/MyModal';
+import Loading from "../../components/Loading";
+import MyModal from '../../components/MyModal';
 
 export async function getServerSideProps() {
   // Pass data to the page via props

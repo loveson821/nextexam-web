@@ -1,4 +1,4 @@
-import User from "../../models/User";
+import User from "../models/User";
 import axiosInstance from "../helper/axiosInstance";
 
 export default class AuthService {

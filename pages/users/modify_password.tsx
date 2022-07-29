@@ -1,9 +1,9 @@
 
 import router from 'next/router';
 import React, { useState } from 'react';
-import MyModal from '../components/MyModal';
-import { useServices } from '../services';
-import AuthService from '../services/auth_services';
+import MyModal from '../../components/MyModal';
+import { useServices } from '../../services';
+import AuthService from '../../services/auth_services';
 
 
 export default function ModifyPassword() {

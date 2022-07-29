@@ -4,12 +4,12 @@ import Image from 'next/image';
 import { useRouter } from 'next/router';
 import React, { useState } from 'react';
 import { UsersPaperEditMode } from '../../utils/enums';
-import Bar from '../components/bar';
-import Dropdown from '../components/dropdowns';
-import LoadMore from '../components/LoadMore';
-import MyModal from '../components/MyModal';
-import { useServices } from '../services';
-import UsersPaperService from '../services/users_paper_service';
+import Bar from '../../components/bar';
+import Dropdown from '../../components/dropdowns';
+import LoadMore from '../../components/LoadMore';
+import MyModal from '../../components/MyModal';
+import { useServices } from '../../services';
+import UsersPaperService from '../../services/users_paper_service';
 
 export default function WaitingCorrection() {
     const { t} = useServices();

@@ -8,12 +8,12 @@ import storage from '../../firebase.js'
 import { User } from '../../models'
 import useCallbackState from '../../utils/useCallbackState'
 import { Util } from '../../utils/util'
-import MyDropdown from '../components/MyDropdown'
-import MyInfoInputModal from '../components/MyInfoInputModal'
-import MyZoomImage from '../components/MyZoomImage'
-import { useServices } from '../services'
-import AuthService from '../services/auth_services'
-import Loading from "../components/Loading";
+import MyDropdown from '../../components/MyDropdown'
+import MyInfoInputModal from '../../components/MyInfoInputModal'
+import MyZoomImage from '../../components/MyZoomImage'
+import { useServices } from '../../services'
+import AuthService from '../../services/auth_services'
+import Loading from "../../components/Loading";
 import useSWR from "swr";
 import Link from "next/link.js"
 

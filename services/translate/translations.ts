@@ -537,3 +537,10 @@ export const en = {
     end: 'End',
   },
 };
+
+export default function index(){
+  return {
+    zh: zh,
+    en: en,
+  }
+}

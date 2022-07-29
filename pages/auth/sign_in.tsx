@@ -1,9 +1,9 @@
 import type { NextPage } from 'next';
 import { useRouter } from 'next/router';
 import { useState } from 'react';
-import { useServices } from '../services';
-import AuthService from '../services/auth_services';
-import GoogleBtn from '../components/GoogleBtn'
+import { useServices } from '../../services';
+import AuthService from '../../services/auth_services';
+import GoogleBtn from '../../components/GoogleBtn'
 import Link from 'next/link';
 import Image from 'next/image';
 

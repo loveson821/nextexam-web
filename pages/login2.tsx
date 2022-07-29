@@ -3,8 +3,8 @@ import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { useState } from 'react';
 import { FaLock, FaUser } from "react-icons/fa";
-import axiosInstance from './helper/axiosInstance';
-import AuthService from './services/auth_services';
+import axiosInstance from '../helper/axiosInstance';
+import AuthService from '../services/auth_services';
 
 const Login: NextPage = () => {
     const router = useRouter();

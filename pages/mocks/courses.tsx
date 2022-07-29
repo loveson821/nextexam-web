@@ -4,10 +4,10 @@ import { useRouter } from "next/router";
 import React, { useState } from "react";
 import Course from "../../models/Course";
 import Curriculum from "../../models/Curriculum";
-import Bar from "../components/bar";
-import MocksService from "../services/mocks_services";
+import Bar from "../../components/bar";
+import MocksService from "../../services/mocks_services";
 import useSWR from "swr";
-import Loading from "../components/Loading";
+import Loading from "../../components/Loading";
 
 
 export async function getServerSideProps() {

@@ -1,13 +1,13 @@
 import React, { useState } from 'react';
 import _ from 'lodash';
-import { UsersPaperEditMode } from '../../../utils/enums';
-import { UsersQuestion } from '../../../models';
+import { UsersPaperEditMode } from '../../utils/enums';
+import { UsersQuestion } from '../../models';
 import { useServices } from '../../services';
 import MyLine from '../MyLine';
 import { MailIcon, PencilAltIcon, TrashIcon } from '@heroicons/react/outline';
 import { RadioGroup } from '@headlessui/react';
 import MyInfoInputModal from '../MyInfoInputModal';
-import CorrectingAnwerModal from '../../mocks/CorrectingAnswerModal';
+import CorrectingAnwerModal from '../../pages/mocks/CorrectingAnswerModal';
 import Image from 'next/image';
 
 export default function MyAnswerView(props: any) {

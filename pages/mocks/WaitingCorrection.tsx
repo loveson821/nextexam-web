@@ -3,14 +3,14 @@ import { CheckCircleIcon, ChevronRightIcon, EyeIcon, FlagIcon, PencilAltIcon } f
 import { useRouter } from 'next/router';
 import React, { useState } from 'react';
 import { UsersPaperEditMode } from '../../utils/enums';
-import Bar from '../components/bar';
-import Dropdown from '../components/dropdowns';
-import LoadMore from '../components/LoadMore';
-import MyModal from '../components/MyModal';
-import { useServices } from '../services';
-import UsersPaperService from '../services/users_paper_service';
+import Bar from '../../components/bar';
+import Dropdown from '../../components/dropdowns';
+import LoadMore from '../../components/LoadMore';
+import MyModal from '../../components/MyModal';
+import { useServices } from '../../services';
+import UsersPaperService from '../../services/users_paper_service';
 import useSWR from "swr";
-import axiosInstance from "../helper/axiosInstance";
+import axiosInstance from "../../helper/axiosInstance";
 import useSWRInfinite from "swr/infinite";
 import Image from 'next/image';
 

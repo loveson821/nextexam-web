@@ -2,12 +2,12 @@ import { NextPage } from "next";
 import Link from "next/link";
 import React, { useState } from "react";
 import Group from "../../models/Group";
-import Bar from "../components/bar";
-import { useServices } from "../services";
-import EbookService from "../services/ebook_services";
+import Bar from "../../components/bar";
+import { useServices } from "../../services";
+import EbookService from "../../services/ebook_services";
 import useSWR from "swr";
-import Loading from "../components/Loading";
-import MyModal from "../components/MyModal";
+import Loading from "../../components/Loading";
+import MyModal from "../../components/MyModal";
 import Image from "next/image";
 
 export async function getServerSideProps(context: any) {

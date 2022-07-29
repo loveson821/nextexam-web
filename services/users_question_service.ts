@@ -1,5 +1,5 @@
 import axiosInstance from '../helper/axiosInstance';
-import { UsersQuestion } from '../../models';
+import { UsersQuestion } from '../models';
 
 export default class UsersQuestionService {
   // load paper pages content

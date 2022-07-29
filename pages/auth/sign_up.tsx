@@ -4,9 +4,9 @@ import { useRouter } from 'next/router';
 import { useState } from 'react';
 import { User } from '../../models';
 import { validate_email } from '../../utils/validate';
-import MyModal from '../components/MyModal';
-import { useServices } from '../services';
-import AuthService from '../services/auth_services';
+import MyModal from '../../components/MyModal';
+import { useServices } from '../../services';
+import AuthService from '../../services/auth_services';
 
 const Sign_up: NextPage = () => {
   const router = useRouter();

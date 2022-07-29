@@ -3,7 +3,7 @@ import Examination from "./Examination";
 import Group from "./Group";
 import JSModel from "./JSModel";
 import moment from 'moment';
-import { useServices } from "../pages/services";
+import { useServices } from "../services";
 
 /**
  * 模擬考試model

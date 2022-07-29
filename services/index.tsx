@@ -25,3 +25,6 @@ export const initServices = async () => {
     }
   }
 };
+
+export default function index() {
+}

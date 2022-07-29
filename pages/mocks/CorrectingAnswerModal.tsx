@@ -3,7 +3,7 @@ import { Dialog, Transition } from '@headlessui/react'
 import html2canvas from "html2canvas"
 import { Fragment, useRef, useState } from 'react'
 // import CanvasDraw from "react-canvas-draw"
-import { useServices } from '../services'
+import { useServices } from '../../services'
 
 export default function CorrectingAnwerModal(props: any) {
   const [open, setOpen] = useState(false)
