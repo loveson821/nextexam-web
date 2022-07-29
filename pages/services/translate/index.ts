@@ -2,6 +2,10 @@ import i18n from 'i18n-js';
 
 import {zh, en} from './translations';
 
+export default function index() {
+}
+
+
 export class TranslateService implements IService {
   private inited = false;
 

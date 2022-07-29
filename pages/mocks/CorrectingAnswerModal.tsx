@@ -2,7 +2,7 @@
 import { Dialog, Transition } from '@headlessui/react'
 import html2canvas from "html2canvas"
 import { Fragment, useRef, useState } from 'react'
-import CanvasDraw from "react-canvas-draw"
+// import CanvasDraw from "react-canvas-draw"
 import { useServices } from '../services'
 
 export default function CorrectingAnwerModal(props: any) {
@@ -61,7 +61,7 @@ export default function CorrectingAnwerModal(props: any) {
                       type="button"
                       className="mt-3 w-full inline-flex justify-center rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white text-base font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 sm:mt-0 sm:w-auto sm:text-sm"
                       onClick={()=>{
-                        saveableCanvas.eraseAll();
+                        // saveableCanvas.eraseAll();
                       }}
                     >
                       Erase
@@ -71,21 +71,21 @@ export default function CorrectingAnwerModal(props: any) {
                       type="button"
                       className="ml-4 mt-3 w-full inline-flex justify-center rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white text-base font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 sm:mt-0 sm:w-auto sm:text-sm"
                       onClick={()=>{
-                        saveableCanvas.undo();
+                        // saveableCanvas.undo();
                       }}
                     >
                       Undo
                     </button>
                   </div>
                   <div id="drawing-area" className='mt-4'>
-                    <CanvasDraw
+                    {/* <CanvasDraw
                       style={{ display: "inline-flex" }}
                       ref={(canvasDraw: any) => (saveableCanvas = canvasDraw)}
                       brushColor={props.canvas?.color}
                       brushRadius={data.brushRadius}
                       lazyRadius={data.lazyRadius}
                       imgSrc={props.canvas?.url}
-                    />
+                    /> */}
                   </div>
                 </div>
               </div>
@@ -94,10 +94,10 @@ export default function CorrectingAnwerModal(props: any) {
                   type="button"
                   className="w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-red-600 text-base font-medium text-white hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500 sm:ml-3 sm:w-auto sm:text-sm"
                   onClick={ () => {
-                    html2canvas(document.querySelector("#drawing-area")).then(canvas => {
-                      // console.log(canvas.toDataURL())
-                      props.confirmClick(props.canvas, canvas.toDataURL())
-                    });
+                    // html2canvas(document.querySelector("#drawing-area")).then(canvas => {
+                    //   // console.log(canvas.toDataURL())
+                    //   props.confirmClick(props.canvas, canvas.toDataURL())
+                    // });
       
                   }}>
                   {t.do('general.confirm')}

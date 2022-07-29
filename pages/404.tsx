@@ -1,4 +1,5 @@
 import { NextPage } from "next"
+import Image from "next/image"
 import Link from "next/link"
 
 /* This example requires Tailwind CSS v2.0+ */
@@ -18,7 +19,7 @@ const _404: NextPage = () => {
           <div className="flex-shrink-0 flex justify-center">
             <Link href="/" className="inline-flex">
               <span className="sr-only">考試英雄</span>
-              <img
+              <Image width={100} height={100}
                 className="h-12 w-auto"
                 src="https://examhero.com/website/logo-light.png"
                 alt=""

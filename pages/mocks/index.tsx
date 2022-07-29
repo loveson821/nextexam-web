@@ -4,7 +4,7 @@ import React, { useState } from 'react';
 import LastMock from '../../models/LastMock';
 import { UsersPaperEditMode } from '../../utils/enums';
 import Bar from '../components/bar';
-import { ExamPaper } from '../components/ExamPaper';
+import  ExamPaper  from '../components/ExamPaper';
 import { useServices } from '../services';
 import MocksService from '../services/mocks_services';
 import UsersPaperService from '../services/users_paper_service';
@@ -30,6 +30,7 @@ const Mocks: NextPage = () => {
   const [visable, setVisable] = useState(false)
   const [description, setDescription] = useState('')
   const [isTodo, setIsTodo] = useState(false)
+  const [loading, setLoading] = useState(true)
   const pages = [
     { name: '模擬試', href: '/mocks/groups', current: true },
     { name: router.query.group_name, href: '/mocks/courses?group_id=' + router.query.group_id + "&group_name=" + router.query.group_name, current: true },
@@ -43,20 +44,23 @@ const Mocks: NextPage = () => {
     if (data) {
       setLastMock(new LastMock(data))
     }
+    setLoading(false)
   }, [data]);
 
   React.useEffect(() => {
     if (_data) {
       // console.log(_data);
+      var docs: any = _data
       var arrs: any = []
-      _data.docs.map((doc: any) => {
+      docs.docs.map((doc: any) => {
+        setLoading(false)
         doc.assignments.map((assignment: any) => {
           arrs.push(assignment)
         })
       })
       setAssignments(arrs)
-      setRole(_data.role)
-      set_published_papers_can_do_count(_data.published_papers_can_do_count)
+      setRole(docs.role)
+      set_published_papers_can_do_count(docs.published_papers_can_do_count)
     }
   }, [_data]);
 
@@ -219,7 +223,7 @@ const Mocks: NextPage = () => {
   return (
     <>
       <div className=" max-w-screen-lg w-full">
-        <Loading visable={!lastMock} />
+        <Loading visable={loading} />
         <Bar pages={pages} />
       </div>
       <div className='max-w-screen-lg w-full mt-2 grid  grid-cols-3  gap-4'>

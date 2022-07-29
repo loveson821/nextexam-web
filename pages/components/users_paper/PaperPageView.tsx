@@ -19,6 +19,7 @@ import { Util } from '../../../utils/util';
 import MyLoader from '../MyLoader';
 import Link from 'next/link';
 import CorrectingAnwerModal from '../../mocks/CorrectingAnswerModal';
+import Image from 'next/image';
 
 export default function PaperPageView(props: any) {
     const { t } = useServices();
@@ -380,7 +381,7 @@ export default function PaperPageView(props: any) {
 
                 </label>
             </div>
-            <img src={props.paper_page.content}/>
+            <Image width={100} height={100} src={props.paper_page.content} alt=''/>
             <div className='flex w-full  p-2'>
                 {
                   props.paper_page.tag_list?.split(',').map((tag: string, index: number) => {

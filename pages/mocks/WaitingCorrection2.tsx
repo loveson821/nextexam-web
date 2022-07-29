@@ -1,5 +1,6 @@
 /* This example requires Tailwind CSS v2.0+ */
 import { CheckCircleIcon, ChevronRightIcon } from '@heroicons/react/solid';
+import Image from 'next/image';
 import { useRouter } from 'next/router';
 import React, { useState } from 'react';
 import { UsersPaperEditMode } from '../../utils/enums';
@@ -222,7 +223,7 @@ export default function WaitingCorrection() {
                     <p className='text-gray-900'>{item.submit_sequence_number}</p>
                 </div>
                 <div className="flex-shrink-0">
-                    <img className="h-12 w-12 rounded-full" src={item.user?.avatar} alt="" />
+                    <Image width={100} height={100} className="h-12 w-12 rounded-full" src={item.user?.avatar} alt="" />
                 </div>
                 <div className="min-w-0 flex-1 px-4 md:grid md:grid-cols-2 md:gap-4">
                     <div className='flex justify-left items-center'>

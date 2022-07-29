@@ -3,7 +3,7 @@ import { NextPage } from 'next';
 import { useRouter } from 'next/router';
 import React, { useEffect, useState } from 'react';
 import Book from '../../models/Book';
-import Chapter from '../../models/Chapter';
+import Chapter from '../../models/chapter';
 import Group from '../../models/Group';
 import Section from '../../models/section';
 import Bar from '../components/bar';
@@ -13,7 +13,8 @@ import EbookService from '../services/ebook_services';
 import useSWR from "swr";
 import Loading from "../components/Loading";
 import MyModal from '../components/MyModal';
-
+import Image from 'next/image';
+import Zoom from 'react-medium-image-zoom'
 // export async function getServerSideProps ({ query }: any) {
 //     const book_id = 20
 //     const res = await fetch(`https://www.examhero.com/api/books/${book_id}.json`, { 
@@ -107,7 +108,7 @@ const Detail: NextPage = (props: any) => {
             </div>
             <div className='max-w-screen-lg w-full p-2  m-4 flex flex-row '>
                 <div className="w-40 rounded-lg overflow-hidden bg-gray-200 aspect-w-1 aspect-h-1 hover:opacity-75">
-                    <MyZoomImage url={book?.cover} className={'w-full h-full object-center object-cover'} />
+                    <MyZoomImage url={book?.cover} className='w-full h-full object-center object-cover' width={200} height={300} layout="intrinsic" />
                 </div>
 
                 <div className='ml-4'>

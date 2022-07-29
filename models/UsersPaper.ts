@@ -2,6 +2,7 @@ import UsersQuestion from './UsersQuestion';
 import JSModel from './JSModel';
 import User from './User';
 import Paper from './Paper';
+import Comment from './Comment';
 
 export default class UsersPaper extends JSModel {
 	id?: number;
@@ -12,7 +13,7 @@ export default class UsersPaper extends JSModel {
 	status?: string;
 	score?: string;
 	submited_at?: string;
-	comment?: User;
+	comment?: Comment;
 
 
 	// var is_model_answer: Bool!

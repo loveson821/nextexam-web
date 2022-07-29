@@ -1,10 +1,12 @@
 import moment from 'moment';
+import Image from 'next/image';
 import Router, { useRouter } from 'next/router';
 import React, { useState } from 'react';
 import { User, UsersPaper } from '../../../models';
 import LastMock from '../../../models/LastMock';
 import { ExamType, UsersPaperEditMode } from '../../../utils/enums';
 import Bar from '../../components/bar';
+import MyZoomImage from '../../components/MyZoomImage';
 import { useServices } from '../../services';
 import PaperService from '../../services/paper_service';
 import UsersPaperService from '../../services/users_paper_service';
@@ -219,13 +221,14 @@ export default function Detail() {
             {
               user_paper != null ?
                 <div className='flex flex-row items-center'>
-
-                  <img src={user_paper?.user?.avatar} className=" border rounded-full w-20 h-20" />
+                  <MyZoomImage url={user_paper?.user?.avatar} className="border rounded-full w-20 h-20" width={80} height={80}/>
+                  {/* <Image  src={user_paper?.user?.avatar || '/empty-image.png'} className=" border rounded-full w-20 h-20" alt='' width={80} height={80} layout="fixed"/> */}
                   <span className='ml-4'>{user_paper?.user?.name}</span>
                 </div>
                 :
                 <div className='flex flex-row items-center'>
-                  <img src={user?.avatar} className="border rounded-full w-20 h-20" />
+                  <MyZoomImage url={user?.avatar} className="border rounded-full w-20 h-20" width={80} height={80}/>
+                  {/* <Image  src={user?.avatar || '/empty-image.png'} className="border rounded-full w-20 h-20" alt='' width={80} height={80} layout="fixed"/> */}
                   <span className='ml-4'>{user?.name}</span>
                 </div>
 

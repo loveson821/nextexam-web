@@ -7,6 +7,7 @@ import { Fragment } from 'react'
 import { Disclosure, Menu, Transition } from '@headlessui/react'
 import { BellIcon, MenuIcon, XIcon } from '@heroicons/react/outline'
 import { useServices } from '../services';
+import Image from 'next/image';
 
 
 
@@ -33,6 +34,10 @@ export default function Header() {
       var user = new User(JSON.parse(_user))
       setUser(user)
     }
+    
+  }, []);
+
+  React.useEffect(() => {
     if (router.pathname.indexOf('mocks') != -1) {
       setData({
         isHome: false,
@@ -52,7 +57,7 @@ export default function Header() {
         isEbook: false,
       })
     }
-  }, []);
+  },[router.pathname])
 
   const logout = () => {
     localStorage.setItem('token', '')
@@ -71,7 +76,7 @@ export default function Header() {
 
   return (
     <>
-      <Disclosure as="nav" className="bg-gray-800 sticky  w-full top-0">
+      <Disclosure as="nav" className="bg-gray-800 sticky  w-full top-0 z-50">
         {({ open }) => (
           <>
             <div className="max-w-7xl mx-auto px-2 sm:px-6 lg:px-8">
@@ -89,15 +94,12 @@ export default function Header() {
                 </div>
                 <div className="flex-1 flex items-center justify-center sm:items-stretch sm:justify-start">
                   <div className="flex-shrink-0 flex items-center">
-                    <img
+                    <Image
                       className="block lg:hidden h-8 w-auto rounded-lg"
                       src="https://examhero.com/website/logo-light.png"
                       alt="考試英雄"
-                    />
-                    <img
-                      className="hidden lg:block h-8 w-auto rounded-lg"
-                      src="https://examhero.com/website/logo-light.png"
-                      alt="考試英雄"
+                      width={30}
+                      height={30}
                     />
                   </div>
                   <div className="hidden sm:block sm:ml-6">
@@ -106,13 +108,13 @@ export default function Header() {
                         <Link
                           key={item.name}
                           href={item.href}
-                          className={classNames(
+                        >
+                          <a 
+                            aria-current={item.current ? 'page' : undefined}
+                            className={classNames(
                             item.current ? 'bg-gray-900 text-white' : 'text-gray-300 hover:bg-gray-700 hover:text-white',
                             'px-3 py-2 rounded-md text-sm font-medium'
-                          )}
-                          aria-current={item.current ? 'page' : undefined}
-                        >
-                          {item.name}
+                          )}>{item.name}</a>
                         </Link>
                       ))}
                     </div>
@@ -124,10 +126,9 @@ export default function Header() {
                       loggedIn ?
                         'https://www.examhero.com/appkit/messages?access_token=' + token
                         : '/auth/sign_in'}
-                    className="bg-gray-800 p-1 rounded-full text-gray-400 hover:text-white focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-800 focus:ring-white"
+                   
                   >
-                    <span className="sr-only">View notifications</span>
-                    <BellIcon className="h-6 w-6" aria-hidden="true" />
+                    <a  target="_blank" className="bg-gray-800 p-1 rounded-full text-gray-400 hover:text-white focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-800 focus:ring-white"><BellIcon className="h-6 w-6" aria-hidden="true" /></a>
                   </Link>
 
                   {
@@ -137,11 +138,16 @@ export default function Header() {
                         <div>
                           <Menu.Button className="bg-gray-800 flex text-sm rounded-full focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-800 focus:ring-white">
                             <span className="sr-only">Open user menu</span>
-                            <img
-                              className="h-8 w-8 rounded-full border"
-                              src={user?.avatar}
-                              alt=""
-                            />
+                            <div className="h-8 w-8 rounded-full border">
+                              <Image
+                                className="h-8 w-8 rounded-full border"
+                                src={user?.avatar || ''}
+                                alt=""
+                                width={30}
+                                height={30}
+                              />
+                            </div>
+                            
                           </Menu.Button>
                         </div>
                         <Transition
@@ -158,9 +164,8 @@ export default function Header() {
                               {({ active }) => (
                                 <Link
                                   href="/users/info"
-                                  className={classNames(active ? 'bg-gray-100' : '', 'block px-4 py-2 text-sm text-gray-700')}
                                 >
-                                  {t.do('me.info.title')}
+                                  <a className={classNames(active ? 'bg-gray-100' : '', 'block px-4 py-2 text-sm text-gray-700')}>{t.do('me.info.title')}</a>
                                 </Link>
                               )}
                             </Menu.Item>
@@ -168,20 +173,17 @@ export default function Header() {
                               {({ active }) => (
                                 <Link
                                   href="/users/modify_password"
-                                  className={classNames(active ? 'bg-gray-100' : '', 'block px-4 py-2 text-sm text-gray-700')}
                                 >
-                                  {t.do('me.manage.modify_password.title')}
+                                  <a className={classNames(active ? 'bg-gray-100' : '', 'block px-4 py-2 text-sm text-gray-700')}>{t.do('me.manage.modify_password.title')}</a>
                                 </Link>
                               )}
                             </Menu.Item>
                             <Menu.Item>
                               {({ active }) => (
                                 <Link
-                                  href={{}}
-                                  // onClick={logout}
-                                  className={classNames(active ? 'bg-gray-100' : '', 'block cursor-pointer px-4 py-2 text-sm text-gray-700')}
+                                  href={''}
                                 >
-                                  {t.do('general.logout')}
+                                  <a className={classNames(active ? 'bg-gray-100' : '', 'block px-4 py-2 text-sm text-gray-700')}>{t.do('general.logout')}</a>
                                 </Link>
                               )}
                             </Menu.Item>
@@ -192,19 +194,17 @@ export default function Header() {
                       <div>
                         <Link
                           href={'/auth/sign_in'}
-                          className={classNames(
-                            'text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium'
-                          )}
                         >
-                          {t.do('general.sign_in')}
+                          <a className={classNames(
+                            'text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium'
+                          )}>{t.do('general.sign_in')}</a>
                         </Link>
                         <Link
                           href={'/auth/sign_up'}
-                          className={classNames(
-                            'text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium'
-                          )}
                         >
-                          {t.do('general.sign_up')}
+                          <a className={classNames(
+                            'text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium'
+                          )}>{t.do('general.sign_up')}</a>
                         </Link>
                       </div>
 

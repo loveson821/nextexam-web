@@ -1,6 +1,6 @@
 import JSModel from './JSModel';
 import Group from './Group';
-import Chapter from './Chapter';
+import Chapter from './chapter';
 
 export default class Book extends JSModel {
 

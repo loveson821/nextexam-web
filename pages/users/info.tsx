@@ -15,6 +15,7 @@ import { useServices } from '../services'
 import AuthService from '../services/auth_services'
 import Loading from "../components/Loading";
 import useSWR from "swr";
+import Link from "next/link.js"
 
 export default function Info() {
     const { t } = useServices();
@@ -44,17 +45,17 @@ export default function Info() {
             setToken(toekn)
         }
         // loadData()
-    }, [setUser, setUserData]);
+    }, []);
 
     const { data, error } = useSWR([`me.json`, token], () => AuthService.getInfo())
 
     useEffect(() => {
         // loadData();
         if (data) {
-            setUserData(data.doc)
-            localStorage.setItem('user', JSON.stringify(data.doc))
+            // setUserData(data.doc)
+            // localStorage.setItem('user', JSON.stringify(data.doc))
         }
-    }, [data, setUserData]);
+    }, [data]);
 
     // const loadData = () => {
     //     AuthService.getInfo().then((data: any) => {
@@ -182,12 +183,13 @@ export default function Info() {
                         <h1 className="text-3xl font-extrabold text-gray-900">{t.do('me.info.title')}</h1>
                         {
                             userData?.has_school_section == true ?
-                                <a
-                                    href={'https://www.examhero.com/appkit/teacher_dashboard?access_token=' + token}
-                                    className="flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
-                                >
-                                    {t.do('me.manage.center')}
-                                </a>
+                                <Link href={'https://www.examhero.com/appkit/teacher_dashboard?access_token=' + token}>
+                                    <a
+                                        className="flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+                                    >
+                                        {t.do('me.manage.center')}
+                                    </a>
+                                </Link>
                                 : ''
                         }
 
@@ -226,7 +228,7 @@ export default function Info() {
                                             <dt className="text-sm font-medium text-gray-500">{t.do('me.info.avatar')}</dt>
                                             <dd className="mt-1 flex text-sm text-gray-900 sm:mt-0 sm:col-span-2">
                                                 <span className="flex-grow">
-                                                    <MyZoomImage url={userData?.avatar} className={'h-8 w-8 rounded-full'} />
+                                                    <MyZoomImage url={userData?.avatar} className={'h-8 w-8 rounded-full'} width={50} height={50} />
                                                 </span>
                                                 <span className="ml-4 flex-shrink-0 flex items-start space-x-4">
                                                     <label

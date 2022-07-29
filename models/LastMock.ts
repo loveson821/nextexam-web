@@ -46,6 +46,8 @@ export default class LastMock extends JSModel {
   suggest_time?: string;
   max_score?: string;
 
+  waiting_correction_count?: number;
+  
   constructor(json: any) {
     super(json);
   }

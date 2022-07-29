@@ -23,7 +23,13 @@ const Courses: NextPage = () => {
         { name: router.query.group_name, href: '#', current: true },
         { name: "選擇科目", href: '#', current: true }
     ]
-    const { data: courses, error } = useSWR('courses/index_v' + group_id, () => MocksService.courses(group_id))
+    const [courses, setCourses] = useState([])
+    const { data, error } = useSWR('courses/index_v' + group_id, () => MocksService.courses(group_id))
+
+    React.useEffect(() => {
+        var docs: any = data
+        setCourses(docs)
+    },[data])
 
     const handleClick = (course_id?: number, curriculum?: Curriculum) => {
         router.push({
@@ -51,7 +57,7 @@ const Courses: NextPage = () => {
                                 <h3>{course.name}</h3>
                             </div>
                             <ul role="list" className="z-0 divide-y divide-gray-200">
-                                {course.related_curriculums && course.related_curriculums[0]?.curriculums?.map((curriculum: Curriculum, index) => (
+                                {course.related_curriculums && course.related_curriculums[0]?.curriculums?.map((curriculum: Curriculum, index: number) => (
                                     <li key={curriculum.name} className=" cursor-pointer bg-white">
 
                                         <div onClick={() => handleClick(course.id, curriculum)} className="px-6 py-5 flex items-center space-x-3 hover:bg-gray-50 focus-within:ring-2 focus-within:ring-inset focus-within:ring-indigo-500">

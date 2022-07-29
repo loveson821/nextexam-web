@@ -69,7 +69,7 @@ export default function CorrectionScreen() {
                     </div>
                     <div className='flex flex-row'>
                         <label className='hidden md:block'>{t.do('exam_status.wait_correction')}</label>
-                        <label className='text-red-500'>( {paper.correcting_count + paper.submited_count}  /  {paper.done_count + paper.correcting_count + paper.submited_count} )</label>
+                        <label className='text-red-500'>( {(paper?.correcting_count || 0) + (paper?.submited_count || 0)}  /  {(paper.done_count || 0) + (paper.correcting_count || 0) + (paper.submited_count || 0)} )</label>
                         <ChevronRightIcon className="h-5 w-5 text-gray-400" aria-hidden="true" />
                     </div>
                 </div>

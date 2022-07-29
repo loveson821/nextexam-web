@@ -12,6 +12,7 @@ import UsersPaperService from '../services/users_paper_service';
 import useSWR from "swr";
 import axiosInstance from "../helper/axiosInstance";
 import useSWRInfinite from "swr/infinite";
+import Image from 'next/image';
 
 export async function getServerSideProps () {
     // Pass data to the page via props
@@ -242,7 +243,7 @@ export default function WaitingCorrection() {
                     <p className='text-gray-900'>{item.submit_sequence_number}</p>
                 </div>
                 <div className="flex-shrink-0">
-                    <img className="h-12 w-12 rounded-full" src={item.user?.avatar} alt="" />
+                    <Image className="h-12 w-12 rounded-full" src={item.user?.avatar} alt="" width={50} height={50}  layout="fixed" />
                 </div>
                 <div className="min-w-0 flex-1 px-4 md:grid md:grid-cols-2 md:gap-4">
                     <div className='flex justify-left items-center'>

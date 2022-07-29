@@ -1,5 +1,8 @@
 import { NextPage } from "next";
+import Image from "next/image";
 import Link from "next/link";
+import React from "react";
+import { useState } from "react";
 import useSWR from "swr";
 import Group from "../../models/Group";
 import Bar from "../components/bar";
@@ -12,8 +15,13 @@ const pages = [
 ]
 
 const Index: NextPage = () => {
-  // const [groups, setGroups] = useState<Group[]>([]);
-  const { data: groups, error } = useSWR('me/groups', () => MocksService.groups())
+  const [groups, setGroups] = useState<any[]>([]);
+  const { data, error } = useSWR('me/groups', () => MocksService.groups())
+
+  React.useEffect(() => {
+      var docs: any = data
+      setGroups(docs)
+    }, [data]);
 
   // React.useEffect(() => {
   //     console.log("data",data);
@@ -22,9 +30,10 @@ const Index: NextPage = () => {
   // if( !groups ){
   //   return <Loading/>
   // }
+  
   return (
     <>
-      <div className=" max-w-screen-lg w-full">
+      <div className=" max-w-screen-lg w-full" >
         <Loading visable={!groups} />
         <Bar pages={pages} />
         <ul role="list" className="mt-2 grid grid-cols-1 gap-6 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
@@ -35,7 +44,7 @@ const Index: NextPage = () => {
             >
               <Link href={'/mocks/courses?group_id=' + group.id + "&group_name=" + group.name}>
                 <div className="flex-1 flex flex-col p-8">
-                  <img className="w-32 h-32 flex-shrink-0 mx-auto rounded-full" src={group.avatar} alt="" />
+                  <Image className="w-32 h-32 flex-shrink-0 mx-auto rounded-full" src={group.avatar || ''} alt="" width={250} height={250} layout="responsive"/>
                   <h3 className="mt-6 text-gray-900 text-sm font-medium">{group.name}</h3>
                   <dl className="mt-1 flex-grow flex flex-col justify-between">
                     <dd className="mt-3">

@@ -8,6 +8,7 @@ import { MailIcon, PencilAltIcon, TrashIcon } from '@heroicons/react/outline';
 import { RadioGroup } from '@headlessui/react';
 import MyInfoInputModal from '../MyInfoInputModal';
 import CorrectingAnwerModal from '../../mocks/CorrectingAnswerModal';
+import Image from 'next/image';
 
 export default function MyAnswerView(props: any) {
     const { t } = useServices();
@@ -68,7 +69,7 @@ export default function MyAnswerView(props: any) {
                 }
                
               </div>
-              <img className=' cursor-pointer' src={url} onClick={() => { onEditAnswer(index) } }/>
+              <Image alt='' width={100} height={100} className=' cursor-pointer' src={url} onClick={() => { onEditAnswer(index) } }/>
                 <MyLine/>
             </div>
           
@@ -247,7 +248,7 @@ export default function MyAnswerView(props: any) {
                   </button>
                 </div>
                 <div className='cursor-pointer' onClick={() => { onEditAnswer(index) }}>
-                  <img src={props.users_question.correction_on_index(index)} />
+                  <Image alt='' width={100} height={100} src={props.users_question.correction_on_index(index)} />
                 </div>
 
               </div>
@@ -255,7 +256,7 @@ export default function MyAnswerView(props: any) {
     
             { !props.users_question.hasCorrectionOnIndex(index) && 
               <div onClick={() => { onEditAnswer(index) }}>
-                <img src={url} />
+                <Image alt='' width={100} height={100} src={url} />
               </div>
             }
           </div>

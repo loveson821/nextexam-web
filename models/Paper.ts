@@ -11,6 +11,9 @@ export default class Paper extends JSModel {
 	whats_wrong_reasons?: [];
 	deadline?: string;
 	purpose?: string;
+	correcting_count?: number;
+	submited_count?: number;
+	done_count?: number;
 
 	constructor(json: any) {
 		super(json);
