@@ -180,11 +180,8 @@ export default function Header() {
                             </Menu.Item>
                             <Menu.Item>
                               {({ active }) => (
-                                <Link
-                                  href={''}
-                                >
-                                  <a className={classNames(active ? 'bg-gray-100' : '', 'block px-4 py-2 text-sm text-gray-700')}>{t.do('general.logout')}</a>
-                                </Link>
+                                  <span onClick={logout} className={classNames(active ? 'bg-gray-100' : '', ' cursor-pointer block px-4 py-2 text-sm text-gray-700')}>{t.do('general.logout')}</span>
+            
                               )}
                             </Menu.Item>
                           </Menu.Items>

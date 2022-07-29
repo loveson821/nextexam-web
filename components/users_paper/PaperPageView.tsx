@@ -18,7 +18,7 @@ import storage from '../../firebase.js'
 import { Util } from '../../utils/util';
 import MyLoader from '../MyLoader';
 import Link from 'next/link';
-import CorrectingAnwerModal from '../../pages/mocks/CorrectingAnswerModal';
+import CorrectingAnwerModal from './CorrectingAnswerModal';
 import Image from 'next/image';
 
 export default function PaperPageView(props: any) {

@@ -7,7 +7,7 @@ import MyLine from '../MyLine';
 import { MailIcon, PencilAltIcon, TrashIcon } from '@heroicons/react/outline';
 import { RadioGroup } from '@headlessui/react';
 import MyInfoInputModal from '../MyInfoInputModal';
-import CorrectingAnwerModal from '../../pages/mocks/CorrectingAnswerModal';
+import CorrectingAnwerModal from './CorrectingAnswerModal';
 import Image from 'next/image';
 
 export default function MyAnswerView(props: any) {

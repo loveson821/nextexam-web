@@ -32,13 +32,14 @@ const Sign_in: NextPage = () => {
   return (
     <div className="min-h-full flex flex-col justify-center py-12 sm:px-6 lg:px-8">
       <div className="sm:mx-auto sm:w-full sm:max-w-md">
-        <Image
-          className="mx-auto h-12 w-auto"
-          src="https://examhero.com/website/logo-light.png"
-          alt="Workflow"
-          width={100}
-          height={100}
-        />
+        <div className="mx-auto w-auto  text-center">
+          <Image
+            src="https://examhero.com/website/logo-light.png"
+            alt="Workflow"
+            width={50}
+            height={50}
+          />
+        </div>
         <h2 className="mt-6 text-center text-3xl font-extrabold text-gray-900">{t.do('general.sign_in')}</h2>
         <p className="mt-2 text-center text-sm text-gray-600">
         </p>
@@ -85,8 +86,8 @@ const Sign_in: NextPage = () => {
             <div className="flex items-center justify-between">
 
               <div className="text-sm">
-                <Link href={{}} className="font-medium text-indigo-600 hover:text-indigo-500">
-                  {t.do('sign_in.forget_password')}
+                <Link href='/auth/forget_password'>
+                  <a  className="font-medium text-indigo-600 hover:text-indigo-500">{t.do('sign_in.forget_password')}</a>
                 </Link>
               </div>
             </div>
@@ -103,16 +104,19 @@ const Sign_in: NextPage = () => {
             <div>
               <Link
                 href='/auth/sign_up'
-                className="w-full cursor-pointer flex justify-center py-2 px-4 border  rounded-md shadow-sm text-sm font-medium text-black bg-white hover:bg-white"
               >
-                {t.do('general.sign_up')}
+               <a className="w-full cursor-pointer flex justify-center py-2 px-4 border  rounded-md shadow-sm text-sm font-medium text-black bg-white hover:bg-white"> {t.do('general.sign_up')}</a>
               </Link>
             </div>
             <div >
               <span className=' text-sm'>{t.do('sign_in.read_agree')}</span>
-              <Link href={'https://examhero.com/pages/terms'} target="_blank" rel="noreferrer" className=' text-sm text-blue-500'>{t.do('sign_in.terms')}</Link>
+              <Link href={'https://examhero.com/pages/terms'} rel="noreferrer" >
+                <a target="_blank"  className=' text-sm text-blue-500'>{t.do('sign_in.terms')}</a>
+                </Link>
               <span className=' text-sm'>{t.do('sign_in.and')}</span>
-              <Link href={'https://examhero.com/pages/privacy'} target="_blank" rel="noreferrer" className=' text-sm text-blue-500'>{t.do('sign_in.privacy')}</Link>
+              <Link href={'https://examhero.com/pages/privacy'} rel="noreferrer" >
+              <a target="_blank"  className=' text-sm text-blue-500'>{t.do('sign_in.privacy')}</a>
+                </Link>
             </div>
           </div>
 
