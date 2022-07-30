@@ -71,7 +71,7 @@ export async function getServerSideProps() {
 
 
     return (
-        <>
+        <div className="w-full items-center flex justify-center">
             <div className="max-w-screen-lg w-full bg-white shadow overflow-hidden ">
                 <div className="py-4">
                     {tikus?.map((tiku: Tiku, index: number) => {
@@ -92,6 +92,6 @@ export async function getServerSideProps() {
 
                 </div>
             </div>
-        </>
+        </div>
     )
   }
