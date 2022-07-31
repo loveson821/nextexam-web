@@ -53,7 +53,7 @@ export async function getServerSideProps() {
     }
 
     const submit = async () => {
-        const res = await fetch(`https://www.examhero.com/api/mila/finish`,{ 
+        const res = await fetch(`https://www.examhero.com/api/milas/finish`,{ 
             method: 'post',
             headers: { 'Content-Type': 'application/json', Authorization: "Bearer " + token}, 
             body: JSON.stringify({
