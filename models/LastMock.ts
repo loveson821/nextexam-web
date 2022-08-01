@@ -196,6 +196,8 @@ export default class LastMock extends JSModel {
             } else {
               showText = t.do('mocks.start_do')
             }
+          }else{
+            showText = t.do('mocks.report')
           }
         } else {
           // 過左報名時間

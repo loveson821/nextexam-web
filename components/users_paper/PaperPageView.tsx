@@ -20,6 +20,8 @@ import MyLoader from '../MyLoader';
 import Link from 'next/link';
 import CorrectingAnwerModal from './CorrectingAnswerModal';
 import Image from 'next/image';
+import MyVideo from '../MyVideo';
+import UsersPaperService from '../../services/users_paper_service';
 
 export default function PaperPageView(props: any) {
     const { t } = useServices();
@@ -36,6 +38,7 @@ export default function PaperPageView(props: any) {
       url: '',
       edit_mode: UsersPaperEditMode.user_edit_mode
     })
+    const [showVideo, setShowVideo] = useState(false)
     
       // 點擊入去手畫圖
       const onImageClick = async (index = -1) => {
@@ -286,6 +289,31 @@ export default function PaperPageView(props: any) {
           return t.do('exam_all.play_text') + " (0)"
       }
 
+      const handleVideoClick = (url: string) => {
+        if (url == '') return;
+        if (props.edit_mode == UsersPaperEditMode.show_only_mode) {
+          alert(t.do('exam_all.play_cannot'));
+          return;
+        }
+        var isConfirm = confirm(t.do('exam_all.play_tip') )
+        if( isConfirm ) checkCanVideo(url)
+      };
+
+      const checkCanVideo = (url: string) => {
+        UsersPaperService.watch_video_once(
+          props.users_paper.id,
+          props.paper_page['paper_pageable_id'],
+        )
+          .then(res => {
+            console.log(res);
+            setShowVideo(true)
+          })
+          .catch(err => {
+            console.log(err);
+            alert(err.toString());
+          });
+      };
+
       const handleFileSelect = (e: any) => {
         // get files from event on the input element as an array
         // let files = [...e.target.files];
@@ -410,8 +438,9 @@ export default function PaperPageView(props: any) {
                 
                 : 
                 <div>
-                    {props.paper_page['tape'] && <QuestionActionButton title={videoTapeText()} onPress={()=>alert('tape')}/>}
-                    {props.paper_page['mandarin_tape'] && <QuestionActionButton title={videoMandarinTapeText} onPress={()=>alert('mandarin_tape')}/>}
+                    {props.paper_page['tape'] && <QuestionActionButton title={videoTapeText()} onPress={()=>handleVideoClick(props.paper_page['tape'])}/>}
+                    {props.paper_page['mandarin_tape'] && <QuestionActionButton title={videoMandarinTapeText} onPress={()=>handleVideoClick(props.paper_page['mandarin_tape'])}/>}
+                    {showVideo &&  <MyVideo src={props.paper_page['tape'] || props.paper_page['mandarin_tape']}/> }
                 </div>}
             </div>
             <MyLine/>
