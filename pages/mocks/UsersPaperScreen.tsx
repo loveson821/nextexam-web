@@ -41,8 +41,8 @@ export default function UsersPaperScreen(props: any) {
 
 
     const loadData = async () => {
-        console.log(router.query.paper_id);
-        console.log(router.query.user_paper_id);
+        // console.log(router.query.paper_id);
+        // console.log(router.query.user_paper_id);
         // var paper_id = 1853;
         // var user_paper_id = 12983;
         var paper_id = parseInt( router.query.paper_id+"");
@@ -62,7 +62,7 @@ export default function UsersPaperScreen(props: any) {
     const handlingEditMode = () => {
         // setEditMode(UsersPaperEditMode.user_edit_mode);
         if (router.query.editMode != undefined) {
-            console.log(router.query.editMode);
+            // console.log(router.query.editMode);
              setEditMode(parseInt(router.query.editMode+""));
         }
       };
@@ -116,7 +116,6 @@ export default function UsersPaperScreen(props: any) {
       }
 
     const update = () => {
-        console.log("update");
         setNum(num => num + 1)
         
     }

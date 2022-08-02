@@ -126,7 +126,7 @@ export default function MyAnswerView(props: any) {
        
         const select = (value: any) => {
           if( isCorrecting() ) return ;
-          console.log(value);
+          // console.log(value);
           setMcValue(value)
           onEditAnswer(value)
           // setNum(num => num++)

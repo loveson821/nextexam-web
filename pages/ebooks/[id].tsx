@@ -66,7 +66,7 @@ const Detail: NextPage = (props: any) => {
     const loadData = () => {
         EbookService.detail(id).then((doc: any) => {
             if (doc) {
-                console.log(doc);
+                // console.log(doc);
                 setBook(doc)
                 setGroup(doc.group)
             }

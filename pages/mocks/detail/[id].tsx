@@ -67,7 +67,7 @@ export default function Detail() {
     if (router.query.id) {
       if (show_model == 0) {
         PaperService.papers_can_do(paper_id).then((doc: any) => {
-          console.log("doc", doc);
+          // console.log("doc", doc);
           setPaper(doc)
           setRole(doc.role)
           if (doc.users_papers.length > 0) {
@@ -82,11 +82,11 @@ export default function Detail() {
 
           setPaper(doc)
           setRole(doc.role)
-          console.log("doc", doc);
+          // console.log("doc", doc);
           if (doc.users_papers.length > 0) {
             setUserPaper(doc.users_papers[0])
           }
-          console.log("user", doc.users_papers[0]);
+          // console.log("user", doc.users_papers[0]);
         }).catch(err => {
           console.log("err", err);
 

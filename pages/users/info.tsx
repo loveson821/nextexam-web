@@ -130,7 +130,7 @@ export default function Info() {
             const reader = new FileReader();
             reader.readAsDataURL(file);
             reader.onload = async () => {
-                console.log(reader.result);
+                // console.log(reader.result);
                 await handleImage(file);
                 e.target.value = null;//上传完图片后要清空file，下次可以继续上传
             };
@@ -153,14 +153,14 @@ export default function Info() {
                 );
                 // update progress
                 // setPercent(percent);
-                console.log(percent);
+                // console.log(percent);
 
             },
             (err) => console.log(err),
             () => {
                 // download url
                 getDownloadURL(uploadTask.snapshot.ref).then((uploadUrl) => {
-                    console.log("uploadUrl", uploadUrl);
+                    // console.log("uploadUrl", uploadUrl);
                     setUserData({
                         ...user,
                         avatar: uploadUrl

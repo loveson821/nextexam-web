@@ -159,7 +159,20 @@ export default function Header() {
                           leaveFrom="transform opacity-100 scale-100"
                           leaveTo="transform opacity-0 scale-95"
                         >
-                          <Menu.Items className="origin-top-right absolute right-0 mt-2 w-48 rounded-md shadow-lg py-1 bg-white ring-1 ring-black ring-opacity-5 focus:outline-none">
+                          <div className="origin-top-right absolute right-0 mt-2 w-48 rounded-md shadow-lg py-1 bg-white ring-1 ring-black ring-opacity-5 focus:outline-none">
+                              <Link
+                                  href="/users/info"
+                                >
+                                  <a className={classNames(' hover:bg-gray-100 block px-4 py-2 text-sm text-gray-700')}>{t.do('me.info.title')}</a>
+                                </Link>
+                                <Link
+                                  href="/users/modify_password"
+                                >
+                                  <a className={classNames(' hover:bg-gray-100 block px-4 py-2 text-sm text-gray-700')}>{t.do('me.manage.modify_password.title')}</a>
+                                </Link>
+                                <span onClick={logout} className={classNames(' hover:bg-gray-100 cursor-pointer block px-4 py-2 text-sm text-gray-700')}>{t.do('general.logout')}</span>
+                          </div>
+                          {/* <Menu.Items className="origin-top-right absolute right-0 mt-2 w-48 rounded-md shadow-lg py-1 bg-white ring-1 ring-black ring-opacity-5 focus:outline-none">
                             <Menu.Item>
                               {({ active }) => (
                                 <Link
@@ -183,8 +196,8 @@ export default function Header() {
                                   <span onClick={logout} className={classNames(active ? 'bg-gray-100' : '', ' cursor-pointer block px-4 py-2 text-sm text-gray-700')}>{t.do('general.logout')}</span>
             
                               )}
-                            </Menu.Item>
-                          </Menu.Items>
+                            </Menu.Item> */}
+                          {/* </Menu.Items> */}
                         </Transition>
                       </Menu>
                       :

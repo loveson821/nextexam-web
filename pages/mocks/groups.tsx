@@ -19,8 +19,10 @@ const Index: NextPage = () => {
   const { data, error } = useSWR('me/groups', () => MocksService.groups())
 
   React.useEffect(() => {
-      var docs: any = data
-      setGroups(docs)
+      if( data ){
+        setGroups(data as any)
+      }
+      
     }, [data]);
 
   // React.useEffect(() => {
@@ -28,7 +30,7 @@ const Index: NextPage = () => {
   //     console.log("error",error);
   //   }, [data, error]);
   // if( !groups ){
-  //   return <Loading/>
+  //   return <Loading visable={!groups}/>
   // }
   
   return (
@@ -44,7 +46,10 @@ const Index: NextPage = () => {
             >
               <Link href={'/mocks/courses?group_id=' + group.id + "&group_name=" + group.name}>
                 <div className="flex-1 flex flex-col p-8">
-                  <Image className="w-32 h-32 flex-shrink-0 mx-auto rounded-full" src={group.avatar || ''} alt="" width={250} height={250} layout="responsive"/>
+                  <img className="w-40 h-40  flex-shrink-0 mx-auto rounded-full" src={group.avatar} alt=""/>
+                  {/* <div className="w-full h-fulltext-center items-center justify-center">
+                    <Image className="w-32 h-32  flex-shrink-0 mx-auto rounded-full" priority={false} src={group.avatar || ''} alt="" width={250} height={250} layout="responsive"/>
+                  </div> */}
                   <h3 className="mt-6 text-gray-900 text-sm font-medium">{group.name}</h3>
                   <dl className="mt-1 flex-grow flex flex-col justify-between">
                     <dd className="mt-3">

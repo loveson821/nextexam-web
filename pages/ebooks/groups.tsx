@@ -110,7 +110,8 @@ const Index: NextPage = () => {
             >
               <Link href={'/ebooks?group_id=' + group.id + "&group_name=" + group.name}>
                 <div className="flex-1 flex flex-col p-8">
-                  <Image className="w-30 h-30 flex-shrink-0 mx-auto rounded-full"   src={group.avatar || ''} alt="" width={250} height={250} layout="responsive"/>
+                  <img className="w-40 h-40  flex-shrink-0 mx-auto rounded-full" src={group.avatar} alt=""/>
+                  {/* <Image className="w-30 h-30 flex-shrink-0 mx-auto rounded-full"   src={group.avatar || ''} alt="" width={250} height={250} layout="responsive"/> */}
                   <h3 className="mt-6 text-gray-900 text-sm font-medium">{group.name}</h3>
                   <dl className="mt-1 flex-grow flex flex-col justify-between">
                     {/* <dt className="sr-only">Title</dt>

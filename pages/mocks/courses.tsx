@@ -27,8 +27,8 @@ const Courses: NextPage = () => {
     const { data, error } = useSWR('courses/index_v' + group_id, () => MocksService.courses(group_id))
 
     React.useEffect(() => {
-        var docs: any = data
-        setCourses(docs)
+        if( data )
+            setCourses(data as any)
     },[data])
 
     const handleClick = (course_id?: number, curriculum?: Curriculum) => {
@@ -49,6 +49,7 @@ const Courses: NextPage = () => {
     return (
         <>
             <div className=" max-w-screen-lg w-full">
+                <Loading visable={!courses} />
                 <Bar pages={pages} />
                 <nav className="mt-2 max-w-screen-lg w-full h-full border rounded-sm overflow-y-auto" aria-label="Directory">
                     {courses?.map((course: Course) => (

@@ -67,15 +67,17 @@ export default function Index() {
         {books?.map((book: Book) => (
           <div key={book.id} onClick={() => detailClick(book)} className="group cursor-pointer p-4 border-r border-b border-gray-200 sm:p-6">
             <div className="rounded-lg overflow-hidden bg-gray-200 aspect-w-1 aspect-h-1 group-hover:opacity-75">
-              <Image
+              {/* <Image
                 src={book.cover || ''}
                 width={200}
                 height={300}
                 layout="responsive"
                 className="w-full h-full object-center object-cover"
                 alt=''
-              />
+              /> */}
+              <img className="w-full h-full object-center object-cover" src={book.cover || ''} alt=''/>
             </div>
+            
             <div className="pt-10 pb-4 text-center">
               <h3 className="text-sm font-medium text-gray-900">
 

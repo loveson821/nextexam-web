@@ -305,7 +305,7 @@ export default function PaperPageView(props: any) {
           props.paper_page['paper_pageable_id'],
         )
           .then(res => {
-            console.log(res);
+            // console.log(res);
             setShowVideo(true)
           })
           .catch(err => {
@@ -323,7 +323,7 @@ export default function PaperPageView(props: any) {
           const reader = new FileReader();
           reader.readAsDataURL(file);
           reader.onload = async () => {
-            console.log(reader.result);
+            // console.log(reader.result);
 
             await handleImage({ uq_id: props.users_question.id, file: reader.result});
             // await handleImage({ uq_id: props.users_question.id, file: file});
@@ -352,14 +352,14 @@ export default function PaperPageView(props: any) {
         UsersQuestionService.save_to_server(props.users_question);
         update_users_paper_for_local_use()
       
-        console.log("score:", score);
+        // console.log("score:", score);
       }
      
   }
 
     const editScore = () => {
       setVisable(true)
-      console.log("score:", data.score);
+      // console.log("score:", data.score);
     }
     const uploadImageView = () => {
         return (

@@ -49,14 +49,14 @@ const Sign_up: NextPage = () => {
     AuthService.signUp(_user).then((data: any) => {
       router.push("/auth/sign_in")
     }).catch(res => {
-      console.log(res);
+      // console.log(res);
       if (!res.success) {
         if (res.errors.email) {
           showTip(t.do('sign_up.email_same'))
         } else if (res.errors.phone) {
           showTip(t.do('sign_up.phone_same'))
         } else {
-          console.log(res.data);
+          // console.log(res.data);
           showTip(res.data.error)
         }
       } else {
@@ -155,12 +155,12 @@ const Sign_up: NextPage = () => {
               </div>
 
               <div>
-                <label htmlFor="password" className="block text-sm font-medium text-gray-700">
+                <label htmlFor="confirm_password" className="block text-sm font-medium text-gray-700">
                   {t.do('sign_up.confirm_password')}
                 </label>
                 <div className="mt-1">
                   <input
-                    id="password"
+                    id="confirm_password"
                     name="confirm_password"
                     type="password"
                     autoComplete="current-password"
